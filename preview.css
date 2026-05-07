@@ -297,6 +297,11 @@ small,
     grid-template-columns: minmax(240px, 300px) minmax(0, 1fr);
   }
 
+  .page_artist .artist_page > .row.rym-modern-contributions-row {
+    display: block !important;
+    margin-top: 28px;
+  }
+
   .page_artist #column_container_right,
   .page_artist #column_container_left {
     float: none !important;
@@ -468,18 +473,6 @@ small,
     text-overflow: ellipsis;
   }
 
-  .page_artist .page_artist_songs_song_has_lyrics {
-    background: rgb(167 181 206 / 14%);
-    border-radius: 999px;
-    color: var(--rym-text-soft) !important;
-    display: inline-flex;
-    font-size: 11px;
-    font-weight: 750;
-    line-height: 1;
-    margin-top: 4px;
-    padding: 4px 7px;
-  }
-
   .page_artist .page_artist_songs_song_stats,
   .page_artist .page_artist_tracks_track_stats_scores {
     align-items: center;
@@ -574,22 +567,24 @@ small,
   }
 
   .page_artist .artist_info .rym-modern-follow-row {
+    align-items: center;
     grid-template-columns: auto minmax(0, 1fr);
-    margin-top: 6px !important;
-    padding-top: 10px !important;
+    margin-top: 8px !important;
+    padding-top: 14px !important;
   }
 
   .page_artist .artist_info .label_num_followers {
-    display: grid;
-    gap: 6px;
+    display: contents;
   }
 
   .page_artist .artist_info .label_num_followers > div {
-    gap: 3px 7px;
-    grid-column: auto;
+    gap: 6px;
+    grid-column: 1 / -1;
   }
 
   .page_artist .section_artist_page_section_nav {
+    min-width: 0;
+    overflow: hidden;
     padding-bottom: 12px !important;
     padding-top: 14px !important;
   }
@@ -598,29 +593,50 @@ small,
     align-items: end;
     border-bottom: 1px solid var(--rym-border);
     display: flex;
-    flex-wrap: wrap;
-    gap: 6px 10px;
+    flex-wrap: nowrap;
+    gap: calc(16px * var(--rym-tab-scale, 1));
+    max-width: 100%;
+    min-width: 0;
+    overflow-x: auto;
+    scrollbar-width: none;
     width: 100%;
   }
 
+  .page_artist .artist_page_section::-webkit-scrollbar {
+    display: none;
+  }
+
   .page_artist .artist_page_section h2,
-  .page_artist .artist_page_section a {
-    color: var(--rym-text) !important;
-    font-size: 24px !important;
-    font-weight: 760;
+  .page_artist .artist_page_section a,
+  .page_artist .artist_page_section_active_music,
+  .page_artist .artist_page_section .rym-modern-section-tab {
+    align-items: baseline;
+    color: var(--rym-text-soft) !important;
+    display: inline-flex !important;
+    flex: 0 0 auto;
+    font-size: clamp(
+      15px,
+      calc(18px * var(--rym-tab-scale, 1)),
+      18px
+    ) !important;
+    font-weight: 760 !important;
+    gap: calc(4px * var(--rym-tab-scale, 1));
     line-height: 1;
-    padding: 0 12px 10px 0 !important;
+    margin-top: 0;
+    opacity: 1;
+    padding: 0 0 calc(11px * var(--rym-tab-scale, 1)) !important;
+    text-decoration: none;
+    white-space: nowrap;
   }
 
   .page_artist .artist_page_section a {
     color: var(--rym-link-hover) !important;
-    opacity: 0.8;
   }
 
   .page_artist .artist_page_section .subtext {
-    font-size: 18px;
+    font-size: clamp(13px, calc(15px * var(--rym-tab-scale, 1)), 15px);
     font-weight: 650;
-    margin-left: 4px;
+    margin-left: calc(4px * var(--rym-tab-scale, 1));
   }
 
   .page_artist .artist_page_section_active_music {
@@ -628,18 +644,26 @@ small,
     margin-bottom: -1px;
   }
 
-  .page_artist .artist_page_section .rym-modern-section-tab {
-    color: var(--rym-text-soft) !important;
-    font-size: 17px !important;
-    font-weight: 720;
-    margin-top: 6px;
-    opacity: 1;
-    padding: 0 0 11px !important;
-    text-decoration: none;
+  .page_artist .artist_page_section_active_music h2 {
+    display: inline !important;
+    padding: 0 !important;
   }
 
+  .page_artist .artist_page_section a:hover,
   .page_artist .artist_page_section .rym-modern-section-tab:hover {
     color: var(--rym-link-hover) !important;
+  }
+
+  .page_artist
+    .artist_page_section
+    .rym-modern-section-tab[aria-current="true"] {
+    color: var(--rym-accent) !important;
+    border-bottom: 2px solid var(--rym-accent);
+    margin-bottom: -1px;
+  }
+
+  .page_artist .rym-modern-tab-panel[hidden] {
+    display: none !important;
   }
 
   .page_artist .section_artist_discography {
@@ -653,9 +677,17 @@ small,
   .page_artist .rym-modern-disco-filters {
     align-items: center;
     display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
+    flex-wrap: nowrap;
+    gap: calc(8px * var(--rym-filter-scale, 1));
     margin: 0 0 18px;
+    max-width: 100%;
+    min-width: 0;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .page_artist .rym-modern-disco-filters::-webkit-scrollbar {
+    display: none;
   }
 
   .page_artist .rym-modern-disco-filter {
@@ -665,12 +697,14 @@ small,
     border-radius: 999px;
     color: var(--rym-text-soft);
     display: inline-flex;
-    font-size: 13px;
+    flex: 0 0 auto;
+    font-size: calc(13px * var(--rym-filter-scale, 1));
     font-weight: 760;
-    gap: 7px;
+    gap: calc(7px * var(--rym-filter-scale, 1));
     line-height: 1;
-    min-height: 30px;
-    padding: 0 11px;
+    min-height: calc(30px * var(--rym-filter-scale, 1));
+    padding: 0 calc(11px * var(--rym-filter-scale, 1));
+    white-space: nowrap;
   }
 
   .page_artist .rym-modern-disco-filter:hover {
@@ -687,7 +721,7 @@ small,
 
   .page_artist .rym-modern-disco-filter span {
     color: inherit;
-    font-size: 12px;
+    font-size: calc(12px * var(--rym-filter-scale, 1));
     font-weight: 850;
     opacity: 0.74;
   }
@@ -730,6 +764,10 @@ small,
     display: flex;
     gap: 12px;
     margin: 18px 0 6px;
+  }
+
+  .page_artist #discography > [hidden] {
+    display: none !important;
   }
 
   .page_artist .disco_header_label {
@@ -896,64 +934,269 @@ small,
   display: none;
 }
 
+.artist_info_main > .clear {
+  display: none !important;
+}
+
 .artist_info .rym-modern-follow-row {
   align-items: center;
-  border-top: 1px solid rgb(49 58 78 / 55%);
+  border-top: 0;
   display: grid !important;
-  gap: 7px 16px !important;
+  gap: 10px 16px !important;
   grid-template-columns: auto minmax(0, 1fr);
-  margin-top: 3px !important;
-  padding-top: 12px !important;
+  margin-top: 0 !important;
+  padding-top: 8px !important;
 }
 
 .artist_info .btn.flat_btn {
-  background: var(--rym-accent-strong) !important;
-  border: 1px solid transparent !important;
-  border-radius: 6px !important;
-  color: #061018 !important;
-  font-size: 13px !important;
-  font-weight: 800;
+  background: rgb(120 183 255 / 16%) !important;
+  border: 1px solid rgb(120 183 255 / 44%) !important;
+  border-radius: 999px !important;
+  box-shadow: none;
+  color: var(--rym-link-hover) !important;
+  font-size: 14px !important;
+  font-weight: 850;
   line-height: 1;
-  min-height: 32px;
-  padding: 7px 12px;
+  min-height: 36px;
+  padding: 9px 20px;
   text-decoration: none;
 }
 
+.artist_info .btn.flat_btn:hover {
+  background: rgb(120 183 255 / 24%) !important;
+  border-color: rgb(120 183 255 / 62%) !important;
+  box-shadow: 0 10px 24px rgb(120 183 255 / 10%);
+  color: #d9efff !important;
+}
+
 .artist_info .label_num_followers {
-  color: var(--rym-text-muted);
-  display: flex;
-  flex-wrap: wrap;
-  gap: 4px 9px;
-  line-height: 1.35;
+  color: var(--rym-text-faint);
+  display: contents;
+  line-height: 1.25;
 }
 
 .artist_info .rym-modern-follower-count {
   color: var(--rym-text-soft);
-  font-size: 15px;
-  font-weight: 720;
-  line-height: 1;
+  font-size: 16px;
+  font-weight: 780;
+  grid-column: 2;
+  letter-spacing: 0;
+  line-height: 1.1;
 }
 
 .artist_info .label_num_followers > div {
   display: flex;
-  flex-basis: 100%;
   flex-wrap: wrap;
-  gap: 4px 8px;
-  grid-column: 2;
+  gap: 6px;
+  grid-column: 1 / -1;
   margin-top: 0 !important;
+  padding-top: 2px;
 }
 
 .artist_info .artist_follower {
-  color: var(--rym-success) !important;
-  font-size: 13px;
-  font-weight: 680;
+  background: rgb(148 163 184 / 9%);
+  border: 1px solid rgb(148 163 184 / 14%);
+  border-radius: 999px;
+  color: var(--rym-text-soft) !important;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1;
+  padding: 4px 8px;
   text-decoration: none;
 }
 
 .artist_info .artist_follower:hover {
-  color: #84e89b !important;
+  background: rgb(120 183 255 / 12%);
+  border-color: rgb(120 183 255 / 28%);
+  color: var(--rym-link-hover) !important;
+}
+
+.artist_info .rym-modern-see-all-followers {
+  background: transparent;
+  border-color: transparent;
+  color: var(--rym-link-hover) !important;
+  font-weight: 780;
+  padding-left: 2px;
+  padding-right: 2px;
+}
+
+.artist_info .rym-modern-see-all-followers:hover {
+  background: transparent;
+  border-color: transparent;
+  color: #d9efff !important;
   text-decoration: underline;
   text-underline-offset: 0.18em;
+}
+
+.page_artist .rym-modern-contributions-column {
+  padding: 0 !important;
+  width: 100% !important;
+}
+
+.page_artist .rym-modern-contributions {
+  background: var(--rym-surface) !important;
+  border: 1px solid var(--rym-border);
+  border-radius: 8px;
+  margin: 0 !important;
+  padding: 18px !important;
+}
+
+.page_artist .rym-modern-contributions .artist_page_header {
+  margin-bottom: 14px;
+  padding: 0 !important;
+}
+
+.page_artist .rym-modern-contributions .artist_page_header h2 {
+  color: var(--rym-text) !important;
+  font-size: 24px !important;
+  line-height: 1.1;
+}
+
+.page_artist .rym-modern-contributions .clearfix {
+  display: none !important;
+}
+
+.page_artist .page_object_contributions {
+  display: grid;
+  gap: 14px;
+}
+
+.page_artist .contributor_header {
+  color: var(--rym-text-muted) !important;
+  display: block;
+  font-size: 12px;
+  font-weight: 780;
+  letter-spacing: 0.14em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.page_artist .contributors {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+
+.page_artist .contributors a {
+  background: rgb(148 163 184 / 9%);
+  border: 1px solid rgb(148 163 184 / 14%);
+  border-radius: 999px;
+  color: var(--rym-text-soft) !important;
+  font-size: 12px !important;
+  font-weight: 720;
+  line-height: 1;
+  padding: 5px 8px;
+  text-decoration: none;
+}
+
+.page_artist .contributors a:hover {
+  background: rgb(120 183 255 / 12%);
+  border-color: rgb(120 183 255 / 28%);
+  color: var(--rym-link-hover) !important;
+}
+
+.page_artist .rym-modern-contribution-actions {
+  border-top: 1px solid rgb(49 58 78 / 55%);
+  padding-top: 14px;
+}
+
+.page_artist .rym-modern-contribution-actions summary {
+  align-items: center;
+  background: rgb(120 183 255 / 11%);
+  border: 1px solid rgb(120 183 255 / 28%);
+  border-radius: 999px;
+  color: var(--rym-link-hover);
+  cursor: pointer;
+  display: inline-flex;
+  font-size: 13px;
+  font-weight: 820;
+  line-height: 1;
+  list-style: none;
+  min-height: 32px;
+  padding: 8px 14px;
+}
+
+.page_artist .rym-modern-contribution-actions summary::-webkit-details-marker {
+  display: none;
+}
+
+.page_artist .rym-modern-contribution-actions summary::after {
+  content: "+";
+  font-size: 16px;
+  font-weight: 760;
+  margin-left: 10px;
+}
+
+.page_artist .rym-modern-contribution-actions[open] summary::after {
+  content: "-";
+}
+
+.page_artist .contribution_links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px !important;
+}
+
+.page_artist .contribution_links .contrib_btn {
+  background: rgb(120 183 255 / 10%) !important;
+  border: 1px solid rgb(120 183 255 / 22%) !important;
+  border-radius: 999px !important;
+  color: var(--rym-link-hover) !important;
+  font-size: 12px !important;
+  font-weight: 760 !important;
+  line-height: 1 !important;
+  min-height: 30px;
+  padding: 8px 12px !important;
+}
+
+.page_artist .contribution_links .contrib_btn:hover {
+  background: rgb(120 183 255 / 18%) !important;
+  border-color: rgb(120 183 255 / 38%) !important;
+  color: #d9efff !important;
+}
+
+@media only screen and (width <= 72rem) {
+  .page_artist .artist_page_section {
+    gap: 10px;
+  }
+
+  .page_artist .artist_page_section h2,
+  .page_artist .artist_page_section a,
+  .page_artist .artist_page_section_active_music,
+  .page_artist .artist_page_section .rym-modern-section-tab {
+    font-size: 14px !important;
+    gap: 3px;
+    padding-bottom: 9px !important;
+  }
+
+  .page_artist .artist_page_section .subtext {
+    font-size: 12px;
+    margin-left: 2px;
+  }
+
+  .page_artist .rym-modern-disco-filters {
+    flex-wrap: wrap;
+    gap: 6px;
+    overflow-x: visible;
+  }
+
+  .page_artist .rym-modern-disco-filter {
+    border-radius: 999px;
+    font-size: 12px;
+    gap: 5px;
+    min-height: 28px;
+    padding: 0 9px;
+  }
+
+  .page_artist .rym-modern-disco-filter span {
+    font-size: 11px;
+  }
+
+  .page_artist .artist_info a.genre {
+    font-size: 12px;
+    padding: 5px 8px;
+  }
 }
 
 @media only screen and (width <= 36rem) {
@@ -966,6 +1209,61 @@ small,
   .artist_info .info_hdr {
     padding-top: 0;
   }
+}
+
+.page_artist .page_artist_songs_song_has_lyrics {
+  align-items: center;
+  background: transparent !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  color: var(--rym-success) !important;
+  display: inline-flex !important;
+  font-size: 0 !important;
+  height: 16px !important;
+  line-height: 1;
+  margin-left: 0 !important;
+  margin-top: 0 !important;
+  min-height: 16px !important;
+  overflow: hidden;
+  padding: 0 !important;
+  position: relative;
+  vertical-align: middle;
+  width: 16px !important;
+}
+
+.page_artist .page_artist_songs_song_has_lyrics::before {
+  color: currentcolor;
+  content: "✓";
+  font-size: 15px;
+  font-weight: 900;
+  left: 50%;
+  line-height: 1;
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -52%);
+}
+
+.page_artist .page_artist_songs_song_has_lyrics:hover {
+  color: #84e89b !important;
+}
+
+.page_artist .page_artist_tracks_track_stats_score_star {
+  align-items: center;
+  display: inline-flex !important;
+  gap: 0;
+}
+
+.page_artist .page_artist_tracks_track_stats_score_star img.metadata-star,
+.page_artist .page_artist_tracks_track_stats_score_star img.metadata-star-bold {
+  display: none !important;
+}
+
+.page_artist .page_artist_tracks_track_stats_score_star::before {
+  color: var(--rym-text);
+  content: "★";
+  font-size: 13px;
+  line-height: 1;
+  margin-right: 2px;
 }
 
 .rating,
