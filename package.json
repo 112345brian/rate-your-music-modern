@@ -7,10 +7,11 @@
     "dev": "vite --host 127.0.0.1",
     "build": "vite build",
     "preview": "vite preview --host 127.0.0.1",
-    "check": "npm run format:check && npm run lint && npm test",
+    "sync:preview": "node scripts/build-preview-css.mjs && node scripts/build-preview-pages.mjs",
+    "check": "npm run sync:preview && npm run format:check && npm run lint && npm test",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "lint": "eslint . && stylelint \"**/*.css\"",
+    "lint": "eslint . && stylelint \"rate-your-music-modern.css\" \"preview.css\"",
     "test": "playwright test",
     "test:ui": "playwright test --ui",
     "install:browsers": "playwright install chromium"

@@ -2,9 +2,12 @@ import js from "@eslint/js";
 import globals from "globals";
 
 export default [
+  {
+    ignores: ["assets/**", "playwright-report/**", "test-results/**"],
+  },
   js.configs.recommended,
   {
-    files: ["**/*.js"],
+    files: ["**/*.js", "**/*.mjs"],
     languageOptions: {
       ecmaVersion: "latest",
       sourceType: "module",

@@ -3,26 +3,27 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>%VITE_APP_TITLE%</title>
-    <link rel="stylesheet" href="/rate-your-music-modern.css" />
+    <title>Rate Your Music Modern</title>
+    <link rel="stylesheet" href="./preview.css" />
   </head>
   <body>
-    <main
-      class="page_charts_section_charts"
-      data-target-site="%VITE_TARGET_SITE%"
-    >
+    <main class="page_charts_section_charts">
       <section class="page_section">
         <div class="page_section_header">
           <h1 class="page_section_title">Rate Your Music Modern</h1>
           <p class="page_section_subtitle">
-            Local fixture for user CSS and JS changes.
+            Preview the Stylus and Tampermonkey files against saved Rate Your
+            Music pages.
           </p>
         </div>
 
         <nav class="page_charts_section_tabs" aria-label="Chart filters">
-          <a class="navlink selected" href="/">Charts</a>
-          <a class="navlink" href="/">Reviews</a>
-          <a class="navlink" href="/">Lists</a>
+          <a class="navlink selected" href="./assets/home-page/preview.html"
+            >Home</a
+          >
+          <a class="navlink" href="./assets/artist-page/preview.html">Artist</a>
+          <a class="navlink" href="./assets/charts-page/preview.html">Charts</a>
+          <a class="navlink" href="./assets/list-page/preview.html">Lists</a>
         </nav>
 
         <ol class="page_charts_section_charts_item_list">
@@ -30,27 +31,51 @@
             <span class="page_charts_section_charts_item_rank">1</span>
             <div>
               <h2 class="page_charts_section_charts_item_title">
-                Mock Album Title
+                Saved Home Page
               </h2>
-              <p class="page_charts_section_charts_item_artist">Mock Artist</p>
+              <p class="page_charts_section_charts_item_artist">
+                Real RYM home markup and assets.
+              </p>
             </div>
-            <span class="page_charts_section_charts_item_rating">4.12</span>
+            <a class="navlink" href="./assets/home-page/preview.html">Open</a>
           </li>
           <li class="page_charts_section_charts_item">
             <span class="page_charts_section_charts_item_rank">2</span>
             <div>
               <h2 class="page_charts_section_charts_item_title">
-                Another Record
+                Songs: Ohia Artist Page
               </h2>
               <p class="page_charts_section_charts_item_artist">
-                Another Artist
+                Real artist, discography, and sidebar markup.
               </p>
             </div>
-            <span class="page_charts_section_charts_item_rating">3.98</span>
+            <a class="navlink" href="./assets/artist-page/preview.html">Open</a>
+          </li>
+          <li class="page_charts_section_charts_item">
+            <span class="page_charts_section_charts_item_rank">3</span>
+            <div>
+              <h2 class="page_charts_section_charts_item_title">
+                2026 Charts Page
+              </h2>
+              <p class="page_charts_section_charts_item_artist">
+                Real chart rows, filters, ratings, and cover art.
+              </p>
+            </div>
+            <a class="navlink" href="./assets/charts-page/preview.html">Open</a>
+          </li>
+          <li class="page_charts_section_charts_item">
+            <span class="page_charts_section_charts_item_rank">4</span>
+            <div>
+              <h2 class="page_charts_section_charts_item_title">Lists Page</h2>
+              <p class="page_charts_section_charts_item_artist">
+                Real list cards, descriptions, and avatars.
+              </p>
+            </div>
+            <a class="navlink" href="./assets/list-page/preview.html">Open</a>
           </li>
         </ol>
       </section>
     </main>
-    <script type="module" src="/rate-your-music-modern.js"></script>
+    <script src="./rate-your-music-modern.js"></script>
   </body>
 </html>
