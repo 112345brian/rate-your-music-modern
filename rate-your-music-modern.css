@@ -1,0 +1,109 @@
+/* ==UserStyle==
+@name           Rate Your Music Modern
+@namespace      github.com/112345brian/rate-your-music-modern
+@version        0.1.0
+@description    Modern visual treatment for Rate Your Music.
+@author         bri
+@homepageURL    https://github.com/112345brian/rate-your-music-modern
+@supportURL     https://github.com/112345brian/rate-your-music-modern/issues
+@updateURL      https://raw.githubusercontent.com/112345brian/rate-your-music-modern/main/rate-your-music-modern.css
+@preprocessor   default
+==/UserStyle== */
+
+@-moz-document domain("rateyourmusic.com"), domain("localhost"), domain("127.0.0.1") {
+  :root {
+    --rym-modern-bg: #f6f3ee;
+    --rym-modern-surface: #fff;
+    --rym-modern-text: #171717;
+    --rym-modern-muted: #62615f;
+    --rym-modern-border: #d8d3ca;
+    --rym-modern-accent: #1f6f8b;
+    --rym-modern-radius: 8px;
+    --rym-modern-shadow: 0 12px 32px rgb(23 23 23 / 10%);
+  }
+
+  body {
+    background: var(--rym-modern-bg);
+    color: var(--rym-modern-text);
+    font-family:
+      Inter,
+      ui-sans-serif,
+      system-ui,
+      -apple-system,
+      BlinkMacSystemFont,
+      "Segoe UI",
+      sans-serif;
+    line-height: 1.5;
+  }
+
+  .page_section {
+    width: min(960px, calc(100% - 32px));
+    margin: 40px auto;
+  }
+
+  .page_section_header {
+    margin-bottom: 20px;
+  }
+
+  .page_section_title {
+    margin: 0;
+    font-size: clamp(2rem, 4vw, 3.5rem);
+    line-height: 1;
+  }
+
+  .page_section_subtitle,
+  .page_charts_section_charts_item_artist {
+    color: var(--rym-modern-muted);
+  }
+
+  .page_charts_section_tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 16px;
+  }
+
+  .navlink {
+    border: 1px solid var(--rym-modern-border);
+    border-radius: var(--rym-modern-radius);
+    color: inherit;
+    padding: 8px 12px;
+    text-decoration: none;
+  }
+
+  .navlink.selected {
+    background: var(--rym-modern-accent);
+    border-color: var(--rym-modern-accent);
+    color: #fff;
+  }
+
+  .page_charts_section_charts_item_list {
+    display: grid;
+    gap: 12px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .page_charts_section_charts_item {
+    align-items: center;
+    background: var(--rym-modern-surface);
+    border: 1px solid var(--rym-modern-border);
+    border-radius: var(--rym-modern-radius);
+    box-shadow: var(--rym-modern-shadow);
+    display: grid;
+    gap: 16px;
+    grid-template-columns: auto 1fr auto;
+    padding: 16px;
+  }
+
+  .page_charts_section_charts_item_rank,
+  .page_charts_section_charts_item_rating {
+    font-weight: 700;
+  }
+
+  .page_charts_section_charts_item_title,
+  .page_charts_section_charts_item_artist {
+    margin: 0;
+  }
+}

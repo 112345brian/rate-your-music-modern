@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>%VITE_APP_TITLE%</title>
+    <link rel="stylesheet" href="/rate-your-music-modern.css" />
+  </head>
+  <body>
+    <main
+      class="page_charts_section_charts"
+      data-target-site="%VITE_TARGET_SITE%"
+    >
+      <section class="page_section">
+        <div class="page_section_header">
+          <h1 class="page_section_title">Rate Your Music Modern</h1>
+          <p class="page_section_subtitle">
+            Local fixture for user CSS and JS changes.
+          </p>
+        </div>
+
+        <nav class="page_charts_section_tabs" aria-label="Chart filters">
+          <a class="navlink selected" href="/">Charts</a>
+          <a class="navlink" href="/">Reviews</a>
+          <a class="navlink" href="/">Lists</a>
+        </nav>
+
+        <ol class="page_charts_section_charts_item_list">
+          <li class="page_charts_section_charts_item">
+            <span class="page_charts_section_charts_item_rank">1</span>
+            <div>
+              <h2 class="page_charts_section_charts_item_title">
+                Mock Album Title
+              </h2>
+              <p class="page_charts_section_charts_item_artist">Mock Artist</p>
+            </div>
+            <span class="page_charts_section_charts_item_rating">4.12</span>
+          </li>
+          <li class="page_charts_section_charts_item">
+            <span class="page_charts_section_charts_item_rank">2</span>
+            <div>
+              <h2 class="page_charts_section_charts_item_title">
+                Another Record
+              </h2>
+              <p class="page_charts_section_charts_item_artist">
+                Another Artist
+              </p>
+            </div>
+            <span class="page_charts_section_charts_item_rating">3.98</span>
+          </li>
+        </ol>
+      </section>
+    </main>
+    <script type="module" src="/rate-your-music-modern.js"></script>
+  </body>
+</html>
