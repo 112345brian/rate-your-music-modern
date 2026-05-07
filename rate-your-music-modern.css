@@ -1,7 +1,7 @@
 /* ==UserStyle==
 @name           Rate Your Music Modern
 @namespace      github.com/112345brian/rate-your-music-modern
-@version        0.1.0
+@version        0.1.1
 @description    Modern visual treatment for Rate Your Music.
 @author         bri
 @homepageURL    https://github.com/112345brian/rate-your-music-modern
@@ -12,74 +12,281 @@
 
 @-moz-document domain("rateyourmusic.com"), domain("localhost"), domain("127.0.0.1") {
   :root {
-    --rym-modern-bg: #f6f3ee;
-    --rym-modern-surface: #fff;
-    --rym-modern-text: #171717;
-    --rym-modern-muted: #62615f;
-    --rym-modern-border: #d8d3ca;
-    --rym-modern-accent: #1f6f8b;
-    --rym-modern-radius: 8px;
-    --rym-modern-shadow: 0 12px 32px rgb(23 23 23 / 10%);
+    color-scheme: dark;
+
+    --rym-bg: #0f1117;
+    --rym-bg-soft: #151924;
+    --rym-surface: #1c2230;
+    --rym-surface-raised: #232b3b;
+    --rym-text: #eef2f8;
+    --rym-text-soft: #c5ceda;
+    --rym-text-muted: #8e9aab;
+    --rym-border: #313a4e;
+    --rym-border-soft: #252d3d;
+    --rym-link: #78b7ff;
+    --rym-link-hover: #a4cdfd;
+    --rym-accent: #7dd3fc;
+    --rym-accent-strong: #38bdf8;
+    --rym-success: #52d273;
+    --rym-warning: #f5c967;
+    --rym-danger: #fb7185;
+    --rym-radius: 8px;
+    --rym-shadow: 0 16px 48px rgb(0 0 0 / 30%);
+    --rym-font:
+      "Inter", ui-sans-serif, system-ui, -apple-system, "BlinkMacSystemFont",
+      "Segoe UI", sans-serif;
   }
 
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  *::first-letter {
+    background: transparent !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    color: inherit !important;
+    display: inline !important;
+    float: none !important;
+    font: inherit !important;
+    margin: 0 !important;
+    outline: 0 !important;
+    padding: 0 !important;
+    text-decoration: inherit !important;
+    text-transform: inherit !important;
+  }
+
+  html,
   body {
-    background: var(--rym-modern-bg);
-    color: var(--rym-modern-text);
-    font-family:
-      Inter,
-      ui-sans-serif,
-      system-ui,
-      -apple-system,
-      BlinkMacSystemFont,
-      "Segoe UI",
-      sans-serif;
+    background: var(--rym-bg) !important;
+    color: var(--rym-text);
+    font-family: var(--rym-font);
     line-height: 1.5;
   }
 
-  .page_section {
-    width: min(960px, calc(100% - 32px));
-    margin: 40px auto;
-  }
-
-  .page_section_header {
-    margin-bottom: 20px;
-  }
-
-  .page_section_title {
+  body {
     margin: 0;
-    font-size: clamp(2rem, 4vw, 3.5rem);
-    line-height: 1;
   }
 
+  a,
+  a:visited,
+  .artist,
+  .album,
+  .song,
+  .genre,
+  .navlink {
+    color: var(--rym-link);
+    text-decoration-color: rgb(120 183 255 / 32%);
+    text-underline-offset: 0.18em;
+  }
+
+  a:hover,
+  .navlink:hover {
+    color: var(--rym-link-hover);
+    text-decoration-color: currentcolor;
+  }
+
+  img,
+  video,
+  iframe {
+    border-radius: var(--rym-radius);
+  }
+
+  input,
+  select,
+  textarea,
+  button {
+    font: inherit;
+  }
+
+  input,
+  select,
+  textarea {
+    background: var(--rym-bg-soft);
+    border: 1px solid var(--rym-border);
+    border-radius: 6px;
+    color: var(--rym-text);
+    padding: 0.55rem 0.7rem;
+  }
+
+  button,
+  input[type="button"],
+  input[type="submit"],
+  .btn,
+  .button,
+  .page_charts_section_charts_item_button {
+    background: var(--rym-surface-raised);
+    border: 1px solid var(--rym-border);
+    border-radius: 6px;
+    color: var(--rym-text);
+    cursor: pointer;
+    font-weight: 650;
+    min-height: 2.25rem;
+    padding: 0.45rem 0.8rem;
+  }
+
+  button:hover,
+  input[type="button"]:hover,
+  input[type="submit"]:hover,
+  .btn:hover,
+  .button:hover {
+    background: #2b3548;
+    border-color: #46536c;
+  }
+
+  table {
+    border-collapse: separate;
+    border-spacing: 0;
+  }
+
+  td,
+  th {
+    border-color: var(--rym-border-soft) !important;
+  }
+
+  hr {
+    border: 0;
+    border-top: 1px solid var(--rym-border);
+  }
+
+  #content,
+  #content_wrapper,
+  .content,
+  .page_section,
+  .page_charts_section_charts,
+  .artist_page,
+  .release_page {
+    background: transparent !important;
+  }
+
+  #content,
+  .content {
+    width: min(1180px, calc(100% - 32px));
+  }
+
+  .page_section,
+  .section,
+  .box,
+  .mbgen,
+  .album_info,
+  .artist_info,
+  .release_info,
+  .review,
+  .comment,
+  .page_charts_section_charts_item,
+  .page_charts_section_charts_item_details {
+    background: var(--rym-surface) !important;
+    border: 1px solid var(--rym-border) !important;
+    border-radius: var(--rym-radius) !important;
+    box-shadow: none;
+  }
+
+  .page_section,
+  .section,
+  .box,
+  .mbgen,
+  .album_info,
+  .artist_info,
+  .release_info,
+  .review,
+  .comment {
+    padding: 1rem;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  .page_section_title,
+  .artist_name_hdr,
+  .album_title,
+  .release_title {
+    color: var(--rym-text) !important;
+    font-weight: 750;
+    letter-spacing: 0;
+  }
+
+  h1,
+  .artist_name_hdr,
+  .album_title,
+  .release_title {
+    font-size: clamp(2.25rem, 5vw, 4rem);
+    line-height: 0.95;
+    margin: 0 0 1rem;
+  }
+
+  h2,
+  .page_section_title {
+    font-size: 1.35rem;
+    line-height: 1.2;
+  }
+
+  small,
+  .small,
+  .subtext,
+  .metadata,
   .page_section_subtitle,
-  .page_charts_section_charts_item_artist {
-    color: var(--rym-modern-muted);
+  .page_charts_section_charts_item_artist,
+  .page_charts_section_charts_item_descriptors,
+  .artist_shortcut,
+  .profile_stats,
+  .notes {
+    color: var(--rym-text-muted) !important;
   }
 
-  .page_charts_section_tabs {
+  .genre,
+  .descriptor,
+  .page_charts_section_charts_item_genre,
+  .page_charts_section_charts_item_descriptor {
+    color: var(--rym-link) !important;
+  }
+
+  .rating,
+  .avg_rating,
+  .page_charts_section_charts_item_rating {
+    color: var(--rym-warning) !important;
+    font-weight: 750;
+  }
+
+  .page_charts_section_tabs,
+  .tabs,
+  .nav,
+  .page_nav {
+    align-items: center;
+    border-bottom: 1px solid var(--rym-border);
     display: flex;
     flex-wrap: wrap;
-    gap: 8px;
-    margin-bottom: 16px;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
   }
 
-  .navlink {
-    border: 1px solid var(--rym-modern-border);
-    border-radius: var(--rym-modern-radius);
-    color: inherit;
-    padding: 8px 12px;
+  .navlink,
+  .tab,
+  .page_nav a {
+    border: 1px solid transparent;
+    border-radius: 999px;
+    color: var(--rym-text-soft);
+    display: inline-flex;
+    line-height: 1;
+    padding: 0.55rem 0.8rem;
     text-decoration: none;
   }
 
-  .navlink.selected {
-    background: var(--rym-modern-accent);
-    border-color: var(--rym-modern-accent);
-    color: #fff;
+  .navlink.selected,
+  .tab.selected,
+  .page_nav a.selected,
+  .page_nav a:hover {
+    background: rgb(125 211 252 / 12%);
+    border-color: rgb(125 211 252 / 32%);
+    color: var(--rym-accent);
   }
 
   .page_charts_section_charts_item_list {
     display: grid;
-    gap: 12px;
+    gap: 0.75rem;
     list-style: none;
     margin: 0;
     padding: 0;
@@ -87,23 +294,50 @@
 
   .page_charts_section_charts_item {
     align-items: center;
-    background: var(--rym-modern-surface);
-    border: 1px solid var(--rym-modern-border);
-    border-radius: var(--rym-modern-radius);
-    box-shadow: var(--rym-modern-shadow);
     display: grid;
-    gap: 16px;
-    grid-template-columns: auto 1fr auto;
-    padding: 16px;
+    gap: 1rem;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    padding: 0.9rem 1rem;
   }
 
-  .page_charts_section_charts_item_rank,
-  .page_charts_section_charts_item_rating {
-    font-weight: 700;
+  .page_charts_section_charts_item:hover,
+  .review:hover,
+  .comment:hover {
+    background: var(--rym-surface-raised) !important;
+    border-color: #41506a !important;
+  }
+
+  .page_charts_section_charts_item_rank {
+    align-items: center;
+    background: rgb(125 211 252 / 10%);
+    border: 1px solid rgb(125 211 252 / 28%);
+    border-radius: 999px;
+    color: var(--rym-accent);
+    display: inline-flex;
+    font-weight: 750;
+    height: 2rem;
+    justify-content: center;
+    min-width: 2rem;
+    padding: 0 0.45rem;
   }
 
   .page_charts_section_charts_item_title,
   .page_charts_section_charts_item_artist {
     margin: 0;
+  }
+
+  .page_charts_section_charts_item_title {
+    font-size: 1rem;
+    line-height: 1.25;
+  }
+
+  .page_charts_section_charts_item_artist {
+    margin-top: 0.15rem;
+  }
+
+  .rym-modern-card-grid {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   }
 }
