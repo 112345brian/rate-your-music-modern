@@ -56,7 +56,9 @@ test("loads generated previews for saved RYM assets", async ({ page }) => {
   ]);
 
   await page.getByRole("button", { name: /EPs/ }).click();
-  await expect(page.locator(".disco_header_label").filter({ hasText: "EP" })).toBeVisible();
+  await expect(
+    page.locator(".disco_header_label").filter({ hasText: "EP" }),
+  ).toBeVisible();
   await expect(
     page.locator(".disco_header_label").filter({ hasText: /^Album$/ }),
   ).toBeHidden();

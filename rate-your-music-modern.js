@@ -183,10 +183,16 @@ function collectDiscographySections(discography) {
       continue;
     }
 
-    const label = header.querySelector(".disco_header_label")?.textContent.trim();
+    const label = header
+      .querySelector(".disco_header_label")
+      ?.textContent.trim();
     const nodes = [header];
 
-    for (let nextIndex = index + 1; nextIndex < children.length; nextIndex += 1) {
+    for (
+      let nextIndex = index + 1;
+      nextIndex < children.length;
+      nextIndex += 1
+    ) {
       const node = children[nextIndex];
 
       if (node.classList.contains("disco_header_top")) {
@@ -235,7 +241,11 @@ function enhanceDiscographyFilters() {
   }
 
   const filters = [
-    { id: "all", label: "All", labels: sections.map((section) => section.label) },
+    {
+      id: "all",
+      label: "All",
+      labels: sections.map((section) => section.label),
+    },
     { id: "albums", label: "Albums", labels: ["Album", "Live Album"] },
     { id: "eps", label: "EPs", labels: ["EP"] },
     { id: "singles", label: "Singles", labels: ["Single"] },

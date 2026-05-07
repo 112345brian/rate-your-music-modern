@@ -647,7 +647,49 @@ small,
   }
 
   .page_artist .disco_toolbar {
-    margin-bottom: 16px;
+    margin-bottom: 10px;
+  }
+
+  .page_artist .rym-modern-disco-filters {
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 0 0 18px;
+  }
+
+  .page_artist .rym-modern-disco-filter {
+    align-items: center;
+    background: rgb(120 183 255 / 8%);
+    border: 1px solid rgb(120 183 255 / 18%);
+    border-radius: 999px;
+    color: var(--rym-text-soft);
+    display: inline-flex;
+    font-size: 13px;
+    font-weight: 760;
+    gap: 7px;
+    line-height: 1;
+    min-height: 30px;
+    padding: 0 11px;
+  }
+
+  .page_artist .rym-modern-disco-filter:hover {
+    background: rgb(120 183 255 / 14%);
+    border-color: rgb(120 183 255 / 34%);
+    color: var(--rym-link-hover);
+  }
+
+  .page_artist .rym-modern-disco-filter[aria-pressed="true"] {
+    background: var(--rym-accent-strong);
+    border-color: transparent;
+    color: #071019;
+  }
+
+  .page_artist .rym-modern-disco-filter span {
+    color: inherit;
+    font-size: 12px;
+    font-weight: 850;
+    opacity: 0.74;
   }
 
   .page_artist .disco_search {
