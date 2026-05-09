@@ -273,6 +273,23 @@ test("modernizes the release preview layout", async ({ page }) => {
     "3.21",
   );
   await expect(
+    page.locator(".rym-modern-release-rating-summary"),
+  ).toBeVisible();
+  await expect(
+    page.locator(
+      ".rym-modern-release-rating-card .rym-modern-rating-distribution",
+    ),
+  ).toBeVisible();
+  await expect(page.locator(".rym-modern-release-friends-card")).toContainText(
+    "3.00",
+  );
+  await expect(
+    page.locator(".rym-modern-release-friends-preview .catalog_header.friend"),
+  ).toHaveCount(3);
+  await expect(
+    page.locator(".rym-modern-release-friends-more"),
+  ).toHaveAttribute("href", "#rym-modern-release-ratings");
+  await expect(
     page.locator(".review_rating.rym-modern-inline-stars"),
   ).not.toHaveCount(0);
   await expect(

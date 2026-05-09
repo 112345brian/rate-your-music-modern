@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Rate Your Music Modern
 // @namespace    github.com/112345brian/rate-your-music-modern
-// @version      0.3.9
+// @version      0.4.0
 // @description  Behavior enhancements for the Rate Your Music Modern userstyle.
 // @author       bri
 // @homepageURL  https://github.com/112345brian/rate-your-music-modern
@@ -548,10 +548,21 @@ function enhanceReleaseRatingDistribution() {
   const ratingLabel = [
     ...document.querySelectorAll(".album_info .info_hdr"),
   ].find((header) => header.textContent.trim().toLowerCase() === "rym rating");
+  const friendsLabel = [
+    ...document.querySelectorAll(".album_info .info_hdr"),
+  ].find((header) => header.textContent.trim().toLowerCase() === "friends");
   const ratingRow = ratingLabel?.closest("tr");
+  const friendsRow = friendsLabel?.closest("tr");
+  const ratingContent = ratingRow?.querySelector("td");
+  const friendsContent = friendsRow?.querySelector("td");
   const chart = document.querySelector("#chart_div");
 
-  if (!ratingRow || !chart || ratingRow.querySelector("#chart_div")) {
+  if (
+    !ratingRow ||
+    !ratingContent ||
+    !chart ||
+    document.querySelector(".rym-modern-release-rating-summary")
+  ) {
     return;
   }
 
@@ -563,11 +574,105 @@ function enhanceReleaseRatingDistribution() {
   }
 
   const distribution = document.createElement("div");
+  const summaryRow = document.createElement("tr");
+  const summaryCell = document.createElement("td");
+  const summary = document.createElement("div");
+  const ratingCard = document.createElement("div");
 
   distribution.className = "rym-modern-rating-distribution";
   distribution.append(chart);
-  ratingRow.classList.add("rym-modern-release-rating-row");
-  ratingRow.append(distribution);
+
+  summaryRow.className = "rym-modern-release-rating-row";
+  summaryCell.colSpan = 3;
+  summary.className = "rym-modern-release-rating-summary";
+  ratingCard.className = "rym-modern-release-rating-card";
+  ratingCard.append(
+    createReleaseInfoLabel(ratingLabel.textContent),
+    ratingContent,
+    distribution,
+  );
+  summary.append(ratingCard);
+
+  if (friendsContent) {
+    const friendsCard = document.createElement("div");
+    const friendsPreview = createReleaseFriendsPreview();
+
+    friendsCard.className = "rym-modern-release-friends-card";
+    friendsCard.append(createReleaseInfoLabel(friendsLabel.textContent));
+    friendsCard.append(friendsContent);
+
+    if (friendsPreview) {
+      friendsCard.append(friendsPreview);
+    }
+
+    summary.append(friendsCard);
+    friendsRow?.remove();
+  }
+
+  summaryCell.append(summary);
+  summaryRow.append(summaryCell);
+  ratingRow.before(summaryRow);
+  ratingRow.remove();
+}
+
+function createReleaseInfoLabel(text) {
+  const label = document.createElement("div");
+
+  label.className = "info_hdr";
+  label.textContent = text.trim();
+
+  return label;
+}
+
+function createReleaseFriendsPreview() {
+  const catalogSection = getReleaseSection(".section_catalog");
+  const friendLines = [
+    ...document.querySelectorAll(".section_catalog .catalog_line"),
+  ].filter((line) => line.querySelector(".catalog_header.friend"));
+
+  if (!catalogSection || friendLines.length === 0) {
+    return null;
+  }
+
+  const preview = document.createElement("div");
+  const moreLink = document.createElement("a");
+
+  catalogSection.id = catalogSection.id || "rym-modern-release-ratings";
+  preview.className = "rym-modern-release-friends-preview";
+
+  for (const line of friendLines.slice(0, 3)) {
+    const clone = line.cloneNode(true);
+
+    clone.classList.add("rym-modern-release-friend-preview-line");
+
+    for (const node of clone.querySelectorAll("[id]")) {
+      node.removeAttribute("id");
+    }
+
+    for (const node of clone.querySelectorAll("[onclick]")) {
+      node.removeAttribute("onclick");
+    }
+
+    for (const avatar of clone.querySelectorAll("[data-bkg]")) {
+      const imageUrl = avatar.getAttribute("data-bkg");
+
+      if (imageUrl) {
+        avatar.style.backgroundImage = `url(${imageUrl.replace(/^\/\//, "https://")})`;
+      }
+    }
+
+    preview.append(clone);
+  }
+
+  moreLink.className = "rym-modern-release-friends-more";
+  moreLink.href = "#rym-modern-release-ratings";
+  moreLink.textContent =
+    friendLines.length > 3
+      ? `Show ${friendLines.length - 3} more ratings`
+      : "Show ratings";
+  preview.append(moreLink);
+
+  return preview;
 }
 
 function enhanceReleaseInlineStars() {
