@@ -606,6 +606,10 @@ small,
     display: none;
   }
 
+  .page_artist .artist_page_section .rym-modern-section-tab[hidden] {
+    display: none !important;
+  }
+
   .page_artist .artist_page_section h2,
   .page_artist .artist_page_section a,
   .page_artist .artist_page_section_active_music,
@@ -629,8 +633,14 @@ small,
     white-space: nowrap;
   }
 
+  .page_artist .artist_page_section a,
+  .page_artist .artist_page_section [data-target],
+  .page_artist .artist_page_section .rym-modern-section-tab {
+    background: transparent !important;
+  }
+
   .page_artist .artist_page_section a {
-    color: var(--rym-link-hover) !important;
+    color: var(--rym-text-soft) !important;
   }
 
   .page_artist .artist_page_section .subtext {
@@ -640,7 +650,6 @@ small,
   }
 
   .page_artist .artist_page_section_active_music {
-    border-bottom: 2px solid var(--rym-link);
     margin-bottom: -1px;
   }
 
@@ -649,17 +658,29 @@ small,
     padding: 0 !important;
   }
 
+  .page_artist .artist_page_section [data-target]:hover,
+  .page_artist .artist_page_section [data-target]:hover h2,
   .page_artist .artist_page_section a:hover,
   .page_artist .artist_page_section .rym-modern-section-tab:hover {
+    background: rgb(120 183 255 / 9%) !important;
     color: var(--rym-link-hover) !important;
   }
 
+  .page_artist .artist_page_section [data-target][aria-current="true"],
   .page_artist
     .artist_page_section
     .rym-modern-section-tab[aria-current="true"] {
     color: var(--rym-accent) !important;
     border-bottom: 2px solid var(--rym-accent);
     margin-bottom: -1px;
+  }
+
+  .page_artist .artist_page_section [data-target][aria-current="true"] h2 {
+    color: inherit !important;
+  }
+
+  .page_artist .artist_page_section [data-target][aria-current="false"] {
+    border-bottom-color: transparent;
   }
 
   .page_artist .rym-modern-tab-panel[hidden] {
@@ -1156,41 +1177,55 @@ small,
   color: #d9efff !important;
 }
 
-@media only screen and (width <= 72rem) {
+@media only screen and (width <= 82rem) {
   .page_artist .artist_page_section {
-    gap: 10px;
+    column-gap: 0;
+    overflow-x: visible;
+  }
+
+  .page_artist .artist_page_section > * + * {
+    margin-left: 20px !important;
   }
 
   .page_artist .artist_page_section h2,
   .page_artist .artist_page_section a,
   .page_artist .artist_page_section_active_music,
   .page_artist .artist_page_section .rym-modern-section-tab {
-    font-size: 14px !important;
-    gap: 3px;
-    padding-bottom: 9px !important;
+    font-size: 18px !important;
+    gap: 5px;
+    padding-bottom: 10px !important;
   }
 
   .page_artist .artist_page_section .subtext {
-    font-size: 12px;
-    margin-left: 2px;
+    align-self: flex-start;
+    font-size: 11px;
+    font-weight: 720;
+    line-height: 1;
+    margin-left: 4px;
+    opacity: 0.66;
+    padding-top: 3px;
   }
 
   .page_artist .rym-modern-disco-filters {
     flex-wrap: wrap;
-    gap: 6px;
+    gap: 7px;
     overflow-x: visible;
   }
 
   .page_artist .rym-modern-disco-filter {
     border-radius: 999px;
-    font-size: 12px;
-    gap: 5px;
-    min-height: 28px;
-    padding: 0 9px;
+    font-size: 13px;
+    gap: 4px;
+    min-height: 30px;
+    padding: 0 11px;
   }
 
   .page_artist .rym-modern-disco-filter span {
-    font-size: 11px;
+    align-self: flex-start;
+    font-size: 10px;
+    line-height: 1;
+    opacity: 0.68;
+    padding-top: 2px;
   }
 
   .page_artist .artist_info a.genre {

@@ -30,6 +30,7 @@ test("loads the design preview", async ({ page }) => {
 });
 
 test("loads generated previews for saved RYM assets", async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 820 });
   await page.goto(
     pathToFileURL(`${process.cwd()}/assets/artist-page/preview.html`).href,
   );
@@ -48,12 +49,43 @@ test("loads generated previews for saved RYM assets", async ({ page }) => {
     "Discussion",
   ]);
   await expect(page.locator("#rym-modern-discography")).toBeVisible();
+  await expect(page.locator("#rym-modern-credits")).toHaveCount(0);
   await expect(
     page.locator("#column_container_right .artist_page_header_section_songs"),
   ).toBeVisible();
   await expect(page.locator(".rym-modern-songs-tab")).toBeHidden();
   await expect(page.locator("#rym-modern-lists")).toBeHidden();
   await expect(page.locator("#rym-modern-discussion")).toBeHidden();
+  await expect(
+    page.locator('[data-target="rym-modern-discography"]'),
+  ).toHaveCSS("border-bottom-color", "rgb(125, 211, 252)");
+  await expect(page.getByRole("link", { name: /Credits 5/ })).toHaveCSS(
+    "color",
+    "rgb(197, 206, 218)",
+  );
+  await expect(
+    page.getByRole("link", { name: /Credits 5/ }),
+  ).not.toHaveAttribute("data-target", /./);
+  await page.locator('[data-target="rym-modern-lists"]').hover();
+  const listHoverColor = await page
+    .locator('[data-target="rym-modern-lists"]')
+    .evaluate((node) => window.getComputedStyle(node).color);
+  const listHoverBackground = await page
+    .locator('[data-target="rym-modern-lists"]')
+    .evaluate((node) => window.getComputedStyle(node).backgroundColor);
+
+  await page.getByRole("link", { name: /Credits 5/ }).hover();
+  const creditsHoverColor = await page
+    .getByRole("link", { name: /Credits 5/ })
+    .evaluate((node) => window.getComputedStyle(node).color);
+  const creditsHoverBackground = await page
+    .getByRole("link", { name: /Credits 5/ })
+    .evaluate((node) => window.getComputedStyle(node).backgroundColor);
+
+  expect(listHoverColor).toBe(creditsHoverColor);
+  expect(listHoverBackground).toBe(creditsHoverBackground);
+  expect(listHoverBackground).not.toBe("rgba(0, 0, 0, 0)");
+  expect(listHoverColor).not.toBe("rgb(197, 206, 218)");
 
   await page.goto(
     `${pathToFileURL(`${process.cwd()}/assets/artist-page/preview.html`).href}#rym-modern-lists`,
@@ -65,6 +97,13 @@ test("loads generated previews for saved RYM assets", async ({ page }) => {
   await expect(page.locator("#rym-modern-discography")).toBeHidden();
   await expect(page.locator("#rym-modern-lists")).toBeVisible();
   await expect(page.locator("#rym-modern-discussion")).toBeHidden();
+  await expect(
+    page.locator('[data-target="rym-modern-discography"]'),
+  ).toHaveCSS("border-bottom-color", "rgba(0, 0, 0, 0)");
+  await expect(page.locator('[data-target="rym-modern-lists"]')).toHaveCSS(
+    "border-bottom-color",
+    "rgb(125, 211, 252)",
+  );
   await page
     .locator(".rym-modern-section-tab", { hasText: "Discussion" })
     .click();
@@ -101,8 +140,26 @@ test("loads generated previews for saved RYM assets", async ({ page }) => {
     const style = window.getComputedStyle(node);
     const row = node.getBoundingClientRect();
     const lastChild = node.lastElementChild.getBoundingClientRect();
+    const visibleChildren = [...node.children].filter(
+      (child) => window.getComputedStyle(child).display !== "none",
+    );
+    const gaps = visibleChildren.slice(1).map((child, index) => {
+      const previous = visibleChildren[index].getBoundingClientRect();
+      const current = child.getBoundingClientRect();
+
+      return current.left - previous.right;
+    });
+    const labelSize = Number.parseFloat(
+      window.getComputedStyle(visibleChildren[0]).fontSize,
+    );
+    const countSize = Number.parseFloat(
+      window.getComputedStyle(visibleChildren[0].querySelector(".subtext"))
+        .fontSize,
+    );
 
     return {
+      countIsDeemphasized: countSize < labelSize,
+      minGap: Math.min(...gaps),
       scale: Number(style.getPropertyValue("--rym-tab-scale") || "1"),
       isOneLine: node.scrollHeight <= node.clientHeight + 2,
       hasFitBuffer: lastChild.right <= row.right - 8,
@@ -122,6 +179,8 @@ test("loads generated previews for saved RYM assets", async ({ page }) => {
       };
     });
 
+  expect(tabFit.countIsDeemphasized).toBe(true);
+  expect(tabFit.minGap).toBeGreaterThanOrEqual(16);
   expect(tabFit.scale).toBeGreaterThan(0);
   expect(tabFit.isOneLine).toBe(true);
   expect(tabFit.hasFitBuffer).toBe(true);

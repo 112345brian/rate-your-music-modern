@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Rate Your Music Modern
 // @namespace    github.com/112345brian/rate-your-music-modern
-// @version      0.2.5
+// @version      0.2.7
 // @description  Behavior enhancements for the Rate Your Music Modern userstyle.
 // @author       bri
 // @homepageURL  https://github.com/112345brian/rate-your-music-modern
@@ -149,7 +149,7 @@ function enhanceArtistTabs() {
   const discographyTab = tabList?.querySelector(
     ".artist_page_section_active_music",
   );
-  const compactLayout = window.matchMedia("(width <= 72rem)");
+  const compactLayout = window.matchMedia("(width <= 82rem)");
 
   if (
     !tabList ||
@@ -179,7 +179,7 @@ function enhanceArtistTabs() {
     },
   ];
   const panels = [discography];
-  const persistentPanels = [discography];
+  const persistentPanels = [...panels];
   let insertionPoint = discography;
   let activePanelId = "rym-modern-discography";
 
