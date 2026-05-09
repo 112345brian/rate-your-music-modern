@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Rate Your Music Modern
 // @namespace    github.com/112345brian/rate-your-music-modern
-// @version      0.4.1
+// @version      0.4.2
 // @description  Behavior enhancements for the Rate Your Music Modern userstyle.
 // @author       bri
 // @homepageURL  https://github.com/112345brian/rate-your-music-modern
@@ -149,7 +149,6 @@ function enhanceArtistTabs() {
   const discographyTab = tabList?.querySelector(
     ".artist_page_section_active_music",
   );
-  const compactLayout = window.matchMedia("(width <= 82rem)");
 
   if (
     !tabList ||
@@ -181,7 +180,6 @@ function enhanceArtistTabs() {
   const panels = [discography];
   const persistentPanels = [...panels];
   let insertionPoint = discography;
-  let activePanelId = "rym-modern-discography";
 
   function createTab(target, section) {
     const tab = document.createElement("a");
@@ -209,8 +207,6 @@ function enhanceArtistTabs() {
   }
 
   function showPanel(panelId) {
-    activePanelId = panelId;
-
     for (const panel of panels) {
       panel.hidden = panel.id !== panelId;
     }
@@ -235,29 +231,6 @@ function enhanceArtistTabs() {
     }
   });
 
-  const songsSection = [...document.querySelectorAll(".section_lists")].find(
-    (candidate) =>
-      candidate.closest(".artist_right_col") &&
-      headerMatches(candidate, "Songs"),
-  );
-  const songsTab =
-    songsSection &&
-    createTab(
-      {
-        id: "rym-modern-songs",
-        label: "Songs",
-      },
-      songsSection,
-    );
-  const songsPlaceholder = document.createComment("rym-modern-songs-home");
-
-  if (songsSection && songsTab) {
-    songsSection.before(songsPlaceholder);
-    songsTab.classList.add("rym-modern-songs-tab");
-    songsTab.hidden = true;
-    tabList.append(songsTab);
-  }
-
   for (const target of sectionTargets) {
     const section = [...document.querySelectorAll(target.selector)].find(
       (candidate) => headerMatches(candidate, target.label),
@@ -278,45 +251,6 @@ function enhanceArtistTabs() {
     tabList.append(createTab(target, section));
   }
 
-  function syncSongsPanel() {
-    if (!songsSection || !songsTab) {
-      return;
-    }
-
-    panels.length = 0;
-    panels.push(...persistentPanels);
-
-    if (compactLayout.matches) {
-      songsSection.id = "rym-modern-songs";
-      songsSection.classList.add("rym-modern-tab-panel");
-      songsTab.hidden = false;
-
-      if (songsSection.parentElement !== discography.parentElement) {
-        discography.after(songsSection);
-      }
-
-      if (!panels.includes(songsSection)) {
-        panels.splice(1, 0, songsSection);
-      }
-
-      songsSection.hidden = activePanelId !== songsSection.id;
-    } else {
-      if (activePanelId === "rym-modern-songs") {
-        activePanelId = "rym-modern-discography";
-      }
-
-      songsTab.hidden = true;
-      songsSection.hidden = false;
-      songsSection.classList.remove("rym-modern-tab-panel");
-      songsSection.removeAttribute("id");
-      songsPlaceholder.after(songsSection);
-    }
-
-    showPanel(activePanelId);
-  }
-
-  compactLayout.addEventListener("change", syncSongsPanel);
-  syncSongsPanel();
   showPanel("rym-modern-discography");
   tabList.dataset.rymModernEnhanced = "true";
 }

@@ -115,14 +115,11 @@ test("loads generated previews for saved RYM assets", async ({ page }) => {
   await expect(page.locator("#rym-modern-lists")).toBeHidden();
   await expect(page.locator("#rym-modern-discussion")).toBeHidden();
   await page.setViewportSize({ width: 1080, height: 720 });
-  await expect(page.locator(".rym-modern-songs-tab")).toBeVisible();
+  await expect(page.locator(".rym-modern-songs-tab")).toHaveCount(0);
   await expect(
     page.locator("#column_container_right .artist_page_header_section_songs"),
-  ).toHaveCount(0);
-  await page.locator(".rym-modern-songs-tab").click();
-  await expect(page.locator("#rym-modern-songs")).toBeVisible();
-  await expect(page.locator("#rym-modern-discography")).toBeHidden();
-  await page.getByRole("button", { name: /Discography 106/ }).click();
+  ).toBeVisible();
+  await expect(page.locator("#rym-modern-discography")).toBeVisible();
   await expect(
     page.locator(".page_artist_songs_song_has_lyrics").first(),
   ).toHaveCSS("color", "rgb(82, 210, 115)");
