@@ -285,6 +285,15 @@ test("modernizes the release preview layout", async ({ page }) => {
     page.locator(".rym-modern-release-rating-row #chart_div"),
   ).toBeVisible();
   await expect(page.locator(".section_catalog #chart_div")).toHaveCount(0);
+  await expect(page.locator(".release_genres")).not.toContainText(",");
+  await expect(page.locator(".release_pri_genres a.genre").first()).toHaveCSS(
+    "color",
+    "rgb(164, 205, 253)",
+  );
+  await expect(page.locator(".release_sec_genres a.genre").first()).toHaveCSS(
+    "color",
+    "rgb(197, 206, 218)",
+  );
   await expect(
     page.locator(".rym-modern-release-lists-disclosure"),
   ).toHaveCount(0);

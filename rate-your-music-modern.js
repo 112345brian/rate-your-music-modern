@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Rate Your Music Modern
 // @namespace    github.com/112345brian/rate-your-music-modern
-// @version      0.3.7
+// @version      0.3.8
 // @description  Behavior enhancements for the Rate Your Music Modern userstyle.
 // @author       bri
 // @homepageURL  https://github.com/112345brian/rate-your-music-modern
@@ -800,6 +800,18 @@ function enhanceReleaseDateRank() {
   releasedRow.remove();
 }
 
+function enhanceReleaseGenres() {
+  for (const genreGroup of document.querySelectorAll(
+    ".page_release .release_pri_genres, .page_release .release_sec_genres",
+  )) {
+    for (const node of genreGroup.childNodes) {
+      if (node.nodeType === Node.TEXT_NODE) {
+        node.textContent = node.textContent.replaceAll(",", "");
+      }
+    }
+  }
+}
+
 function getReleaseSection(selector) {
   return [...document.querySelectorAll(selector)].find(
     (section) => !section.closest(".show-for-small"),
@@ -856,6 +868,7 @@ function enhanceReleasePage() {
   const panels = [];
 
   enhanceReleaseDateRank();
+  enhanceReleaseGenres();
   enhanceReleaseUserRating();
   enhanceReleaseInlineStars();
   enhanceReleaseTrackListingHeader();
