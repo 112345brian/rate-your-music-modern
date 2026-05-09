@@ -231,6 +231,9 @@ test("modernizes the release preview layout", async ({ page }) => {
   await expect(page).toHaveTitle(/Song for Alpha/);
   await expect(page.locator(".album_title")).toContainText("Song for Alpha");
   await expect(page.locator(".rym-modern-release-tabs")).toBeVisible();
+  await expect(
+    page.locator(".rym-modern-release-tab[aria-current='true']"),
+  ).toHaveText("Discussion");
   await expect(page.locator(".rym-modern-release-personal-card")).toBeVisible();
   await expect(
     page.locator(".rym-modern-release-personal-card .my_catalog_rating"),
@@ -323,8 +326,8 @@ test("modernizes the release preview layout", async ({ page }) => {
           ".album_info .rym-modern-release-user-rating",
         ) === null,
       stickyStackPosition: getComputedStyle(stickyStack).position,
-      commentsAfterReviews:
-        reviews.compareDocumentPosition(comments) &
+      commentsBeforeReviews:
+        comments.compareDocumentPosition(reviews) &
         Node.DOCUMENT_POSITION_FOLLOWING,
       commentsShareColumn: comments.closest("#column_container_right") !== null,
       suggestionsAfterGrid:
@@ -343,7 +346,7 @@ test("modernizes the release preview layout", async ({ page }) => {
   expect(releaseOrder.personalCardInLeftColumn).toBe(true);
   expect(releaseOrder.personalControlsNotInAlbumInfo).toBe(true);
   expect(releaseOrder.stickyStackPosition).toBe("sticky");
-  expect(Boolean(releaseOrder.commentsAfterReviews)).toBe(true);
+  expect(Boolean(releaseOrder.commentsBeforeReviews)).toBe(true);
   expect(releaseOrder.commentsShareColumn).toBe(true);
   expect(Boolean(releaseOrder.suggestionsAfterGrid)).toBe(true);
   expect(releaseOrder.suggestionsOutsideColumns).toBe(true);
@@ -362,7 +365,7 @@ test("modernizes the release preview layout", async ({ page }) => {
   await expect(page.locator("#rym-modern-release-lists")).toBeVisible();
   await expect(page.locator("#rym-modern-release-credits")).toBeHidden();
 
-  await releaseTabs.getByRole("link", { name: /^Discussion/ }).click();
+  await releaseTabs.getByRole("link", { name: /^Forum/ }).click();
   await expect(page.locator("#rym-modern-release-discussion")).toBeVisible();
   await expect(page.locator("#rym-modern-release-lists")).toBeHidden();
 });

@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Rate Your Music Modern
 // @namespace    github.com/112345brian/rate-your-music-modern
-// @version      0.3.8
+// @version      0.3.9
 // @description  Behavior enhancements for the Rate Your Music Modern userstyle.
 // @author       bri
 // @homepageURL  https://github.com/112345brian/rate-your-music-modern
@@ -881,7 +881,6 @@ function enhanceReleasePage() {
     );
 
     reviewsShell.before(reviewsPanel);
-    reviewsPanel.append(reviewsShell);
     panels.push(reviewsPanel);
 
     if (comments) {
@@ -889,6 +888,8 @@ function enhanceReleasePage() {
       comments.classList.add("rym-modern-release-main-section");
       reviewsPanel.append(comments);
     }
+
+    reviewsPanel.append(reviewsShell);
   }
 
   if (lists) {
@@ -898,7 +899,7 @@ function enhanceReleasePage() {
   const tabTargets = [
     {
       id: "rym-modern-release-reviews",
-      label: "Reviews",
+      label: "Discussion",
       section: reviewsShell,
       panel: panels[0],
     },
@@ -919,7 +920,7 @@ function enhanceReleasePage() {
     },
     {
       id: "rym-modern-release-discussion",
-      label: "Discussion",
+      label: "Forum",
       section: discussion,
     },
   ].filter((target) => target.panel || target.section);
