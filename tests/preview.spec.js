@@ -10,7 +10,7 @@ test("loads the design preview", async ({ page }) => {
     "Rate Your Music Modern",
   );
   await expect(page.locator("html")).toHaveClass(/rym-modern/);
-  await expect(page.locator(".page_charts_section_charts_item")).toHaveCount(4);
+  await expect(page.locator(".page_charts_section_charts_item")).toHaveCount(5);
 
   const firstLetterStyle = await page
     .getByRole("heading", { level: 1 })
@@ -220,4 +220,111 @@ test("loads generated previews for saved RYM assets", async ({ page }) => {
   await expect(page.locator(".contribution_links")).toBeHidden();
   await page.getByText(/Contribution options/).click();
   await expect(page.locator(".contribution_links")).toBeVisible();
+});
+
+test("modernizes the release preview layout", async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto(
+    pathToFileURL(`${process.cwd()}/assets/release-page/preview.html`).href,
+  );
+
+  await expect(page).toHaveTitle(/Song for Alpha/);
+  await expect(page.locator(".album_title")).toContainText("Song for Alpha");
+  await expect(page.locator(".rym-modern-release-tabs")).toBeVisible();
+  await expect(
+    page.locator(".rym-modern-release-user-rating-row"),
+  ).toBeVisible();
+  await expect(
+    page.locator(".rym-modern-release-user-rating-row .my_catalog_rating"),
+  ).toBeVisible();
+  await expect(page.locator(".rym-modern-release-rank")).toHaveText(
+    "ranked #1,244 that year",
+  );
+  await expect(
+    page.getByRole("rowheader", { name: "Ranked", exact: true }),
+  ).toHaveCount(0);
+  await expect(page.locator(".section_my_catalog")).toBeHidden();
+  await expect(page.locator("#reviews_shell")).toBeVisible();
+  await expect(page.locator("#rym-modern-release-comments")).toBeVisible();
+  await expect(page.locator("#rym-modern-release-issues")).toBeHidden();
+  await expect(page.locator("#rym-modern-release-credits")).toBeHidden();
+  await expect(page.locator("#rym-modern-release-lists")).toBeHidden();
+  await expect(page.locator("#rym-modern-release-discussion")).toBeHidden();
+  await expect(page.locator(".rym-modern-release-rating-row")).toContainText(
+    "3.21",
+  );
+  await expect(
+    page.locator(".review_rating.rym-modern-inline-stars"),
+  ).not.toHaveCount(0);
+  await expect(
+    page.locator(".catalog_rating.rym-modern-inline-stars"),
+  ).not.toHaveCount(0);
+  await expect(
+    page.locator(".section_tracklisting .rym-modern-track-total").first(),
+  ).toHaveText("Total length: 63:05");
+  await expect(
+    page.locator(".rym-modern-track-total-source").first(),
+  ).toBeHidden();
+  await expect(
+    page.locator(".rym-modern-release-rating-row #chart_div"),
+  ).toBeVisible();
+  await expect(page.locator(".section_catalog #chart_div")).toHaveCount(0);
+  await expect(
+    page.locator(".rym-modern-release-lists-disclosure"),
+  ).toHaveCount(0);
+
+  const releaseOrder = await page.evaluate(() => {
+    const reviews = document.querySelector("#reviews_shell");
+    const comments = document.querySelector("#rym-modern-release-comments");
+    const userRating = document.querySelector(
+      ".rym-modern-release-user-rating-row",
+    );
+    const rymRating = document.querySelector(".rym-modern-release-rating-row");
+    const suggestions = document.querySelector(
+      ".rym-modern-release-bottom-section",
+    );
+
+    return {
+      userRatingBeforeRymRating:
+        userRating.compareDocumentPosition(rymRating) &
+        Node.DOCUMENT_POSITION_FOLLOWING,
+      commentsAfterReviews:
+        reviews.compareDocumentPosition(comments) &
+        Node.DOCUMENT_POSITION_FOLLOWING,
+      commentsShareColumn: comments.closest("#column_container_right") !== null,
+      suggestionsAfterGrid:
+        document
+          .querySelector(".release_page > div > .row")
+          .compareDocumentPosition(suggestions) &
+        Node.DOCUMENT_POSITION_FOLLOWING,
+      suggestionsOutsideColumns:
+        suggestions.closest(
+          "#column_container_left, #column_container_right",
+        ) === null,
+    };
+  });
+
+  expect(Boolean(releaseOrder.userRatingBeforeRymRating)).toBe(true);
+  expect(Boolean(releaseOrder.commentsAfterReviews)).toBe(true);
+  expect(releaseOrder.commentsShareColumn).toBe(true);
+  expect(Boolean(releaseOrder.suggestionsAfterGrid)).toBe(true);
+  expect(releaseOrder.suggestionsOutsideColumns).toBe(true);
+
+  const releaseTabs = page.locator(".rym-modern-release-tabs");
+
+  await releaseTabs.getByRole("link", { name: /^Issues/ }).click();
+  await expect(page.locator("#rym-modern-release-reviews")).toBeHidden();
+  await expect(page.locator("#rym-modern-release-issues")).toBeVisible();
+
+  await releaseTabs.getByRole("link", { name: /^Credits/ }).click();
+  await expect(page.locator("#rym-modern-release-credits")).toBeVisible();
+  await expect(page.locator("#rym-modern-release-issues")).toBeHidden();
+
+  await releaseTabs.getByRole("link", { name: /^Lists/ }).click();
+  await expect(page.locator("#rym-modern-release-lists")).toBeVisible();
+  await expect(page.locator("#rym-modern-release-credits")).toBeHidden();
+
+  await releaseTabs.getByRole("link", { name: /^Discussion/ }).click();
+  await expect(page.locator("#rym-modern-release-discussion")).toBeVisible();
+  await expect(page.locator("#rym-modern-release-lists")).toBeHidden();
 });

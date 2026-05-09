@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Rate Your Music Modern
 // @namespace    github.com/112345brian/rate-your-music-modern
-// @version      0.2.7
+// @version      0.3.4
 // @description  Behavior enhancements for the Rate Your Music Modern userstyle.
 // @author       bri
 // @homepageURL  https://github.com/112345brian/rate-your-music-modern
@@ -544,6 +544,378 @@ function enhanceContributions() {
   contributions.dataset.rymModernEnhanced = "true";
 }
 
+function enhanceReleaseRatingDistribution() {
+  const ratingLabel = [
+    ...document.querySelectorAll(".album_info .info_hdr"),
+  ].find((header) => header.textContent.trim().toLowerCase() === "rym rating");
+  const ratingRow = ratingLabel?.closest("tr");
+  const chart = document.querySelector("#chart_div");
+
+  if (!ratingRow || !chart || ratingRow.querySelector("#chart_div")) {
+    return;
+  }
+
+  if (
+    chart.previousElementSibling?.textContent.trim().toLowerCase() ===
+    "rating distribution"
+  ) {
+    chart.previousElementSibling.remove();
+  }
+
+  const distribution = document.createElement("div");
+
+  distribution.className = "rym-modern-rating-distribution";
+  distribution.append(chart);
+  ratingRow.classList.add("rym-modern-release-rating-row");
+  ratingRow.append(distribution);
+}
+
+function enhanceReleaseInlineStars() {
+  for (const image of document.querySelectorAll(
+    ".page_release .review_rating img, .page_release .catalog_rating img, .page_release .track_rating_disp img",
+  )) {
+    const ratingText = image.getAttribute("alt") || image.getAttribute("title");
+    const ratingValue = Number.parseFloat(ratingText);
+    const starStep = Number.isFinite(ratingValue)
+      ? Math.max(0, Math.min(10, Math.round(ratingValue * 2)))
+      : null;
+    const wrapper = image.parentElement;
+
+    if (!wrapper || starStep === null) {
+      continue;
+    }
+
+    wrapper.classList.add("rym-modern-inline-stars", `star-${starStep}m`);
+    wrapper.setAttribute("aria-label", ratingText);
+  }
+}
+
+function enhanceReleaseTrackListingHeader() {
+  for (const section of document.querySelectorAll(
+    ".page_release .section_tracklisting",
+  )) {
+    if (section.dataset.rymModernTrackHeader === "true") {
+      continue;
+    }
+
+    const header = section.querySelector(".release_page_header");
+    const total = section.querySelector(".tracklist_total");
+    const credits = section.querySelector(".track_credit_show_link");
+
+    if (!header || !total || !credits) {
+      continue;
+    }
+
+    const totalColumn = document.createElement("div");
+
+    totalColumn.className = "rym-modern-track-total";
+    totalColumn.textContent = total.textContent.trim();
+    header.append(totalColumn, credits);
+    total.closest("li.track")?.classList.add("rym-modern-track-total-source");
+    section.dataset.rymModernTrackHeader = "true";
+  }
+}
+
+function enhanceReleaseUserRating() {
+  const ratingLabel = [
+    ...document.querySelectorAll(".album_info .info_hdr"),
+  ].find((header) => header.textContent.trim().toLowerCase() === "rym rating");
+  const ratingRow = ratingLabel?.closest("tr");
+  const catalogControls = document.querySelector(
+    ".section_my_catalog .release_my_catalog",
+  );
+  const reviewEditor = document.querySelector(".section_my_catalog #my_review");
+  const albumInfo = ratingRow?.closest(".album_info");
+  const albumInfoOuter = albumInfo?.closest(".album_info_outer");
+  const existingRow = document.querySelector(
+    ".rym-modern-release-user-rating-row",
+  );
+
+  if (!ratingRow || !catalogControls || existingRow) {
+    return;
+  }
+
+  const row = document.createElement("tr");
+  const header = document.createElement("th");
+  const content = document.createElement("td");
+  const frame = document.createElement("div");
+  const primaryActions = document.createElement("div");
+  const rateBlock = document.createElement("div");
+  const rateLabel = document.createElement("div");
+  const secondaryActions = document.createElement("div");
+  const ratingControl = catalogControls.querySelector(".my_catalog_rating");
+  const catalogAction = catalogControls.querySelector(".my_catalog_catalog");
+  const listeningAction = catalogControls.querySelector(
+    ".my_catalog_listening",
+  );
+  const tagAction = catalogControls.querySelector(".my_catalog_tags");
+  const reviewAction = catalogControls.querySelector(".my_catalog_review");
+  const trackRatingAction = catalogControls.querySelector(
+    ".my_catalog_rate_tracks",
+  );
+  const bumpAction = catalogControls.querySelector(".my_catalog_bump");
+  const touchGuidance = catalogControls.querySelector(
+    ".release_touch_guidance",
+  );
+
+  row.className = "rym-modern-release-user-rating-row";
+  header.className = "info_hdr";
+  header.textContent = "Your rating";
+  content.colSpan = 2;
+  frame.className = "rym-modern-release-user-rating";
+  primaryActions.className = "rym-modern-release-user-rating-primary";
+  rateBlock.className = "rym-modern-release-user-rating-rate";
+  rateLabel.className = "rym-modern-release-user-rating-rate-label";
+  rateLabel.textContent = "Rate";
+  secondaryActions.className = "rym-modern-release-user-rating-secondary";
+
+  for (const action of [catalogAction, listeningAction, tagAction]) {
+    if (action) {
+      primaryActions.append(action);
+    }
+  }
+
+  if (ratingControl) {
+    rateBlock.append(rateLabel, ratingControl);
+  }
+
+  if (touchGuidance) {
+    rateBlock.append(touchGuidance);
+  }
+
+  for (const action of [reviewAction, trackRatingAction, bumpAction]) {
+    if (action) {
+      secondaryActions.append(action);
+    }
+  }
+
+  catalogControls.replaceChildren(primaryActions, rateBlock, secondaryActions);
+  frame.append(catalogControls);
+  content.append(frame);
+  row.append(header, content);
+  ratingRow.before(row);
+
+  if (reviewEditor && albumInfoOuter) {
+    reviewEditor.classList.add("rym-modern-release-review-editor");
+    albumInfoOuter.after(reviewEditor);
+  }
+
+  document
+    .querySelector(".section_my_catalog")
+    ?.classList.add("rym-modern-release-catalog-source");
+}
+
+function enhanceReleaseDateRank() {
+  const rows = [...document.querySelectorAll(".album_info tr")];
+  const releasedRow = rows.find(
+    (row) =>
+      row.querySelector(".info_hdr")?.textContent.trim().toLowerCase() ===
+      "released",
+  );
+  const rankedRow = rows.find(
+    (row) =>
+      row.querySelector(".info_hdr")?.textContent.trim().toLowerCase() ===
+      "ranked",
+  );
+  const releasedContent = releasedRow?.querySelector("td");
+  const rankedContent = rankedRow?.querySelector("td");
+  const rank = rankedContent?.querySelector("b")?.textContent.trim();
+  const chartLink = rankedContent?.querySelector("a[href*='/charts/']");
+
+  if (
+    !releasedContent ||
+    !rankedRow ||
+    !rank ||
+    !chartLink ||
+    releasedContent.querySelector(".rym-modern-release-rank")
+  ) {
+    return;
+  }
+
+  const rankLink = document.createElement("a");
+  const separator = document.createElement("span");
+
+  separator.className = "rym-modern-release-meta-separator";
+  separator.textContent = " ";
+  rankLink.className = "rym-modern-release-rank";
+  rankLink.href = chartLink.href;
+  rankLink.textContent = `ranked #${rank} that year`;
+  releasedContent.append(separator, rankLink);
+  rankedRow.remove();
+}
+
+function getReleaseSection(selector) {
+  return [...document.querySelectorAll(selector)].find(
+    (section) => !section.closest(".show-for-small"),
+  );
+}
+
+function createReleaseTab(target, section) {
+  const tab = document.createElement("a");
+  const count = section && getLeadingCount(section);
+
+  tab.className = "rym-modern-release-tab";
+  tab.href = `#${target.id}`;
+  tab.dataset.target = target.id;
+  tab.append(target.label);
+
+  if (count) {
+    const countElement = document.createElement("span");
+
+    countElement.className = "rym-modern-release-tab-count";
+    countElement.textContent = count;
+    tab.append(" ", countElement);
+  }
+
+  return tab;
+}
+
+function createReleasePanel(id, className = "") {
+  const panel = document.createElement("section");
+
+  panel.id = id;
+  panel.className = `rym-modern-release-tab-panel ${className}`.trim();
+
+  return panel;
+}
+
+function enhanceReleasePage() {
+  if (
+    !document.documentElement.classList.contains("page_release") ||
+    document.documentElement.dataset.rymModernReleaseEnhanced === "true"
+  ) {
+    return;
+  }
+
+  const reviewsShell = document.querySelector("#reviews_shell");
+  const comments = getReleaseSection(".section_comments");
+  const lists = getReleaseSection(".section_lists");
+  const issues = document.querySelector(
+    ".hide-for-small > .section_issues.section_outer",
+  );
+  const credits = document.querySelector(".hide-for-small > .section_credits");
+  const discussion = getReleaseSection(".page_object_section_discussion");
+  const suggestions = getReleaseSection(".section_suggestions");
+  const releaseGrid = document.querySelector(".release_page > div > .row");
+  const panels = [];
+
+  enhanceReleaseDateRank();
+  enhanceReleaseUserRating();
+  enhanceReleaseInlineStars();
+  enhanceReleaseTrackListingHeader();
+  enhanceReleaseRatingDistribution();
+
+  if (reviewsShell) {
+    const reviewsPanel = createReleasePanel(
+      "rym-modern-release-reviews",
+      "rym-modern-release-reviews-panel",
+    );
+
+    reviewsShell.before(reviewsPanel);
+    reviewsPanel.append(reviewsShell);
+    panels.push(reviewsPanel);
+
+    if (comments) {
+      comments.id = "rym-modern-release-comments";
+      comments.classList.add("rym-modern-release-main-section");
+      reviewsPanel.append(comments);
+    }
+  }
+
+  if (lists) {
+    lists.classList.add("rym-modern-release-main-section");
+  }
+
+  const tabTargets = [
+    {
+      id: "rym-modern-release-reviews",
+      label: "Reviews",
+      section: reviewsShell,
+      panel: panels[0],
+    },
+    {
+      id: "rym-modern-release-issues",
+      label: "Issues",
+      section: issues,
+    },
+    {
+      id: "rym-modern-release-credits",
+      label: "Credits",
+      section: credits,
+    },
+    {
+      id: "rym-modern-release-lists",
+      label: "Lists",
+      section: lists,
+    },
+    {
+      id: "rym-modern-release-discussion",
+      label: "Discussion",
+      section: discussion,
+    },
+  ].filter((target) => target.panel || target.section);
+
+  for (const target of tabTargets) {
+    if (target.panel) {
+      continue;
+    }
+
+    target.panel = createReleasePanel(target.id);
+    target.panel.hidden = true;
+    target.panel.append(target.section);
+    panels.push(target.panel);
+  }
+
+  if (panels[0] && tabTargets.length > 1) {
+    const tabList = document.createElement("nav");
+
+    tabList.className = "rym-modern-release-tabs";
+    tabList.setAttribute("aria-label", "Release sections");
+
+    for (const target of tabTargets) {
+      const tab = createReleaseTab(target, target.section);
+
+      tab.setAttribute(
+        "aria-current",
+        String(target.id === "rym-modern-release-reviews"),
+      );
+      tab.addEventListener("click", (event) => {
+        event.preventDefault();
+
+        for (const panel of panels) {
+          panel.hidden = panel.id !== target.id;
+        }
+
+        for (const sectionTab of tabList.querySelectorAll(
+          ".rym-modern-release-tab",
+        )) {
+          sectionTab.setAttribute(
+            "aria-current",
+            String(sectionTab.dataset.target === target.id),
+          );
+        }
+
+        history.replaceState(null, "", `#${target.id}`);
+      });
+
+      tabList.append(tab);
+    }
+
+    panels[0].before(tabList);
+
+    for (let index = 1; index < panels.length; index += 1) {
+      panels[index - 1].after(panels[index]);
+    }
+  }
+
+  if (suggestions && releaseGrid) {
+    suggestions.classList.add("rym-modern-release-bottom-section");
+    releaseGrid.after(suggestions);
+  }
+
+  document.documentElement.dataset.rymModernReleaseEnhanced = "true";
+}
+
 function fitInlineGroup(element, variableName, minimumScale) {
   element.style.setProperty(variableName, "1");
 
@@ -595,4 +967,5 @@ enhanceArtistTabs();
 enhanceArtistSongStats();
 enhanceDiscographyFilters();
 enhanceContributions();
+enhanceReleasePage();
 enhanceResponsiveInlineGroups();

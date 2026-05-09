@@ -24,6 +24,10 @@ const pages = [
     label: "Lists",
     directory: "list-page",
   },
+  {
+    label: "Release",
+    directory: "release-page",
+  },
 ];
 
 function injectPreviewAssets(html) {
@@ -35,7 +39,8 @@ function injectPreviewAssets(html) {
     .replace(
       /\n\s*<script src="\.\.\/\.\.\/rate-your-music-modern\.js" data-rym-modern-preview-js><\/script>\s*/g,
       "",
-    );
+    )
+    .replace(/position:fixed:\s*top/g, "position:fixed;top");
   const link = `\n<link rel="stylesheet" href="${PREVIEW_STYLESHEET}" ${PREVIEW_MARKER}>`;
   const script = `\n<script src="${PREVIEW_SCRIPT}" ${PREVIEW_SCRIPT_MARKER}></script>`;
 
