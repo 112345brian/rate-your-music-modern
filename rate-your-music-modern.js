@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Rate Your Music Modern
 // @namespace    github.com/112345brian/rate-your-music-modern
-// @version      0.4.0
+// @version      0.4.1
 // @description  Behavior enhancements for the Rate Your Music Modern userstyle.
 // @author       bri
 // @homepageURL  https://github.com/112345brian/rate-your-music-modern
@@ -808,6 +808,81 @@ function enhanceReleaseUserRating() {
     ?.classList.add("rym-modern-release-catalog-source");
 }
 
+function enhanceReleaseRatingHitArea() {
+  const ratingConstructor = globalThis.RYMrating;
+
+  if (
+    typeof ratingConstructor !== "function" ||
+    ratingConstructor.prototype.rymModernHitArea === true
+  ) {
+    return;
+  }
+
+  const ratingFromPointer = (event, element) => {
+    const stars = element.querySelector(".rating_stars");
+    const rect = stars?.getBoundingClientRect();
+    const pointer = event.touches?.item(0) ?? event.changedTouches?.item(0);
+    const clientX = pointer?.clientX ?? event.clientX;
+
+    if (!rect || !Number.isFinite(clientX)) {
+      return 0;
+    }
+
+    const zeroZone = Math.max(6, rect.width * 0.06);
+    const x = clientX - rect.left;
+
+    if (x <= zeroZone) {
+      return 0;
+    }
+
+    if (x >= rect.width) {
+      return 10;
+    }
+
+    return Math.max(
+      1,
+      Math.min(10, Math.ceil(((x - zeroZone) / (rect.width - zeroZone)) * 10)),
+    );
+  };
+
+  ratingConstructor.prototype.rymModernHitArea = true;
+  ratingConstructor.prototype.onMouseMove = function onMouseMove(
+    event,
+    element,
+  ) {
+    if (!this.loading && !this.isTouch) {
+      this.setStars(ratingFromPointer(event, element));
+    }
+  };
+  ratingConstructor.prototype.onClick = function onClick(event, element) {
+    if (!this.isTouch && !this.loading) {
+      const rating = ratingFromPointer(event, element);
+
+      this.setRating(rating);
+      this.rating = rating;
+    }
+  };
+  ratingConstructor.prototype.onTouchStart = function onTouchStart(
+    event,
+    element,
+  ) {
+    if (!this.loading) {
+      this.isTouch = true;
+      this.setStars(ratingFromPointer(event, element));
+      event.preventDefault();
+    }
+  };
+  ratingConstructor.prototype.onTouchMove = function onTouchMove(
+    event,
+    element,
+  ) {
+    if (!this.loading) {
+      this.setStars(ratingFromPointer(event, element));
+      event.preventDefault();
+    }
+  };
+}
+
 function enhanceReleaseDateRank() {
   const rows = [...document.querySelectorAll(".album_info tr")];
   const artistRow = rows.find(
@@ -975,6 +1050,7 @@ function enhanceReleasePage() {
   enhanceReleaseDateRank();
   enhanceReleaseGenres();
   enhanceReleaseUserRating();
+  enhanceReleaseRatingHitArea();
   enhanceReleaseInlineStars();
   enhanceReleaseTrackListingHeader();
   enhanceReleaseRatingDistribution();

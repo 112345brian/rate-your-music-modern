@@ -238,6 +238,21 @@ test("modernizes the release preview layout", async ({ page }) => {
   await expect(
     page.locator(".rym-modern-release-personal-card .my_catalog_rating"),
   ).toBeVisible();
+  const personalStars = page.locator(
+    ".rym-modern-release-personal-card .rating_stars",
+  );
+  const personalRatingNumber = page.locator(
+    ".rym-modern-release-personal-card .rating_num",
+  );
+  const personalStarsBox = await personalStars.boundingBox();
+
+  expect(personalStarsBox).not.toBeNull();
+  await page.mouse.move(
+    personalStarsBox.x + personalStarsBox.width * 0.7,
+    personalStarsBox.y + personalStarsBox.height / 2,
+  );
+  await expect(personalRatingNumber).toHaveText("3.5");
+  await expect(personalStars).toHaveClass(/star-7m/);
   await expect(page.locator(".rym-modern-release-rank")).toHaveText(
     "ranked #1,244 that year",
   );
