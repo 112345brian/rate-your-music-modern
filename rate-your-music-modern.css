@@ -1,7 +1,7 @@
 /* ==UserStyle==
 @name           Rate Your Music Modern
 @namespace      github.com/112345brian/rate-your-music-modern
-@version        0.5.2
+@version        0.5.4
 @description    Modern visual treatment for Rate Your Music.
 @author         bri
 @homepageURL    https://github.com/112345brian/rate-your-music-modern
@@ -1472,23 +1472,55 @@
     min-height: 86px;
   }
 
-  .page_release table.album_info tr.rym-modern-release-user-rating-row {
-    align-items: center;
-    background: rgb(70 86 106 / 36%);
-    border: 1px solid rgb(164 205 253 / 16%);
-    border-radius: 9px;
-    grid-template-columns: 1fr;
-    margin-bottom: 8px;
-    min-height: 170px;
-    padding: 0;
-    overflow: hidden;
+  .page_release table.album_info tr.rym-modern-release-summary-row {
+    border-bottom-color: rgb(49 58 78 / 72%);
+    display: block;
+    min-height: 0;
+    padding: 0 0 14px;
   }
 
-  .page_release
-    table.album_info
-    tr.rym-modern-release-user-rating-row
-    > .info_hdr {
-    display: none !important;
+  .page_release table.album_info tr.rym-modern-release-summary-row td {
+    display: block !important;
+  }
+
+  .page_release .rym-modern-release-summary-grid {
+    display: grid;
+    gap: 10px;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .page_release .rym-modern-release-summary-field {
+    background: rgb(120 183 255 / 5%);
+    border: 1px solid rgb(120 183 255 / 12%);
+    border-radius: 8px;
+    min-width: 0;
+    padding: 11px 12px;
+  }
+
+  .page_release .rym-modern-release-summary-label {
+    color: var(--rym-text-muted);
+    display: block;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.11em;
+    line-height: 1;
+    margin-bottom: 7px;
+    text-transform: uppercase;
+  }
+
+  .page_release .rym-modern-release-summary-value {
+    color: var(--rym-text-soft);
+    display: block;
+    font-size: 15px;
+    font-weight: 650;
+    line-height: 1.3;
+    min-width: 0;
+  }
+
+  @media only screen and (width < 66rem) {
+    .page_release .rym-modern-release-summary-grid {
+      grid-template-columns: minmax(0, 1fr);
+    }
   }
 
   .page_release table.album_info tr:last-child {
@@ -1547,6 +1579,33 @@
 
   .page_release .rym-modern-release-catalog-source {
     display: none !important;
+  }
+
+  .page_release .rym-modern-release-personal-card {
+    background: rgb(70 86 106 / 36%);
+    border: 1px solid rgb(164 205 253 / 16%);
+    border-radius: var(--rym-radius);
+    box-shadow: 0 16px 34px rgb(0 0 0 / 12%);
+    margin: 14px 0;
+    overflow: hidden;
+  }
+
+  @media only screen and (width >= 43rem) {
+    .page_release .rym-modern-release-sticky-stack {
+      position: sticky;
+      top: 4.75rem;
+      z-index: 3;
+    }
+  }
+
+  .page_release .rym-modern-release-personal-title {
+    color: var(--rym-text) !important;
+    font-size: 18px !important;
+    font-weight: 820 !important;
+    letter-spacing: 0;
+    line-height: 1.1;
+    margin: 0 !important;
+    padding: 14px 14px 0 !important;
   }
 
   .page_release .rym-modern-release-user-rating {
@@ -1907,8 +1966,6 @@
     box-shadow: var(--rym-shadow);
     overflow: hidden;
     padding: 0 !important;
-    position: sticky;
-    top: 4.75rem;
   }
 
   .page_release .page_release_art_frame img,
@@ -1975,6 +2032,21 @@
     display: grid;
     gap: 10px;
     grid-template-columns: minmax(0, 1fr) auto auto;
+  }
+
+  .page_release
+    #column_container_left
+    .section_tracklisting
+    .release_page_header {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+
+  .page_release
+    #column_container_left
+    .section_tracklisting
+    .release_page_header
+    h2 {
+    grid-column: 1 / -1;
   }
 
   .page_release .section_tracklisting .release_page_header h2 {

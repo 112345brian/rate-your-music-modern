@@ -231,17 +231,33 @@ test("modernizes the release preview layout", async ({ page }) => {
   await expect(page).toHaveTitle(/Song for Alpha/);
   await expect(page.locator(".album_title")).toContainText("Song for Alpha");
   await expect(page.locator(".rym-modern-release-tabs")).toBeVisible();
+  await expect(page.locator(".rym-modern-release-personal-card")).toBeVisible();
   await expect(
-    page.locator(".rym-modern-release-user-rating-row"),
-  ).toBeVisible();
-  await expect(
-    page.locator(".rym-modern-release-user-rating-row .my_catalog_rating"),
+    page.locator(".rym-modern-release-personal-card .my_catalog_rating"),
   ).toBeVisible();
   await expect(page.locator(".rym-modern-release-rank")).toHaveText(
     "ranked #1,244 that year",
   );
+  await expect(page.locator(".rym-modern-release-summary-row")).toContainText(
+    "Daniel Avery",
+  );
+  await expect(page.locator(".rym-modern-release-summary-row")).toContainText(
+    "Album",
+  );
+  await expect(page.locator(".rym-modern-release-summary-row")).toContainText(
+    "6 April 2018",
+  );
   await expect(
     page.getByRole("rowheader", { name: "Ranked", exact: true }),
+  ).toHaveCount(0);
+  await expect(
+    page.getByRole("rowheader", { name: "Artist", exact: true }),
+  ).toHaveCount(0);
+  await expect(
+    page.getByRole("rowheader", { name: "Type", exact: true }),
+  ).toHaveCount(0);
+  await expect(
+    page.getByRole("rowheader", { name: "Released", exact: true }),
   ).toHaveCount(0);
   await expect(page.locator(".section_my_catalog")).toBeHidden();
   await expect(page.locator("#reviews_shell")).toBeVisible();
@@ -276,18 +292,28 @@ test("modernizes the release preview layout", async ({ page }) => {
   const releaseOrder = await page.evaluate(() => {
     const reviews = document.querySelector("#reviews_shell");
     const comments = document.querySelector("#rym-modern-release-comments");
-    const userRating = document.querySelector(
-      ".rym-modern-release-user-rating-row",
+    const personalCard = document.querySelector(
+      ".rym-modern-release-personal-card",
     );
-    const rymRating = document.querySelector(".rym-modern-release-rating-row");
+    const artFrame = document.querySelector(".page_release_art_frame");
+    const stickyStack = document.querySelector(
+      ".rym-modern-release-sticky-stack",
+    );
     const suggestions = document.querySelector(
       ".rym-modern-release-bottom-section",
     );
 
     return {
-      userRatingBeforeRymRating:
-        userRating.compareDocumentPosition(rymRating) &
+      personalCardAfterArt:
+        artFrame.compareDocumentPosition(personalCard) &
         Node.DOCUMENT_POSITION_FOLLOWING,
+      personalCardInLeftColumn:
+        personalCard.closest("#column_container_left") !== null,
+      personalControlsNotInAlbumInfo:
+        document.querySelector(
+          ".album_info .rym-modern-release-user-rating",
+        ) === null,
+      stickyStackPosition: getComputedStyle(stickyStack).position,
       commentsAfterReviews:
         reviews.compareDocumentPosition(comments) &
         Node.DOCUMENT_POSITION_FOLLOWING,
@@ -304,7 +330,10 @@ test("modernizes the release preview layout", async ({ page }) => {
     };
   });
 
-  expect(Boolean(releaseOrder.userRatingBeforeRymRating)).toBe(true);
+  expect(Boolean(releaseOrder.personalCardAfterArt)).toBe(true);
+  expect(releaseOrder.personalCardInLeftColumn).toBe(true);
+  expect(releaseOrder.personalControlsNotInAlbumInfo).toBe(true);
+  expect(releaseOrder.stickyStackPosition).toBe("sticky");
   expect(Boolean(releaseOrder.commentsAfterReviews)).toBe(true);
   expect(releaseOrder.commentsShareColumn).toBe(true);
   expect(Boolean(releaseOrder.suggestionsAfterGrid)).toBe(true);

@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Rate Your Music Modern
 // @namespace    github.com/112345brian/rate-your-music-modern
-// @version      0.3.5
+// @version      0.3.7
 // @description  Behavior enhancements for the Rate Your Music Modern userstyle.
 // @author       bri
 // @homepageURL  https://github.com/112345brian/rate-your-music-modern
@@ -617,27 +617,25 @@ function enhanceReleaseTrackListingHeader() {
 }
 
 function enhanceReleaseUserRating() {
-  const ratingLabel = [
-    ...document.querySelectorAll(".album_info .info_hdr"),
-  ].find((header) => header.textContent.trim().toLowerCase() === "rym rating");
-  const ratingRow = ratingLabel?.closest("tr");
   const catalogControls = document.querySelector(
     ".section_my_catalog .release_my_catalog",
   );
   const reviewEditor = document.querySelector(".section_my_catalog #my_review");
-  const albumInfo = ratingRow?.closest(".album_info");
-  const albumInfoOuter = albumInfo?.closest(".album_info_outer");
-  const existingRow = document.querySelector(
-    ".rym-modern-release-user-rating-row",
+  const releaseArtFrame = document.querySelector(
+    ".page_release .page_release_art_frame",
+  );
+  const albumInfoOuter = document.querySelector(".album_info_outer");
+  const existingPersonalCard = document.querySelector(
+    ".rym-modern-release-personal-card",
   );
 
-  if (!ratingRow || !catalogControls || existingRow) {
+  if (!catalogControls || !releaseArtFrame || existingPersonalCard) {
     return;
   }
 
-  const row = document.createElement("tr");
-  const header = document.createElement("th");
-  const content = document.createElement("td");
+  const personalCard = document.createElement("section");
+  const stickyStack = document.createElement("div");
+  const heading = document.createElement("h2");
   const frame = document.createElement("div");
   const primaryActions = document.createElement("div");
   const rateBlock = document.createElement("div");
@@ -658,10 +656,10 @@ function enhanceReleaseUserRating() {
     ".release_touch_guidance",
   );
 
-  row.className = "rym-modern-release-user-rating-row";
-  header.className = "info_hdr";
-  header.textContent = "Your rating";
-  content.colSpan = 2;
+  stickyStack.className = "rym-modern-release-sticky-stack";
+  personalCard.className = "rym-modern-release-personal-card";
+  heading.className = "rym-modern-release-personal-title";
+  heading.textContent = "Your rating";
   frame.className = "rym-modern-release-user-rating";
   primaryActions.className = "rym-modern-release-user-rating-primary";
   rateBlock.className = "rym-modern-release-user-rating-rate";
@@ -691,9 +689,9 @@ function enhanceReleaseUserRating() {
 
   catalogControls.replaceChildren(primaryActions, rateBlock, secondaryActions);
   frame.append(catalogControls);
-  content.append(frame);
-  row.append(header, content);
-  ratingRow.before(row);
+  personalCard.append(heading, frame);
+  releaseArtFrame.before(stickyStack);
+  stickyStack.append(releaseArtFrame, personalCard);
 
   if (reviewEditor && albumInfoOuter) {
     reviewEditor.classList.add("rym-modern-release-review-editor");
@@ -707,6 +705,16 @@ function enhanceReleaseUserRating() {
 
 function enhanceReleaseDateRank() {
   const rows = [...document.querySelectorAll(".album_info tr")];
+  const artistRow = rows.find(
+    (row) =>
+      row.querySelector(".info_hdr")?.textContent.trim().toLowerCase() ===
+      "artist",
+  );
+  const typeRow = rows.find(
+    (row) =>
+      row.querySelector(".info_hdr")?.textContent.trim().toLowerCase() ===
+      "type",
+  );
   const releasedRow = rows.find(
     (row) =>
       row.querySelector(".info_hdr")?.textContent.trim().toLowerCase() ===
@@ -722,26 +730,74 @@ function enhanceReleaseDateRank() {
   const rank = rankedContent?.querySelector("b")?.textContent.trim();
   const chartLink = rankedContent?.querySelector("a[href*='/charts/']");
 
+  if (!releasedContent) {
+    return;
+  }
+
   if (
-    !releasedContent ||
-    !rankedRow ||
-    !rank ||
-    !chartLink ||
-    releasedContent.querySelector(".rym-modern-release-rank")
+    rankedRow &&
+    rank &&
+    chartLink &&
+    !releasedContent.querySelector(".rym-modern-release-rank")
+  ) {
+    const rankLink = document.createElement("a");
+    const separator = document.createElement("span");
+
+    separator.className = "rym-modern-release-meta-separator";
+    separator.textContent = " ";
+    rankLink.className = "rym-modern-release-rank";
+    rankLink.href = chartLink.href;
+    rankLink.textContent = `ranked #${rank} that year`;
+    releasedContent.append(separator, rankLink);
+    rankedRow.remove();
+  }
+
+  if (
+    document.querySelector(".rym-modern-release-summary-row") ||
+    !artistRow ||
+    !typeRow
   ) {
     return;
   }
 
-  const rankLink = document.createElement("a");
-  const separator = document.createElement("span");
+  const summaryRow = document.createElement("tr");
+  const summaryCell = document.createElement("td");
+  const summaryGrid = document.createElement("div");
 
-  separator.className = "rym-modern-release-meta-separator";
-  separator.textContent = " ";
-  rankLink.className = "rym-modern-release-rank";
-  rankLink.href = chartLink.href;
-  rankLink.textContent = `ranked #${rank} that year`;
-  releasedContent.append(separator, rankLink);
-  rankedRow.remove();
+  summaryRow.className = "rym-modern-release-summary-row";
+  summaryCell.colSpan = 3;
+  summaryGrid.className = "rym-modern-release-summary-grid";
+
+  for (const [label, row] of [
+    ["Artist", artistRow],
+    ["Type", typeRow],
+    ["Release", releasedRow],
+  ]) {
+    const value = row?.querySelector("td");
+
+    if (!value) {
+      continue;
+    }
+
+    const field = document.createElement("div");
+    const fieldLabel = document.createElement("span");
+    const fieldValue = document.createElement("span");
+
+    field.className = "rym-modern-release-summary-field";
+    fieldLabel.className = "rym-modern-release-summary-label";
+    fieldLabel.textContent = label;
+    fieldValue.className = "rym-modern-release-summary-value";
+    fieldValue.append(...value.childNodes);
+    field.append(fieldLabel, fieldValue);
+    summaryGrid.append(field);
+  }
+
+  summaryCell.append(summaryGrid);
+  summaryRow.append(summaryCell);
+  artistRow.before(summaryRow);
+  artistRow.remove();
+  typeRow.remove();
+  releasedRow.remove();
 }
 
 function getReleaseSection(selector) {
