@@ -1468,6 +1468,7 @@ html#page_release #content {
 }
 
 .page_release .rym-modern-release-rating-card,
+.page_release .rym-modern-release-distribution-card,
 .page_release .rym-modern-release-friends-card {
   background: rgb(120 183 255 / 5%);
   border: 1px solid rgb(120 183 255 / 12%);
@@ -1509,6 +1510,12 @@ html#page_release #content {
 .page_release .rym-modern-release-friends-card > td {
   align-self: center;
   min-width: 0;
+}
+
+.page_release .rym-modern-release-distribution-card {
+  align-content: stretch;
+  display: grid;
+  min-height: 100%;
 }
 
 .page_release table.album_info tr.rym-modern-release-summary-row {
@@ -1988,15 +1995,16 @@ html#page_release #content {
 
 .page_release .rym-modern-release-friends-preview .catalog_date {
   font-size: 11px;
-  padding-top: 9px;
+  padding-top: 12px;
 }
 
 .page_release .rym-modern-release-friends-preview .catalog_header {
   border-color: rgb(74 222 128 / 28%);
-  gap: 7px;
+  gap: 2px 7px;
   grid-template-columns: 24px minmax(0, 1fr) 88px;
-  min-height: 38px;
-  padding: 5px 8px;
+  grid-template-rows: auto auto;
+  min-height: 44px;
+  padding: 6px 8px;
 }
 
 .page_release
@@ -2011,10 +2019,13 @@ html#page_release #content {
   color: var(--rym-accent) !important;
   font-size: 14px !important;
   font-weight: 850 !important;
+  line-height: 1.15;
 }
 
 .page_release .rym-modern-release-friends-preview .catalog_rating {
   align-self: center;
+  grid-column: 3;
+  grid-row: 1;
 }
 
 .page_release .rym-modern-release-friends-preview .rym-modern-inline-stars {
@@ -2032,11 +2043,14 @@ html#page_release #content {
   .rym-modern-release-friends-preview
   .catalog_rating_system_comment {
   font-size: 12px !important;
-  grid-column: 2 / 3;
-  justify-self: end;
-  margin-top: -4px !important;
+  grid-column: 2 / 4;
+  grid-row: 2;
+  justify-self: start;
+  line-height: 1.15;
+  margin: 0 !important;
   max-width: 100%;
   overflow: hidden;
+  padding-right: 4px;
   text-overflow: ellipsis;
   white-space: nowrap;
 }

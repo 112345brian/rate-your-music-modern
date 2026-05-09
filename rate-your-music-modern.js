@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Rate Your Music Modern
 // @namespace    github.com/112345brian/rate-your-music-modern
-// @version      0.4.2
+// @version      0.4.4
 // @description  Behavior enhancements for the Rate Your Music Modern userstyle.
 // @author       bri
 // @homepageURL  https://github.com/112345brian/rate-your-music-modern
@@ -512,6 +512,7 @@ function enhanceReleaseRatingDistribution() {
   const summaryCell = document.createElement("td");
   const summary = document.createElement("div");
   const ratingCard = document.createElement("div");
+  const friendsPreview = createReleaseFriendsPreview();
 
   distribution.className = "rym-modern-rating-distribution";
   distribution.append(chart);
@@ -523,26 +524,27 @@ function enhanceReleaseRatingDistribution() {
   ratingCard.append(
     createReleaseInfoLabel(ratingLabel.textContent),
     ratingContent,
-    distribution,
   );
   summary.append(ratingCard);
 
-  if (friendsContent) {
+  if (friendsContent && friendsPreview) {
     const friendsCard = document.createElement("div");
-    const friendsPreview = createReleaseFriendsPreview();
 
     friendsCard.className = "rym-modern-release-friends-card";
     friendsCard.append(createReleaseInfoLabel(friendsLabel.textContent));
     friendsCard.append(friendsContent);
-
-    if (friendsPreview) {
-      friendsCard.append(friendsPreview);
-    }
-
+    friendsCard.append(friendsPreview);
+    ratingCard.append(distribution);
     summary.append(friendsCard);
-    friendsRow?.remove();
+  } else {
+    const distributionCard = document.createElement("div");
+
+    distributionCard.className = "rym-modern-release-distribution-card";
+    distributionCard.append(distribution);
+    summary.append(distributionCard);
   }
 
+  friendsRow?.remove();
   summaryCell.append(summary);
   summaryRow.append(summaryCell);
   ratingRow.before(summaryRow);
@@ -576,6 +578,7 @@ function createReleaseFriendsPreview() {
 
   for (const line of friendLines.slice(0, 3)) {
     const clone = line.cloneNode(true);
+    const date = clone.querySelector(".catalog_date_inner");
 
     clone.classList.add("rym-modern-release-friend-preview-line");
 
@@ -595,6 +598,10 @@ function createReleaseFriendsPreview() {
       }
     }
 
+    if (date) {
+      date.textContent = truncateCurrentYearDate(date.textContent);
+    }
+
     preview.append(clone);
   }
 
@@ -607,6 +614,15 @@ function createReleaseFriendsPreview() {
   preview.append(moreLink);
 
   return preview;
+}
+
+function truncateCurrentYearDate(dateText) {
+  const currentYear = String(new Date().getFullYear());
+  const trimmed = dateText.trim();
+
+  return trimmed.endsWith(` ${currentYear}`)
+    ? trimmed.slice(0, -currentYear.length).trim()
+    : trimmed;
 }
 
 function enhanceReleaseInlineStars() {

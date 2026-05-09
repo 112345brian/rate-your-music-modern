@@ -299,6 +299,16 @@ test("modernizes the release preview layout", async ({ page }) => {
     page.locator(".rym-modern-release-friends-preview .catalog_header.friend"),
   ).toHaveCount(3);
   await expect(
+    page
+      .locator(
+        ".rym-modern-release-friends-preview .catalog_rating_system_comment",
+      )
+      .first(),
+  ).toHaveCSS("grid-row-start", "2");
+  await expect(
+    page.locator(".rym-modern-release-distribution-card"),
+  ).toHaveCount(0);
+  await expect(
     page.locator(".rym-modern-release-friends-more"),
   ).toHaveAttribute("href", "#rym-modern-release-ratings");
   await expect(
@@ -397,4 +407,77 @@ test("modernizes the release preview layout", async ({ page }) => {
   await releaseTabs.getByRole("link", { name: /^Forum/ }).click();
   await expect(page.locator("#rym-modern-release-discussion")).toBeVisible();
   await expect(page.locator("#rym-modern-release-lists")).toBeHidden();
+});
+
+test("uses the release distribution as the second column without friend ratings", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.addInitScript(() => {
+    const removeFriendRatings = () => {
+      for (const node of document.querySelectorAll(".catalog_header.friend")) {
+        node.classList.remove("friend");
+      }
+    };
+
+    new MutationObserver(removeFriendRatings).observe(document, {
+      childList: true,
+      subtree: true,
+    });
+    document.addEventListener("readystatechange", removeFriendRatings, true);
+  });
+  await page.goto(
+    pathToFileURL(`${process.cwd()}/assets/release-page/preview.html`).href,
+  );
+
+  await expect(
+    page.locator(".section_catalog .catalog_header.friend"),
+  ).toHaveCount(0);
+  await expect(page.locator(".rym-modern-release-friends-card")).toHaveCount(0);
+  await expect(
+    page.locator(".rym-modern-release-distribution-card #chart_div"),
+  ).toBeVisible();
+  await expect(
+    page.locator(".rym-modern-release-rating-card #chart_div"),
+  ).toHaveCount(0);
+});
+
+test("shortens current-year dates in the release friends preview", async ({
+  page,
+}) => {
+  const currentYear = new Date().getFullYear();
+
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.addInitScript((year) => {
+    let updated = false;
+    const rewriteFirstFriendDate = () => {
+      if (updated) {
+        return;
+      }
+
+      const date = document
+        .querySelector(".catalog_header.friend")
+        ?.previousElementSibling?.querySelector(".catalog_date_inner");
+
+      if (date) {
+        date.textContent = `5 Apr ${year}`;
+        updated = true;
+      }
+    };
+
+    new MutationObserver(rewriteFirstFriendDate).observe(document, {
+      childList: true,
+      subtree: true,
+    });
+    document.addEventListener("readystatechange", rewriteFirstFriendDate, true);
+  }, currentYear);
+  await page.goto(
+    pathToFileURL(`${process.cwd()}/assets/release-page/preview.html`).href,
+  );
+
+  await expect(
+    page
+      .locator(".rym-modern-release-friends-preview .catalog_date_inner")
+      .first(),
+  ).toHaveText("5 Apr");
 });
