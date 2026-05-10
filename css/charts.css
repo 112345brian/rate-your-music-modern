@@ -1,0 +1,89 @@
+.page_charts_section_tabs,
+.tabs,
+.nav,
+.page_nav {
+  align-items: center;
+  border-bottom: 1px solid var(--rym-border);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.navlink,
+.tab,
+.page_nav a {
+  border: 1px solid transparent;
+  border-radius: 999px;
+  color: var(--rym-text-soft);
+  display: inline-flex;
+  line-height: 1;
+  padding: 0.55rem 0.8rem;
+  text-decoration: none;
+}
+
+.navlink.selected,
+.tab.selected,
+.page_nav a.selected,
+.page_nav a:hover {
+  background: rgb(125 211 252 / 12%);
+  border-color: rgb(125 211 252 / 32%);
+  color: var(--rym-accent);
+}
+
+.page_charts_section_charts_item_list {
+  display: grid;
+  gap: 0.75rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.page_charts_section_charts_item {
+  align-items: center;
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  padding: 0.9rem 1rem;
+}
+
+.page_charts_section_charts_item:hover,
+.review:hover,
+.comment:hover {
+  background: var(--rym-surface-raised) !important;
+  border-color: #41506a !important;
+}
+
+.page_charts_section_charts_item_rank {
+  align-items: center;
+  background: rgb(125 211 252 / 10%);
+  border: 1px solid rgb(125 211 252 / 28%);
+  border-radius: 999px;
+  color: var(--rym-accent);
+  display: inline-flex;
+  font-weight: 750;
+  height: 2rem;
+  justify-content: center;
+  min-width: 2rem;
+  padding: 0 0.45rem;
+}
+
+.page_charts_section_charts_item_title,
+.page_charts_section_charts_item_artist {
+  margin: 0;
+}
+
+.page_charts_section_charts_item_title {
+  font-size: 1rem;
+  line-height: 1.25;
+}
+
+.page_charts_section_charts_item_artist {
+  margin-top: 0.15rem;
+}
+
+.rym-modern-card-grid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
