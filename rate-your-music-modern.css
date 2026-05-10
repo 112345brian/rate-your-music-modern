@@ -1,7 +1,7 @@
 /* ==UserStyle==
 @name           Rate Your Music Modern
 @namespace      github.com/112345brian/rate-your-music-modern
-@version        0.6.2
+@version        0.6.3
 @description    Modern visual treatment for Rate Your Music.
 @author         bri
 @homepageURL    https://github.com/112345brian/rate-your-music-modern
@@ -1690,7 +1690,7 @@
       isolation: isolate;
       position: sticky;
       top: 4.75rem;
-      z-index: 3;
+      z-index: 1;
     }
   }
 
@@ -2044,7 +2044,7 @@
   .page_release .rym-modern-release-friends-preview .catalog_header {
     border-color: rgb(74 222 128 / 28%);
     gap: 2px 7px;
-    grid-template-columns: 24px minmax(0, 1fr) 88px;
+    grid-template-columns: 24px minmax(0, 1fr) 100px;
     grid-template-rows: auto auto;
     min-height: 44px;
     padding: 6px 8px;
@@ -2072,10 +2072,8 @@
   }
 
   .page_release .rym-modern-release-friends-preview .rym-modern-inline-stars {
-    min-width: 82px;
-    transform: scale(0.9);
-    transform-origin: right center;
-    width: 82px;
+    min-width: 96px;
+    width: 96px;
   }
 
   .page_release .rym-modern-release-friends-preview .catalog_track_ratings {
@@ -2116,11 +2114,35 @@
   .page_release .release_sec_genres {
     display: inline-flex;
     flex-wrap: wrap;
-    gap: 7px;
+    gap: 7px 8px;
+  }
+
+  .page_release table.album_info tr.release_genres {
+    align-items: start;
+    gap: 14px;
+    grid-template-columns: 110px minmax(0, 1fr) 30px;
+    padding: 14px 0 16px;
+  }
+
+  .page_release table.album_info tr.release_genres th.info_hdr {
+    padding-top: 8px !important;
+  }
+
+  .page_release table.album_info tr.release_genres td:first-of-type > div {
+    display: flex;
+    float: none !important;
+    flex-wrap: wrap;
+    gap: 7px 8px;
+    max-width: 100%;
+  }
+
+  .page_release table.album_info tr.release_genres td:last-child {
+    align-self: start;
+    padding-top: 6px !important;
   }
 
   .page_release .release_pri_genres {
-    margin-right: 9px;
+    margin-right: 2px;
   }
 
   .page_release .release_sec_genres {
@@ -2212,6 +2234,11 @@
     border-radius: var(--rym-radius);
     margin-top: 14px;
     padding: 14px !important;
+  }
+
+  .page_release .section_tracklisting {
+    position: relative;
+    z-index: 2;
   }
 
   .page_release .release_page_header,
@@ -2629,7 +2656,7 @@
   .page_release .review_header {
     display: grid;
     gap: 10px;
-    grid-template-columns: 34px minmax(140px, 1fr) 130px 94px 124px;
+    grid-template-columns: 34px minmax(140px, 1fr) 130px 102px 124px;
   }
 
   .page_release .review_header > a:first-child {
@@ -2656,7 +2683,7 @@
   .page_release .review_header > span[itemprop="reviewRating"] {
     grid-column: 4;
     justify-self: start;
-    min-width: 88px;
+    min-width: 96px;
   }
 
   .page_release .review_header > div[id^="review_voting"] {
@@ -2746,7 +2773,7 @@
     display: grid;
     gap: 8px 10px;
     grid-column: 2;
-    grid-template-columns: 28px minmax(0, 1fr) 92px;
+    grid-template-columns: 28px minmax(0, 1fr) 100px;
     min-height: 42px;
     padding: 6px 10px;
   }
@@ -2822,11 +2849,11 @@
     float: none !important;
     height: 18px;
     line-height: 18px;
-    min-width: 88px;
+    min-width: 96px;
     overflow: hidden;
     position: relative;
     vertical-align: middle;
-    width: 88px;
+    width: 96px;
   }
 
   .page_release .rym-modern-inline-stars img {
@@ -3148,6 +3175,141 @@
     gap: 8px;
     min-height: 0 !important;
     padding: 0 !important;
+  }
+
+  .page_release .rym-modern-contributions {
+    background: var(--rym-surface) !important;
+    border: 1px solid var(--rym-border);
+    border-radius: 8px;
+    margin: 38px auto 0 !important;
+    max-width: 760px;
+    padding: 18px !important;
+    width: 100%;
+  }
+
+  .page_release .rym-modern-contributions .release_page_header {
+    margin-bottom: 14px;
+    padding: 0 !important;
+  }
+
+  .page_release .rym-modern-contributions .release_page_header h2 {
+    color: var(--rym-text) !important;
+    font-size: 24px !important;
+    line-height: 1.1;
+  }
+
+  .page_release .rym-modern-contributions .color_bar,
+  .page_release .rym-modern-contributions > table {
+    display: none !important;
+  }
+
+  .page_release .rym-modern-contributions .page_object_contributions {
+    display: grid;
+    gap: 14px;
+    padding: 0 !important;
+  }
+
+  .page_release .rym-modern-contributions .contributor_header {
+    color: var(--rym-text-muted) !important;
+    display: block;
+    font-size: 12px;
+    font-weight: 780;
+    letter-spacing: 0.14em;
+    line-height: 1;
+    text-transform: uppercase;
+  }
+
+  .page_release .rym-modern-contributions .contributors {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+  }
+
+  .page_release .rym-modern-contributions .contributors a {
+    background: rgb(148 163 184 / 9%);
+    border: 1px solid rgb(148 163 184 / 14%);
+    border-radius: 999px;
+    color: var(--rym-text-soft) !important;
+    font-size: 12px !important;
+    font-weight: 720;
+    line-height: 1;
+    padding: 5px 8px;
+    text-decoration: none;
+  }
+
+  .page_release .rym-modern-contributions .contributors a:hover {
+    background: rgb(120 183 255 / 12%);
+    border-color: rgb(120 183 255 / 28%);
+    color: var(--rym-link-hover) !important;
+  }
+
+  .page_release .rym-modern-contribution-actions {
+    border-top: 1px solid rgb(49 58 78 / 55%);
+    padding-top: 14px;
+  }
+
+  .page_release .rym-modern-contribution-actions summary {
+    align-items: center;
+    background: rgb(120 183 255 / 11%);
+    border: 1px solid rgb(120 183 255 / 28%);
+    border-radius: 999px;
+    color: var(--rym-link-hover);
+    cursor: pointer;
+    display: inline-flex;
+    font-size: 13px;
+    font-weight: 820;
+    line-height: 1;
+    list-style: none;
+    min-height: 32px;
+    padding: 8px 14px;
+  }
+
+  .page_release
+    .rym-modern-contribution-actions
+    summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .page_release .rym-modern-contribution-actions summary::after {
+    content: "+";
+    font-size: 16px;
+    font-weight: 760;
+    margin-left: 10px;
+  }
+
+  .page_release .rym-modern-contribution-actions[open] summary::after {
+    content: "-";
+  }
+
+  .page_release .rym-modern-contributions .contribution_links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 12px !important;
+  }
+
+  .page_release .rym-modern-contributions .contribution_links .contrib_btn,
+  .page_release .rym-modern-contributions .contribution_links .ui_button {
+    background: rgb(120 183 255 / 10%) !important;
+    border: 1px solid rgb(120 183 255 / 22%) !important;
+    border-radius: 999px !important;
+    color: var(--rym-link-hover) !important;
+    font-size: 12px !important;
+    font-weight: 760 !important;
+    line-height: 1 !important;
+    margin: 0 !important;
+    min-height: 30px;
+    padding: 8px 12px !important;
+  }
+
+  .page_release
+    .rym-modern-contributions
+    .contribution_links
+    .contrib_btn:hover,
+  .page_release .rym-modern-contributions .contribution_links .ui_button:hover {
+    background: rgb(120 183 255 / 18%) !important;
+    border-color: rgb(120 183 255 / 38%) !important;
+    color: #d9efff !important;
   }
 
   .page_release .rym-modern-release-bottom-section ul.suggestions li {

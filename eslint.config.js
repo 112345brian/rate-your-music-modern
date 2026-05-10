@@ -3,7 +3,12 @@ import globals from "globals";
 
 export default [
   {
-    ignores: ["assets/**", "playwright-report/**", "test-results/**"],
+    ignores: [
+      ".claude/**",
+      "assets/**",
+      "playwright-report/**",
+      "test-results/**",
+    ],
   },
   js.configs.recommended,
   {

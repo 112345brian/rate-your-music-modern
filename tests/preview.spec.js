@@ -339,6 +339,25 @@ test("modernizes the release preview layout", async ({ page }) => {
   await expect(
     page.locator(".rym-modern-release-lists-disclosure"),
   ).toHaveCount(0);
+  await expect(
+    page.locator(".page_release .rym-modern-contributions"),
+  ).toBeVisible();
+  await expect(
+    page.locator(".page_release .rym-modern-contributions .contributors a"),
+  ).toHaveCount(5);
+  await expect(
+    page.locator(".page_release .rym-modern-contribution-actions"),
+  ).not.toHaveAttribute("open", "");
+  await expect(
+    page.locator(".page_release .rym-modern-contributions .contribution_links"),
+  ).toBeHidden();
+  await page
+    .locator(".page_release .rym-modern-contributions")
+    .getByText(/Contribution options/)
+    .click();
+  await expect(
+    page.locator(".page_release .rym-modern-contributions .contribution_links"),
+  ).toBeVisible();
 
   const releaseOrder = await page.evaluate(() => {
     const reviews = document.querySelector("#reviews_shell");
@@ -350,6 +369,7 @@ test("modernizes the release preview layout", async ({ page }) => {
     const stickyStack = document.querySelector(
       ".rym-modern-release-sticky-stack",
     );
+    const tracklisting = document.querySelector(".section_tracklisting");
     const suggestions = document.querySelector(
       ".rym-modern-release-bottom-section",
     );
@@ -365,6 +385,8 @@ test("modernizes the release preview layout", async ({ page }) => {
           ".album_info .rym-modern-release-user-rating",
         ) === null,
       stickyStackPosition: getComputedStyle(stickyStack).position,
+      stickyStackZIndex: Number(getComputedStyle(stickyStack).zIndex),
+      tracklistingZIndex: Number(getComputedStyle(tracklisting).zIndex),
       commentsBeforeReviews:
         comments.compareDocumentPosition(reviews) &
         Node.DOCUMENT_POSITION_FOLLOWING,
@@ -400,6 +422,27 @@ test("modernizes the release preview layout", async ({ page }) => {
           Math.max(...positions) - Math.min(...positions) < 2
         );
       }),
+      friendStarsFit: [
+        ...document.querySelectorAll(
+          ".rym-modern-release-friends-preview .catalog_header.friend",
+        ),
+      ].every((header) => {
+        const stars = header.querySelector(".rym-modern-inline-stars");
+        const headerBox = header.getBoundingClientRect();
+        const starsBox = stars?.getBoundingClientRect();
+
+        return (
+          starsBox &&
+          starsBox.width >= 94 &&
+          starsBox.right <= headerBox.right - 4
+        );
+      }),
+      genreRowColumnGap: getComputedStyle(
+        document.querySelector(".release_genres"),
+      ).columnGap,
+      genreWrapperFloat: getComputedStyle(
+        document.querySelector(".release_genres td:first-of-type > div"),
+      ).float,
     };
   });
 
@@ -407,12 +450,18 @@ test("modernizes the release preview layout", async ({ page }) => {
   expect(releaseOrder.personalCardInLeftColumn).toBe(true);
   expect(releaseOrder.personalControlsNotInAlbumInfo).toBe(true);
   expect(releaseOrder.stickyStackPosition).toBe("sticky");
+  expect(releaseOrder.tracklistingZIndex).toBeGreaterThan(
+    releaseOrder.stickyStackZIndex,
+  );
   expect(Boolean(releaseOrder.commentsBeforeReviews)).toBe(true);
   expect(releaseOrder.commentsShareColumn).toBe(true);
   expect(Boolean(releaseOrder.suggestionsAfterGrid)).toBe(true);
   expect(releaseOrder.suggestionsOutsideColumns).toBe(true);
   expect(releaseOrder.commentsFillPanel).toBe(true);
   expect(releaseOrder.reviewColumnsAligned).toBe(true);
+  expect(releaseOrder.friendStarsFit).toBe(true);
+  expect(releaseOrder.genreRowColumnGap).toBe("14px");
+  expect(releaseOrder.genreWrapperFloat).toBe("none");
 
   const releaseTabs = page.locator(".rym-modern-release-tabs");
 
@@ -551,6 +600,56 @@ test("pairs recorded and language release metadata", async ({ page }) => {
   await page.goto(
     pathToFileURL(`${process.cwd()}/assets/release-page/preview.html`).href,
   );
+
+  await expect(
+    page.locator(".rym-modern-release-language-recorded-row"),
+  ).toContainText("Language");
+  await expect(
+    page.locator(".rym-modern-release-language-recorded-row"),
+  ).toContainText("English");
+  await expect(
+    page.locator(".rym-modern-release-language-recorded-row"),
+  ).toContainText("Recorded");
+  await expect(
+    page.locator(".rym-modern-release-language-recorded-row"),
+  ).toContainText("2023 - 2026");
+  await expect(
+    page.getByRole("rowheader", { name: "Recorded", exact: true }),
+  ).toHaveCount(0);
+  await expect(
+    page.getByRole("rowheader", { name: "Language", exact: true }),
+  ).toHaveCount(0);
+});
+
+test("pairs recorded and language if recorded is added after enhancement", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto(
+    pathToFileURL(`${process.cwd()}/assets/release-page/preview.html`).href,
+  );
+
+  await expect(
+    page.locator(".rym-modern-release-language-recorded-row"),
+  ).toHaveCount(0);
+
+  await page.evaluate(() => {
+    const ratingRow = [...document.querySelectorAll(".album_info tr")].find(
+      (row) =>
+        row.querySelector(".info_hdr")?.textContent.trim().toLowerCase() ===
+        "rym rating",
+    );
+    const recordedRow = document.createElement("tr");
+    const header = document.createElement("th");
+    const value = document.createElement("td");
+
+    header.className = "info_hdr";
+    header.textContent = "Recorded";
+    value.colSpan = 2;
+    value.textContent = "2023 - 2026";
+    recordedRow.append(header, value);
+    ratingRow.before(recordedRow);
+  });
 
   await expect(
     page.locator(".rym-modern-release-language-recorded-row"),
