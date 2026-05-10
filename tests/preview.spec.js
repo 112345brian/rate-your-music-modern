@@ -653,6 +653,27 @@ test("modernizes the release preview layout", async ({ page }) => {
   await releaseTabs.getByRole("link", { name: /^Lists/ }).click();
   await expect(page.locator("#rym-modern-release-lists")).toBeVisible();
   await expect(page.locator("#rym-modern-release-credits")).toBeHidden();
+  expect(
+    await page
+      .locator("#rym-modern-release-lists ul.lists li")
+      .first()
+      .evaluate((item) => {
+        const image = item
+          .querySelector(".list_image")
+          ?.getBoundingClientRect();
+        const info = item.querySelector(".list_info")?.getBoundingClientRect();
+        const itemBox = item.getBoundingClientRect();
+        const infoStyle = getComputedStyle(item.querySelector(".list_info"));
+
+        return (
+          image &&
+          info &&
+          infoStyle.marginLeft === "0px" &&
+          info.left - image.right <= 14 &&
+          info.right <= itemBox.right - 8
+        );
+      }),
+  ).toBe(true);
 
   await releaseTabs.getByRole("link", { name: /^Forum/ }).click();
   await expect(page.locator("#rym-modern-release-discussion")).toBeVisible();
