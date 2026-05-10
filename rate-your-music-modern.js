@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Rate Your Music Modern
 // @namespace    github.com/112345brian/rate-your-music-modern
-// @version      0.4.7
+// @version      0.4.8
 // @description  Behavior enhancements for the Rate Your Music Modern userstyle.
 // @author       bri
 // @homepageURL  https://github.com/112345brian/rate-your-music-modern
@@ -941,6 +941,50 @@ function enhanceReleaseRatingHitArea() {
   };
 }
 
+function collectReleaseRankEntries(rankedContent) {
+  const entries = [];
+
+  for (const rankNode of rankedContent.querySelectorAll("b")) {
+    const rank = rankNode.textContent.trim();
+
+    if (!rank) {
+      continue;
+    }
+
+    const parts = [];
+    let cursor = rankNode.nextSibling;
+    let link = null;
+
+    while (cursor && cursor.nodeName !== "BR") {
+      if (cursor instanceof HTMLAnchorElement) {
+        link = cursor;
+        parts.push(cursor.textContent.trim());
+      } else {
+        parts.push(cursor.textContent ?? "");
+      }
+
+      cursor = cursor.nextSibling;
+    }
+
+    const context = parts.join(" ").replace(/\s+/g, " ").trim();
+    const contextLower = context.toLowerCase();
+    const label =
+      contextLower.includes("overall") || contextLower.includes("all-time")
+        ? "overall"
+        : /\b\d{4}\b/.test(context)
+          ? "that year"
+          : context.replace(/^for\s+/i, "") || "overall";
+
+    entries.push({
+      href: link?.href,
+      label,
+      rank,
+    });
+  }
+
+  return entries;
+}
+
 function enhanceReleaseDateRank() {
   const rows = [...document.querySelectorAll(".album_info tr")];
   const artistRow = rows.find(
@@ -965,8 +1009,9 @@ function enhanceReleaseDateRank() {
   );
   const releasedContent = releasedRow?.querySelector("td");
   const rankedContent = rankedRow?.querySelector("td");
-  const rank = rankedContent?.querySelector("b")?.textContent.trim();
-  const chartLink = rankedContent?.querySelector("a[href*='/charts/']");
+  const rankEntries = rankedContent
+    ? collectReleaseRankEntries(rankedContent)
+    : [];
 
   if (!releasedContent) {
     return;
@@ -974,19 +1019,30 @@ function enhanceReleaseDateRank() {
 
   if (
     rankedRow &&
-    rank &&
-    chartLink &&
-    !releasedContent.querySelector(".rym-modern-release-rank")
+    rankEntries.length > 0 &&
+    !releasedContent.querySelector(".rym-modern-release-rank-list")
   ) {
-    const rankLink = document.createElement("a");
+    const rankList = document.createElement("span");
     const separator = document.createElement("span");
 
     separator.className = "rym-modern-release-meta-separator";
     separator.textContent = " ";
-    rankLink.className = "rym-modern-release-rank";
-    rankLink.href = chartLink.href;
-    rankLink.textContent = `ranked #${rank} that year`;
-    releasedContent.append(separator, rankLink);
+    rankList.className = "rym-modern-release-rank-list";
+
+    for (const entry of rankEntries) {
+      const rankElement = document.createElement(entry.href ? "a" : "span");
+
+      rankElement.className = "rym-modern-release-rank";
+      rankElement.textContent = `ranked #${entry.rank} ${entry.label}`;
+
+      if (entry.href) {
+        rankElement.href = entry.href;
+      }
+
+      rankList.append(rankElement);
+    }
+
+    releasedContent.append(separator, rankList);
     rankedRow.remove();
   }
 

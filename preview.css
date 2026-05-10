@@ -1653,6 +1653,14 @@ html#page_release #content {
   white-space: nowrap;
 }
 
+.page_release .rym-modern-release-rank-list {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 3px;
+  line-height: 1.18;
+  vertical-align: top;
+}
+
 .page_release .rym-modern-release-catalog-source {
   display: none !important;
 }

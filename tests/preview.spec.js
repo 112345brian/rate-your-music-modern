@@ -236,12 +236,40 @@ test("modernizes the release preview layout", async ({ page }) => {
         '<span class="navpage">Page </span><span class="navlinkcurrent">1</span> <a class="navlinknum" href="#">2</a> <span class="navdot">..</span> <a class="navlinknext" href="#">&gt;&gt;</a>';
       reviewSort.append(nav);
     };
+    const injectOverallRank = () => {
+      const rankedCell = [...document.querySelectorAll(".album_info tr")].find(
+        (row) =>
+          row.querySelector(".info_hdr")?.textContent.trim().toLowerCase() ===
+          "ranked",
+      )?.lastElementChild;
+
+      if (!rankedCell || rankedCell.dataset.testOverallRank === "true") {
+        return;
+      }
+
+      rankedCell.dataset.testOverallRank = "true";
+      rankedCell.append(document.createElement("br"));
+      rankedCell.append(document.createTextNode("#"));
+
+      const rank = document.createElement("b");
+      const link = document.createElement("a");
+
+      rank.textContent = "8,921";
+      link.href = "https://rateyourmusic.com/charts/top/album/all-time/";
+      link.textContent = "all-time";
+      rankedCell.append(rank, document.createTextNode(" overall "), link);
+    };
 
     new MutationObserver(injectReviewPagination).observe(document, {
       childList: true,
       subtree: true,
     });
+    new MutationObserver(injectOverallRank).observe(document, {
+      childList: true,
+      subtree: true,
+    });
     document.addEventListener("readystatechange", injectReviewPagination, true);
+    document.addEventListener("readystatechange", injectOverallRank, true);
   });
   await page.goto(
     pathToFileURL(`${process.cwd()}/assets/release-page/preview.html`).href,
@@ -272,9 +300,10 @@ test("modernizes the release preview layout", async ({ page }) => {
   );
   await expect(personalRatingNumber).toHaveText("3.5");
   await expect(personalStars).toHaveClass(/star-7m/);
-  await expect(page.locator(".rym-modern-release-rank")).toHaveText(
+  await expect(page.locator(".rym-modern-release-rank")).toHaveText([
     "ranked #1,244 that year",
-  );
+    "ranked #8,921 overall",
+  ]);
   await expect(page.locator(".rym-modern-release-summary-row")).toContainText(
     "Daniel Avery",
   );

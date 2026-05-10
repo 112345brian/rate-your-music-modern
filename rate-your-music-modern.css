@@ -1,7 +1,7 @@
 /* ==UserStyle==
 @name           Rate Your Music Modern
 @namespace      github.com/112345brian/rate-your-music-modern
-@version        0.6.5
+@version        0.6.6
 @description    Modern visual treatment for Rate Your Music.
 @author         bri
 @homepageURL    https://github.com/112345brian/rate-your-music-modern
@@ -1670,6 +1670,14 @@
     font-size: 13px !important;
     font-weight: 760;
     white-space: nowrap;
+  }
+
+  .page_release .rym-modern-release-rank-list {
+    display: inline-flex;
+    flex-direction: column;
+    gap: 3px;
+    line-height: 1.18;
+    vertical-align: top;
   }
 
   .page_release .rym-modern-release-catalog-source {
