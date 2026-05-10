@@ -378,6 +378,28 @@ test("modernizes the release preview layout", async ({ page }) => {
         suggestions.closest(
           "#column_container_left, #column_container_right",
         ) === null,
+      commentsFillPanel:
+        Math.abs(
+          comments.querySelector(".comments").getBoundingClientRect().width -
+            comments.getBoundingClientRect().width,
+        ) < 2,
+      reviewColumnsAligned: [
+        ".review_date",
+        '[itemprop="reviewRating"]',
+        'div[id^="review_voting"]',
+      ].every((selector) => {
+        const positions = [...reviews.querySelectorAll(".review_header")]
+          .map(
+            (header) =>
+              header.querySelector(selector)?.getBoundingClientRect().x,
+          )
+          .filter((position) => Number.isFinite(position));
+
+        return (
+          positions.length > 1 &&
+          Math.max(...positions) - Math.min(...positions) < 2
+        );
+      }),
     };
   });
 
@@ -389,6 +411,8 @@ test("modernizes the release preview layout", async ({ page }) => {
   expect(releaseOrder.commentsShareColumn).toBe(true);
   expect(Boolean(releaseOrder.suggestionsAfterGrid)).toBe(true);
   expect(releaseOrder.suggestionsOutsideColumns).toBe(true);
+  expect(releaseOrder.commentsFillPanel).toBe(true);
+  expect(releaseOrder.reviewColumnsAligned).toBe(true);
 
   const releaseTabs = page.locator(".rym-modern-release-tabs");
 
@@ -480,4 +504,70 @@ test("shortens current-year dates in the release friends preview", async ({
       .locator(".rym-modern-release-friends-preview .catalog_date_inner")
       .first(),
   ).toHaveText("5 Apr");
+});
+
+test("pairs recorded and language release metadata", async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.addInitScript(() => {
+    let inserted = false;
+    const insertRecordedRow = () => {
+      if (
+        inserted ||
+        document.querySelector(".album_info .rym-test-recorded")
+      ) {
+        return;
+      }
+
+      const ratingRow = [...document.querySelectorAll(".album_info tr")].find(
+        (row) =>
+          row.querySelector(".info_hdr")?.textContent.trim().toLowerCase() ===
+          "rym rating",
+      );
+
+      if (!ratingRow) {
+        return;
+      }
+
+      const recordedRow = document.createElement("tr");
+      const header = document.createElement("th");
+      const value = document.createElement("td");
+
+      recordedRow.className = "rym-test-recorded";
+      header.className = "info_hdr";
+      header.textContent = "Recorded";
+      value.colSpan = 2;
+      value.textContent = "2023 - 2026";
+      recordedRow.append(header, value);
+      ratingRow.before(recordedRow);
+      inserted = true;
+    };
+
+    new MutationObserver(insertRecordedRow).observe(document, {
+      childList: true,
+      subtree: true,
+    });
+    document.addEventListener("readystatechange", insertRecordedRow, true);
+  });
+  await page.goto(
+    pathToFileURL(`${process.cwd()}/assets/release-page/preview.html`).href,
+  );
+
+  await expect(
+    page.locator(".rym-modern-release-language-recorded-row"),
+  ).toContainText("Language");
+  await expect(
+    page.locator(".rym-modern-release-language-recorded-row"),
+  ).toContainText("English");
+  await expect(
+    page.locator(".rym-modern-release-language-recorded-row"),
+  ).toContainText("Recorded");
+  await expect(
+    page.locator(".rym-modern-release-language-recorded-row"),
+  ).toContainText("2023 - 2026");
+  await expect(
+    page.getByRole("rowheader", { name: "Recorded", exact: true }),
+  ).toHaveCount(0);
+  await expect(
+    page.getByRole("rowheader", { name: "Language", exact: true }),
+  ).toHaveCount(0);
 });

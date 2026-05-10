@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Rate Your Music Modern
 // @namespace    github.com/112345brian/rate-your-music-modern
-// @version      0.4.4
+// @version      0.4.5
 // @description  Behavior enhancements for the Rate Your Music Modern userstyle.
 // @author       bri
 // @homepageURL  https://github.com/112345brian/rate-your-music-modern
@@ -930,6 +930,63 @@ function enhanceReleaseDateRank() {
   releasedRow.remove();
 }
 
+function enhanceReleaseRecordedLanguage() {
+  const rows = [...document.querySelectorAll(".album_info tr")];
+  const recordedRow = rows.find(
+    (row) =>
+      row.querySelector(".info_hdr")?.textContent.trim().toLowerCase() ===
+      "recorded",
+  );
+  const languageRow = rows.find(
+    (row) =>
+      row.querySelector(".info_hdr")?.textContent.trim().toLowerCase() ===
+      "language",
+  );
+  const recordedContent = recordedRow?.querySelector("td");
+  const languageContent = languageRow?.querySelector("td");
+
+  if (
+    !recordedRow ||
+    !languageRow ||
+    !recordedContent ||
+    !languageContent ||
+    document.querySelector(".rym-modern-release-language-recorded-row")
+  ) {
+    return;
+  }
+
+  const pairedRow = document.createElement("tr");
+  const pairedCell = document.createElement("td");
+  const grid = document.createElement("div");
+
+  pairedRow.className = "rym-modern-release-language-recorded-row";
+  pairedCell.colSpan = 3;
+  grid.className = "rym-modern-release-language-recorded-grid";
+
+  for (const [label, content] of [
+    ["Language", languageContent],
+    ["Recorded", recordedContent],
+  ]) {
+    const field = document.createElement("div");
+    const fieldLabel = document.createElement("span");
+    const fieldValue = document.createElement("span");
+
+    field.className = "rym-modern-release-language-recorded-field";
+    fieldLabel.className = "rym-modern-release-summary-label";
+    fieldLabel.textContent = label;
+    fieldValue.className = "rym-modern-release-summary-value";
+    fieldValue.append(...content.childNodes);
+    field.append(fieldLabel, fieldValue);
+    grid.append(field);
+  }
+
+  pairedCell.append(grid);
+  pairedRow.append(pairedCell);
+  languageRow.before(pairedRow);
+  recordedRow.remove();
+  languageRow.remove();
+}
+
 function enhanceReleaseGenres() {
   for (const genreGroup of document.querySelectorAll(
     ".page_release .release_pri_genres, .page_release .release_sec_genres",
@@ -998,6 +1055,7 @@ function enhanceReleasePage() {
   const panels = [];
 
   enhanceReleaseDateRank();
+  enhanceReleaseRecordedLanguage();
   enhanceReleaseGenres();
   enhanceReleaseUserRating();
   enhanceReleaseRatingHitArea();

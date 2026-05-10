@@ -1,7 +1,7 @@
 /* ==UserStyle==
 @name           Rate Your Music Modern
 @namespace      github.com/112345brian/rate-your-music-modern
-@version        0.6.1
+@version        0.6.2
 @description    Modern visual treatment for Rate Your Music.
 @author         bri
 @homepageURL    https://github.com/112345brian/rate-your-music-modern
@@ -1545,6 +1545,29 @@
     display: block !important;
   }
 
+  .page_release table.album_info tr.rym-modern-release-language-recorded-row {
+    display: block;
+    min-height: 0;
+    padding: 12px 0;
+  }
+
+  .page_release
+    table.album_info
+    tr.rym-modern-release-language-recorded-row
+    td {
+    display: block !important;
+  }
+
+  .page_release .rym-modern-release-language-recorded-grid {
+    display: grid;
+    gap: 10px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .page_release .rym-modern-release-language-recorded-field {
+    min-width: 0;
+  }
+
   .page_release .rym-modern-release-summary-grid {
     display: grid;
     gap: 10px;
@@ -1585,6 +1608,10 @@
     }
 
     .page_release .rym-modern-release-rating-summary {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .page_release .rym-modern-release-language-recorded-grid {
       grid-template-columns: minmax(0, 1fr);
     }
   }
@@ -2415,6 +2442,15 @@
     max-width: 760px;
   }
 
+  .page_release #rym-modern-release-reviews,
+  .page_release #rym-modern-release-comments,
+  .page_release #rym-modern-release-comments .comments,
+  .page_release #rym-modern-release-comments .comments_list,
+  .page_release #rym-modern-release-comments .comments_post {
+    max-width: none !important;
+    width: 100% !important;
+  }
+
   .page_release .rym-modern-release-tabs {
     align-items: stretch;
     border-bottom: 1px solid var(--rym-border);
@@ -2590,6 +2626,59 @@
     min-height: 34px;
   }
 
+  .page_release .review_header {
+    display: grid;
+    gap: 10px;
+    grid-template-columns: 34px minmax(140px, 1fr) 130px 94px 124px;
+  }
+
+  .page_release .review_header > a:first-child {
+    grid-column: 1;
+  }
+
+  .page_release .review_header .review_user {
+    grid-column: 2;
+    min-width: 0;
+  }
+
+  .page_release .review_header .review_user a {
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .page_release .review_header .review_date {
+    grid-column: 3;
+    min-width: 0;
+  }
+
+  .page_release .review_header > span[itemprop="reviewRating"] {
+    grid-column: 4;
+    justify-self: start;
+    min-width: 88px;
+  }
+
+  .page_release .review_header > div[id^="review_voting"] {
+    align-items: center;
+    display: grid !important;
+    float: none !important;
+    gap: 8px;
+    grid-column: 5;
+    grid-template-columns: 32px repeat(3, 18px);
+    justify-self: start;
+    min-width: 110px;
+  }
+
+  .page_release .review_header .review_voting {
+    display: contents;
+  }
+
+  .page_release .review_header .review_vote_count {
+    min-width: 32px;
+    text-align: center;
+  }
+
   .page_release .review_header_img,
   .page_release .comment_img,
   .page_release .comment_no_img {
@@ -2612,7 +2701,7 @@
   }
 
   .page_release .review_rating {
-    margin-left: auto;
+    margin-left: 0;
   }
 
   .page_release .catalog_line {
