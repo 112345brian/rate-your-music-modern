@@ -490,6 +490,7 @@ function enhanceReleaseRatingDistribution() {
   const ratingContent = ratingRow?.querySelector("td");
   const friendsContent = friendsRow?.querySelector("td");
   const chart = document.querySelector("#chart_div");
+  const catalogSection = prepareReleaseCatalogSection();
 
   if (
     !ratingRow ||
@@ -538,9 +539,13 @@ function enhanceReleaseRatingDistribution() {
     summary.append(friendsCard);
   } else {
     const distributionCard = document.createElement("div");
+    const catalogLink = createReleaseCatalogLink("See Catalog");
 
     distributionCard.className = "rym-modern-release-distribution-card";
     distributionCard.append(distribution);
+    if (catalogSection) {
+      distributionCard.append(catalogLink);
+    }
     summary.append(distributionCard);
   }
 
@@ -549,6 +554,48 @@ function enhanceReleaseRatingDistribution() {
   summaryRow.append(summaryCell);
   ratingRow.before(summaryRow);
   ratingRow.remove();
+}
+
+function prepareReleaseCatalogSection() {
+  const catalogSection = getReleaseSection(".section_catalog");
+
+  if (!catalogSection) {
+    return null;
+  }
+
+  catalogSection.id = catalogSection.id || "rym-modern-release-ratings";
+
+  if (location.hash === `#${catalogSection.id}`) {
+    catalogSection.classList.remove("rym-modern-release-catalog-hidden");
+  } else {
+    catalogSection.classList.add("rym-modern-release-catalog-hidden");
+  }
+
+  return catalogSection;
+}
+
+function createReleaseCatalogLink(text) {
+  const link = document.createElement("a");
+
+  link.className = "rym-modern-release-catalog-link";
+  link.href = "#rym-modern-release-ratings";
+  link.textContent = text;
+  link.addEventListener("click", (event) => {
+    const catalogSection = document.querySelector(
+      "#rym-modern-release-ratings",
+    );
+
+    if (!catalogSection) {
+      return;
+    }
+
+    event.preventDefault();
+    catalogSection.classList.remove("rym-modern-release-catalog-hidden");
+    history.replaceState(null, "", link.hash);
+    catalogSection.scrollIntoView({ block: "start", behavior: "smooth" });
+  });
+
+  return link;
 }
 
 function createReleaseInfoLabel(text) {
@@ -561,7 +608,7 @@ function createReleaseInfoLabel(text) {
 }
 
 function createReleaseFriendsPreview() {
-  const catalogSection = getReleaseSection(".section_catalog");
+  const catalogSection = prepareReleaseCatalogSection();
   const friendLines = [
     ...document.querySelectorAll(".section_catalog .catalog_line"),
   ].filter((line) => line.querySelector(".catalog_header.friend"));
@@ -573,7 +620,6 @@ function createReleaseFriendsPreview() {
   const preview = document.createElement("div");
   const moreLink = document.createElement("a");
 
-  catalogSection.id = catalogSection.id || "rym-modern-release-ratings";
   preview.className = "rym-modern-release-friends-preview";
 
   for (const line of friendLines.slice(0, 3)) {
@@ -605,8 +651,15 @@ function createReleaseFriendsPreview() {
     preview.append(clone);
   }
 
-  moreLink.className = "rym-modern-release-friends-more";
-  moreLink.href = "#rym-modern-release-ratings";
+  moreLink.className =
+    "rym-modern-release-friends-more rym-modern-release-catalog-link";
+  moreLink.href = `#${catalogSection.id}`;
+  moreLink.addEventListener("click", (event) => {
+    event.preventDefault();
+    catalogSection.classList.remove("rym-modern-release-catalog-hidden");
+    history.replaceState(null, "", moreLink.hash);
+    catalogSection.scrollIntoView({ block: "start", behavior: "smooth" });
+  });
   moreLink.textContent =
     friendLines.length > 3
       ? `Show ${friendLines.length - 3} more ratings`
@@ -642,6 +695,32 @@ function enhanceReleaseInlineStars() {
 
     wrapper.classList.add("rym-modern-inline-stars", `star-${starStep}m`);
     wrapper.setAttribute("aria-label", ratingText);
+
+    if (!wrapper.querySelector(".rym-modern-star-row")) {
+      const row = document.createElement("span");
+
+      row.className = "rym-modern-star-row";
+      row.setAttribute("aria-hidden", "true");
+
+      for (let starIndex = 1; starIndex <= 5; starIndex += 1) {
+        const star = document.createElement("span");
+        const fullStep = starIndex * 2;
+
+        star.className = "rym-modern-star";
+
+        if (starStep >= fullStep) {
+          star.classList.add("is-full");
+        } else if (starStep === fullStep - 1) {
+          star.classList.add("is-half");
+        } else {
+          star.classList.add("is-empty");
+        }
+
+        row.append(star);
+      }
+
+      wrapper.append(row);
+    }
   }
 }
 
@@ -668,6 +747,28 @@ function enhanceReleaseTrackListingHeader() {
     header.append(totalColumn, credits);
     total.closest("li.track")?.classList.add("rym-modern-track-total-source");
     section.dataset.rymModernTrackHeader = "true";
+  }
+}
+
+function enhanceReleaseReviewPagination() {
+  const reviewList = document.querySelector("#reviews_shell .review_list");
+
+  if (!reviewList) {
+    return;
+  }
+
+  for (const nav of [
+    ...reviewList.querySelectorAll(".navspan, .ui_pagination"),
+  ]) {
+    if (nav.closest(".rym-modern-review-pagination")) {
+      continue;
+    }
+
+    const row = document.createElement("div");
+
+    row.className = "rym-modern-review-pagination";
+    nav.before(row);
+    row.append(nav);
   }
 }
 
@@ -1139,7 +1240,7 @@ function enhanceReleasePage() {
   const credits = document.querySelector(".hide-for-small > .section_credits");
   const discussion = getReleaseSection(".page_object_section_discussion");
   const suggestions = getReleaseSection(".section_suggestions");
-  const releaseGrid = document.querySelector(".release_page > div > .row");
+  const releaseMainColumn = document.querySelector("#column_container_right");
   const panels = [];
 
   enhanceReleaseDateRank();
@@ -1149,6 +1250,7 @@ function enhanceReleasePage() {
   enhanceReleaseRatingHitArea();
   enhanceReleaseInlineStars();
   enhanceReleaseTrackListingHeader();
+  enhanceReleaseReviewPagination();
   enhanceReleaseRatingDistribution();
   enhanceReleaseContributions();
 
@@ -1256,9 +1358,9 @@ function enhanceReleasePage() {
     }
   }
 
-  if (suggestions && releaseGrid) {
+  if (suggestions && releaseMainColumn) {
     suggestions.classList.add("rym-modern-release-bottom-section");
-    releaseGrid.after(suggestions);
+    releaseMainColumn.append(suggestions);
   }
 
   document.documentElement.dataset.rymModernReleaseEnhanced = "true";

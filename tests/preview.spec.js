@@ -221,6 +221,28 @@ test("loads generated previews for saved RYM assets", async ({ page }) => {
 
 test("modernizes the release preview layout", async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
+  await page.addInitScript(() => {
+    const injectReviewPagination = () => {
+      const reviewSort = document.querySelector(".review_sort");
+
+      if (!reviewSort || reviewSort.querySelector(".navspan")) {
+        return;
+      }
+
+      const nav = document.createElement("span");
+
+      nav.className = "navspan";
+      nav.innerHTML =
+        '<span class="navpage">Page </span><span class="navlinkcurrent">1</span> <a class="navlinknum" href="#">2</a> <span class="navdot">..</span> <a class="navlinknext" href="#">&gt;&gt;</a>';
+      reviewSort.append(nav);
+    };
+
+    new MutationObserver(injectReviewPagination).observe(document, {
+      childList: true,
+      subtree: true,
+    });
+    document.addEventListener("readystatechange", injectReviewPagination, true);
+  });
   await page.goto(
     pathToFileURL(`${process.cwd()}/assets/release-page/preview.html`).href,
   );
@@ -311,6 +333,33 @@ test("modernizes the release preview layout", async ({ page }) => {
   await expect(
     page.locator(".rym-modern-release-friends-more"),
   ).toHaveAttribute("href", "#rym-modern-release-ratings");
+  await expect(page.locator("#rym-modern-release-ratings")).toBeHidden();
+  await page.locator(".rym-modern-release-friends-more").click();
+  await expect(page.locator("#rym-modern-release-ratings")).toBeVisible();
+  await expect(page.locator(".rating_info_table .rating_info_tab")).toHaveCount(
+    3,
+  );
+  expect(
+    await page
+      .locator(".section_catalog .catalog_header")
+      .first()
+      .evaluate((header) => {
+        const headerBox = header.getBoundingClientRect();
+        const ratingBox = header
+          .querySelector(".catalog_rating")
+          ?.getBoundingClientRect();
+        const commentBox = header
+          .querySelector(".catalog_rating_system_comment")
+          ?.getBoundingClientRect();
+
+        return (
+          ratingBox &&
+          commentBox &&
+          ratingBox.bottom <= commentBox.top &&
+          commentBox.bottom <= headerBox.bottom + 1
+        );
+      }),
+  ).toBe(true);
   await expect(
     page.locator(".review_rating.rym-modern-inline-stars"),
   ).not.toHaveCount(0);
@@ -370,6 +419,11 @@ test("modernizes the release preview layout", async ({ page }) => {
       ".rym-modern-release-sticky-stack",
     );
     const tracklisting = document.querySelector(".section_tracklisting");
+    const releaseNavigation = document.querySelector(
+      "#column_container_left .section_release_navigation",
+    );
+    const leftColumn = document.querySelector("#column_container_left");
+    const rightColumn = document.querySelector("#column_container_right");
     const suggestions = document.querySelector(
       ".rym-modern-release-bottom-section",
     );
@@ -387,24 +441,48 @@ test("modernizes the release preview layout", async ({ page }) => {
       stickyStackPosition: getComputedStyle(stickyStack).position,
       stickyStackZIndex: Number(getComputedStyle(stickyStack).zIndex),
       tracklistingZIndex: Number(getComputedStyle(tracklisting).zIndex),
+      releaseNavigationZIndex: Number(
+        getComputedStyle(releaseNavigation).zIndex,
+      ),
+      leftColumnHeight: leftColumn.getBoundingClientRect().height,
+      rightColumnHeight: rightColumn.getBoundingClientRect().height,
       commentsBeforeReviews:
         comments.compareDocumentPosition(reviews) &
         Node.DOCUMENT_POSITION_FOLLOWING,
       commentsShareColumn: comments.closest("#column_container_right") !== null,
-      suggestionsAfterGrid:
+      suggestionsInMainColumn:
+        suggestions.closest("#column_container_right") !== null,
+      suggestionsAfterTabs:
         document
-          .querySelector(".release_page > div > .row")
+          .querySelector(".rym-modern-release-tabs")
           .compareDocumentPosition(suggestions) &
         Node.DOCUMENT_POSITION_FOLLOWING,
-      suggestionsOutsideColumns:
-        suggestions.closest(
-          "#column_container_left, #column_container_right",
-        ) === null,
       commentsFillPanel:
         Math.abs(
           comments.querySelector(".comments").getBoundingClientRect().width -
             comments.getBoundingClientRect().width,
         ) < 2,
+      commentsListMaxHeight: getComputedStyle(
+        comments.querySelector(".comments_list"),
+      ).maxHeight,
+      commentsListOverflowY: getComputedStyle(
+        comments.querySelector(".comments_list"),
+      ).overflowY,
+      reviewPaginationOnOwnLine: (() => {
+        const sort = document.querySelector(".review_sort");
+        const pagination = document.querySelector(
+          ".rym-modern-review-pagination",
+        );
+
+        if (!sort || !pagination) {
+          return false;
+        }
+
+        return (
+          pagination.getBoundingClientRect().top >
+          sort.getBoundingClientRect().top
+        );
+      })(),
       reviewColumnsAligned: [
         ".review_date",
         '[itemprop="reviewRating"]',
@@ -453,11 +531,20 @@ test("modernizes the release preview layout", async ({ page }) => {
   expect(releaseOrder.tracklistingZIndex).toBeGreaterThan(
     releaseOrder.stickyStackZIndex,
   );
+  expect(releaseOrder.releaseNavigationZIndex).toBeGreaterThan(
+    releaseOrder.stickyStackZIndex,
+  );
+  expect(releaseOrder.leftColumnHeight).toBeGreaterThanOrEqual(
+    releaseOrder.rightColumnHeight - 2,
+  );
   expect(Boolean(releaseOrder.commentsBeforeReviews)).toBe(true);
   expect(releaseOrder.commentsShareColumn).toBe(true);
-  expect(Boolean(releaseOrder.suggestionsAfterGrid)).toBe(true);
-  expect(releaseOrder.suggestionsOutsideColumns).toBe(true);
+  expect(releaseOrder.suggestionsInMainColumn).toBe(true);
+  expect(Boolean(releaseOrder.suggestionsAfterTabs)).toBe(true);
   expect(releaseOrder.commentsFillPanel).toBe(true);
+  expect(releaseOrder.commentsListMaxHeight).toBe("none");
+  expect(releaseOrder.commentsListOverflowY).toBe("visible");
+  expect(releaseOrder.reviewPaginationOnOwnLine).toBe(true);
   expect(releaseOrder.reviewColumnsAligned).toBe(true);
   expect(releaseOrder.friendStarsFit).toBe(true);
   expect(releaseOrder.genreRowColumnGap).toBe("14px");
@@ -510,6 +597,12 @@ test("uses the release distribution as the second column without friend ratings"
   await expect(
     page.locator(".rym-modern-release-distribution-card #chart_div"),
   ).toBeVisible();
+  await expect(
+    page.locator(".rym-modern-release-distribution-card"),
+  ).toContainText("See Catalog");
+  await expect(page.locator("#rym-modern-release-ratings")).toBeHidden();
+  await page.locator(".rym-modern-release-catalog-link").click();
+  await expect(page.locator("#rym-modern-release-ratings")).toBeVisible();
   await expect(
     page.locator(".rym-modern-release-rating-card #chart_div"),
   ).toHaveCount(0);
