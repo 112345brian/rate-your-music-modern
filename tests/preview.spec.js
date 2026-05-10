@@ -425,6 +425,32 @@ test("modernizes the release preview layout", async ({ page }) => {
   await expect(
     page.locator(".catalog_rating.rym-modern-inline-stars"),
   ).not.toHaveCount(0);
+  await page.evaluate(() => {
+    const catalogList = document.querySelector(
+      ".section_catalog .catalog_list",
+    );
+    const line = document.createElement("div");
+
+    line.className = "catalog_line";
+    line.id = "rym-modern-dynamic-catalog-test";
+    line.innerHTML = `
+      <div class="catalog_date"><div class="catalog_date_inner">10 May 2026</div></div>
+      <div class="catalog_header">
+        <span class="catalog_user"><a class="user" href="#">dynamicuser</a></span>
+        <span class="catalog_rating"><img src="Song%20for%20Alpha%20by%20Daniel%20Avery%20(Album,%20Ambient%20Techno)_%20Reviews,%20Ratings,%20Credits,%20Song%20list%20-%20Rate%20Your%20Music_files/8m.png" width="90" height="16" alt="4.00 stars" title="4.00 stars"></span>
+        <span class="catalog_rating_system_comment hide-for-small">dynamic row</span>
+      </div>
+    `;
+    catalogList?.append(line);
+  });
+  await expect(
+    page.locator(
+      "#rym-modern-dynamic-catalog-test .catalog_rating.rym-modern-inline-stars",
+    ),
+  ).toBeVisible();
+  await expect(
+    page.locator("#rym-modern-dynamic-catalog-test .rym-modern-star-row"),
+  ).toBeVisible();
   await expect(
     page.locator(".section_tracklisting .rym-modern-track-total").first(),
   ).toHaveText("Total length: 63:05");
