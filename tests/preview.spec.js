@@ -259,6 +259,31 @@ test("modernizes the release preview layout", async ({ page }) => {
       link.textContent = "all-time";
       rankedCell.append(rank, document.createTextNode(" overall "), link);
     };
+    const injectVideoSection = () => {
+      if (document.querySelector(".section_videos")) {
+        return;
+      }
+
+      const tracklisting = document.querySelector(
+        "#column_container_left .section_tracklisting",
+      );
+
+      if (!tracklisting) {
+        return;
+      }
+
+      const section = document.createElement("div");
+
+      section.className = "section_videos";
+      section.innerHTML = `
+        <div class="release_page_header"><h2>Video</h2></div>
+        <div class="video" style="width: 900px;">
+          <a class="video_title" href="#">Weezer - The World Has Turned And Left Me Here (2024 Remaster Official Video)</a>
+          <iframe title="video preview" src="about:blank" style="width: 900px; height: 360px;"></iframe>
+        </div>
+      `;
+      tracklisting.before(section);
+    };
 
     new MutationObserver(injectReviewPagination).observe(document, {
       childList: true,
@@ -268,8 +293,13 @@ test("modernizes the release preview layout", async ({ page }) => {
       childList: true,
       subtree: true,
     });
+    new MutationObserver(injectVideoSection).observe(document, {
+      childList: true,
+      subtree: true,
+    });
     document.addEventListener("readystatechange", injectReviewPagination, true);
     document.addEventListener("readystatechange", injectOverallRank, true);
+    document.addEventListener("readystatechange", injectVideoSection, true);
   });
   await page.goto(
     pathToFileURL(`${process.cwd()}/assets/release-page/preview.html`).href,
@@ -398,6 +428,36 @@ test("modernizes the release preview layout", async ({ page }) => {
   await expect(
     page.locator(".section_tracklisting .rym-modern-track-total").first(),
   ).toHaveText("Total length: 63:05");
+  await expect(page.locator(".section_videos")).toHaveCSS(
+    "border-top-style",
+    "solid",
+  );
+  await expect(page.locator(".section_videos iframe")).toBeVisible();
+  const videoSectionLayout = await page.evaluate(() => {
+    const section = document.querySelector(".section_videos");
+    const frame = section?.querySelector("iframe");
+    const title = section?.querySelector(".video_title");
+
+    if (!section || !frame || !title) {
+      return null;
+    }
+
+    const sectionBox = section.getBoundingClientRect();
+    const frameBox = frame.getBoundingClientRect();
+    const titleBox = title.getBoundingClientRect();
+
+    return {
+      frameFits: frameBox.right <= sectionBox.right + 1,
+      sectionFits: section.scrollWidth <= section.clientWidth + 1,
+      titleFits: titleBox.right <= sectionBox.right + 1,
+    };
+  });
+
+  expect(videoSectionLayout).toEqual({
+    frameFits: true,
+    sectionFits: true,
+    titleFits: true,
+  });
   await expect(
     page.locator(".rym-modern-track-total-source").first(),
   ).toBeHidden();

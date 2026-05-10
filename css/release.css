@@ -1032,12 +1032,75 @@ html#page_release #content {
 }
 
 .page_release .section_tracklisting,
+.page_release .section_videos,
 .page_release .section_credits {
   background: var(--rym-surface) !important;
   border: 1px solid var(--rym-border) !important;
   border-radius: var(--rym-radius);
   margin-top: 14px;
   padding: 14px !important;
+}
+
+.page_release .section_videos {
+  max-width: 100%;
+  overflow: hidden;
+}
+
+.page_release .section_videos *,
+.page_release .section_videos *::before,
+.page_release .section_videos *::after {
+  box-sizing: border-box;
+  max-width: 100%;
+}
+
+.page_release .section_videos iframe,
+.page_release .section_videos video,
+.page_release .section_videos embed,
+.page_release .section_videos object {
+  aspect-ratio: 16 / 9;
+  background: rgb(8 13 24 / 72%) !important;
+  border: 0 !important;
+  display: block !important;
+  height: auto !important;
+  width: 100% !important;
+}
+
+.page_release .section_videos img {
+  display: block;
+  height: auto !important;
+  object-fit: cover;
+  width: 100% !important;
+}
+
+.page_release .section_videos :where(.video, .video_item, .media_video) {
+  background: rgb(8 13 24 / 72%) !important;
+  border: 1px solid rgb(120 183 255 / 20%) !important;
+  border-radius: 10px;
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 4%);
+  overflow: hidden;
+  width: min(100%, 560px);
+}
+
+.page_release
+  .section_videos
+  :where(.video_title, .video_caption, .video_name, .media_title) {
+  background: rgb(15 17 23 / 84%) !important;
+  border-bottom: 1px solid rgb(120 183 255 / 16%);
+  color: var(--rym-text) !important;
+  display: block;
+  font-size: 14px !important;
+  font-weight: 760 !important;
+  line-height: 1.25 !important;
+  overflow: hidden;
+  padding: 10px 12px;
+  text-decoration: none !important;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 100%;
+}
+
+.page_release .section_videos :where(.video_title, .media_title):hover {
+  color: var(--rym-link-hover) !important;
 }
 
 .page_release .section_tracklisting {
