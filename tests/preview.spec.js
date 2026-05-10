@@ -479,8 +479,9 @@ test("modernizes the release preview layout", async ({ page }) => {
         }
 
         return (
-          pagination.getBoundingClientRect().top >
-          sort.getBoundingClientRect().top
+          !pagination.closest(".review_sort") &&
+          pagination.getBoundingClientRect().top >=
+            sort.getBoundingClientRect().bottom
         );
       })(),
       reviewColumnsAligned: [

@@ -1335,12 +1335,13 @@ html#page_release #content {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
+  margin-bottom: 10px !important;
 }
 
 .page_release .rym-modern-review-pagination {
-  display: block;
-  flex-basis: 100%;
-  margin-top: 10px;
+  clear: both;
+  display: block !important;
+  margin: 0 0 28px !important;
   width: 100%;
 }
 
@@ -1348,8 +1349,17 @@ html#page_release #content {
 .page_release .rym-modern-review-pagination .ui_pagination {
   display: flex;
   flex-wrap: wrap;
-  gap: 7px 10px;
+  gap: 8px 12px;
+  justify-content: flex-start;
   line-height: 1.25;
+  max-width: 760px;
+  text-align: left !important;
+}
+
+.page_release .review_sort > .navspan,
+.page_release .review_sort > .ui_pagination {
+  flex-basis: 100%;
+  margin-top: 10px;
 }
 
 .page_release .sort_choices {
