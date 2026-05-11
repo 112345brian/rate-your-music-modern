@@ -2750,10 +2750,16 @@ html#page_release #content {
     padding-top: 0 !important;
   }
 
+  .page_release .section_main_info .page_section > .show-for-small [class^="coverart_"] {
+    width: 100% !important;
+    height: auto !important;
+    overflow: visible !important;
+  }
+
   .page_release .section_main_info .page_section > .show-for-small [class^="coverart_"] img {
     display: block;
-    width: 100%;
-    height: auto;
+    width: 100% !important;
+    height: auto !important;
     border-radius: 3px;
   }
 

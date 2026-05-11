@@ -1,7 +1,7 @@
 /* ==UserStyle==
 @name           Rate Your Music Modern
 @namespace      github.com/112345brian/rate-your-music-modern
-@version        0.8.2
+@version        0.8.3
 @description    Modern visual treatment for Rate Your Music.
 @author         bri
 @homepageURL    https://github.com/112345brian/rate-your-music-modern
@@ -4099,11 +4099,21 @@
       .section_main_info
       .page_section
       > .show-for-small
+      [class^="coverart_"] {
+      width: 100% !important;
+      height: auto !important;
+      overflow: visible !important;
+    }
+
+    .page_release
+      .section_main_info
+      .page_section
+      > .show-for-small
       [class^="coverart_"]
       img {
       display: block;
-      width: 100%;
-      height: auto;
+      width: 100% !important;
+      height: auto !important;
       border-radius: 3px;
     }
 
