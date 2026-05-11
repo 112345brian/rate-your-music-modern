@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Rate Your Music Modern
 // @namespace    github.com/112345brian/rate-your-music-modern
-// @version      0.3.5
+// @version      0.5.0
 // @description  Behavior enhancements for the Rate Your Music Modern userstyle.
 // @author       bri
 // @homepageURL  https://github.com/112345brian/rate-your-music-modern
@@ -149,7 +149,6 @@ function enhanceArtistTabs() {
   const discographyTab = tabList?.querySelector(
     ".artist_page_section_active_music",
   );
-  const compactLayout = window.matchMedia("(width <= 82rem)");
 
   if (
     !tabList ||
@@ -181,7 +180,6 @@ function enhanceArtistTabs() {
   const panels = [discography];
   const persistentPanels = [...panels];
   let insertionPoint = discography;
-  let activePanelId = "rym-modern-discography";
 
   function createTab(target, section) {
     const tab = document.createElement("a");
@@ -209,8 +207,6 @@ function enhanceArtistTabs() {
   }
 
   function showPanel(panelId) {
-    activePanelId = panelId;
-
     for (const panel of panels) {
       panel.hidden = panel.id !== panelId;
     }
@@ -235,29 +231,6 @@ function enhanceArtistTabs() {
     }
   });
 
-  const songsSection = [...document.querySelectorAll(".section_lists")].find(
-    (candidate) =>
-      candidate.closest(".artist_right_col") &&
-      headerMatches(candidate, "Songs"),
-  );
-  const songsTab =
-    songsSection &&
-    createTab(
-      {
-        id: "rym-modern-songs",
-        label: "Songs",
-      },
-      songsSection,
-    );
-  const songsPlaceholder = document.createComment("rym-modern-songs-home");
-
-  if (songsSection && songsTab) {
-    songsSection.before(songsPlaceholder);
-    songsTab.classList.add("rym-modern-songs-tab");
-    songsTab.hidden = true;
-    tabList.append(songsTab);
-  }
-
   for (const target of sectionTargets) {
     const section = [...document.querySelectorAll(target.selector)].find(
       (candidate) => headerMatches(candidate, target.label),
@@ -278,45 +251,6 @@ function enhanceArtistTabs() {
     tabList.append(createTab(target, section));
   }
 
-  function syncSongsPanel() {
-    if (!songsSection || !songsTab) {
-      return;
-    }
-
-    panels.length = 0;
-    panels.push(...persistentPanels);
-
-    if (compactLayout.matches) {
-      songsSection.id = "rym-modern-songs";
-      songsSection.classList.add("rym-modern-tab-panel");
-      songsTab.hidden = false;
-
-      if (songsSection.parentElement !== discography.parentElement) {
-        discography.after(songsSection);
-      }
-
-      if (!panels.includes(songsSection)) {
-        panels.splice(1, 0, songsSection);
-      }
-
-      songsSection.hidden = activePanelId !== songsSection.id;
-    } else {
-      if (activePanelId === "rym-modern-songs") {
-        activePanelId = "rym-modern-discography";
-      }
-
-      songsTab.hidden = true;
-      songsSection.hidden = false;
-      songsSection.classList.remove("rym-modern-tab-panel");
-      songsSection.removeAttribute("id");
-      songsPlaceholder.after(songsSection);
-    }
-
-    showPanel(activePanelId);
-  }
-
-  compactLayout.addEventListener("change", syncSongsPanel);
-  syncSongsPanel();
   showPanel("rym-modern-discography");
   tabList.dataset.rymModernEnhanced = "true";
 }
@@ -548,10 +482,22 @@ function enhanceReleaseRatingDistribution() {
   const ratingLabel = [
     ...document.querySelectorAll(".album_info .info_hdr"),
   ].find((header) => header.textContent.trim().toLowerCase() === "rym rating");
+  const friendsLabel = [
+    ...document.querySelectorAll(".album_info .info_hdr"),
+  ].find((header) => header.textContent.trim().toLowerCase() === "friends");
   const ratingRow = ratingLabel?.closest("tr");
+  const friendsRow = friendsLabel?.closest("tr");
+  const ratingContent = ratingRow?.querySelector("td");
+  const friendsContent = friendsRow?.querySelector("td");
   const chart = document.querySelector("#chart_div");
+  const catalogSection = prepareReleaseCatalogSection();
 
-  if (!ratingRow || !chart || ratingRow.querySelector("#chart_div")) {
+  if (
+    !ratingRow ||
+    !ratingContent ||
+    !chart ||
+    document.querySelector(".rym-modern-release-rating-summary")
+  ) {
     return;
   }
 
@@ -563,14 +509,176 @@ function enhanceReleaseRatingDistribution() {
   }
 
   const distribution = document.createElement("div");
+  const summaryRow = document.createElement("tr");
+  const summaryCell = document.createElement("td");
+  const summary = document.createElement("div");
+  const ratingCard = document.createElement("div");
+  const friendsPreview = createReleaseFriendsPreview();
 
   distribution.className = "rym-modern-rating-distribution";
   distribution.append(chart);
-  ratingRow.classList.add("rym-modern-release-rating-row");
-  ratingRow.append(distribution);
+
+  summaryRow.className = "rym-modern-release-rating-row";
+  summaryCell.colSpan = 3;
+  summary.className = "rym-modern-release-rating-summary";
+  ratingCard.className = "rym-modern-release-rating-card";
+  ratingCard.append(
+    createReleaseInfoLabel(ratingLabel.textContent),
+    ratingContent,
+  );
+  summary.append(ratingCard);
+
+  if (friendsContent && friendsPreview) {
+    const friendsCard = document.createElement("div");
+
+    friendsCard.className = "rym-modern-release-friends-card";
+    friendsCard.append(createReleaseInfoLabel(friendsLabel.textContent));
+    friendsCard.append(friendsContent);
+    friendsCard.append(friendsPreview);
+    ratingCard.append(distribution);
+    summary.append(friendsCard);
+  } else {
+    const distributionCard = document.createElement("div");
+    const catalogLink = createReleaseCatalogLink("See Catalog");
+
+    distributionCard.className = "rym-modern-release-distribution-card";
+    distributionCard.append(distribution);
+    if (catalogSection) {
+      distributionCard.append(catalogLink);
+    }
+    summary.append(distributionCard);
+  }
+
+  friendsRow?.remove();
+  summaryCell.append(summary);
+  summaryRow.append(summaryCell);
+  ratingRow.before(summaryRow);
+  ratingRow.remove();
 }
 
-function enhanceReleaseInlineStars() {
+function prepareReleaseCatalogSection() {
+  const catalogSection = getReleaseSection(".section_catalog");
+
+  if (!catalogSection) {
+    return null;
+  }
+
+  catalogSection.id = catalogSection.id || "rym-modern-release-ratings";
+
+  if (location.hash === `#${catalogSection.id}`) {
+    catalogSection.classList.remove("rym-modern-release-catalog-hidden");
+  } else {
+    catalogSection.classList.add("rym-modern-release-catalog-hidden");
+  }
+
+  return catalogSection;
+}
+
+function createReleaseCatalogLink(text) {
+  const link = document.createElement("a");
+
+  link.className = "rym-modern-release-catalog-link";
+  link.href = "#rym-modern-release-ratings";
+  link.textContent = text;
+  link.addEventListener("click", (event) => {
+    const catalogSection = document.querySelector(
+      "#rym-modern-release-ratings",
+    );
+
+    if (!catalogSection) {
+      return;
+    }
+
+    event.preventDefault();
+    catalogSection.classList.remove("rym-modern-release-catalog-hidden");
+    history.replaceState(null, "", link.hash);
+    catalogSection.scrollIntoView({ block: "start", behavior: "smooth" });
+  });
+
+  return link;
+}
+
+function createReleaseInfoLabel(text) {
+  const label = document.createElement("div");
+
+  label.className = "info_hdr";
+  label.textContent = text.trim();
+
+  return label;
+}
+
+function createReleaseFriendsPreview() {
+  const catalogSection = prepareReleaseCatalogSection();
+  const friendLines = [
+    ...document.querySelectorAll(".section_catalog .catalog_line"),
+  ].filter((line) => line.querySelector(".catalog_header.friend"));
+
+  if (!catalogSection || friendLines.length === 0) {
+    return null;
+  }
+
+  const preview = document.createElement("div");
+  const moreLink = document.createElement("a");
+
+  preview.className = "rym-modern-release-friends-preview";
+
+  for (const line of friendLines.slice(0, 3)) {
+    const clone = line.cloneNode(true);
+    const date = clone.querySelector(".catalog_date_inner");
+
+    clone.classList.add("rym-modern-release-friend-preview-line");
+
+    for (const node of clone.querySelectorAll("[id]")) {
+      node.removeAttribute("id");
+    }
+
+    for (const node of clone.querySelectorAll("[onclick]")) {
+      node.removeAttribute("onclick");
+    }
+
+    for (const avatar of clone.querySelectorAll("[data-bkg]")) {
+      const imageUrl = avatar.getAttribute("data-bkg");
+
+      if (imageUrl) {
+        avatar.style.backgroundImage = `url(${imageUrl.replace(/^\/\//, "https://")})`;
+      }
+    }
+
+    if (date) {
+      date.textContent = truncateCurrentYearDate(date.textContent);
+    }
+
+    preview.append(clone);
+  }
+
+  moreLink.className =
+    "rym-modern-release-friends-more rym-modern-release-catalog-link";
+  moreLink.href = `#${catalogSection.id}`;
+  moreLink.addEventListener("click", (event) => {
+    event.preventDefault();
+    catalogSection.classList.remove("rym-modern-release-catalog-hidden");
+    history.replaceState(null, "", moreLink.hash);
+    catalogSection.scrollIntoView({ block: "start", behavior: "smooth" });
+  });
+  moreLink.textContent =
+    friendLines.length > 3
+      ? `Show ${friendLines.length - 3} more ratings`
+      : "Show ratings";
+  preview.append(moreLink);
+
+  return preview;
+}
+
+function truncateCurrentYearDate(dateText) {
+  const currentYear = String(new Date().getFullYear());
+  const trimmed = dateText.trim();
+
+  return trimmed.endsWith(` ${currentYear}`)
+    ? trimmed.slice(0, -currentYear.length).trim()
+    : trimmed;
+}
+
+function transformReleaseInlineStars() {
   for (const image of document.querySelectorAll(
     ".page_release .review_rating img, .page_release .catalog_rating img, .page_release .track_rating_disp img",
   )) {
@@ -587,7 +695,48 @@ function enhanceReleaseInlineStars() {
 
     wrapper.classList.add("rym-modern-inline-stars", `star-${starStep}m`);
     wrapper.setAttribute("aria-label", ratingText);
+
+    if (!wrapper.querySelector(".rym-modern-star-row")) {
+      const row = document.createElement("span");
+
+      row.className = "rym-modern-star-row";
+      row.setAttribute("aria-hidden", "true");
+
+      for (let starIndex = 1; starIndex <= 5; starIndex += 1) {
+        const star = document.createElement("span");
+        const fullStep = starIndex * 2;
+
+        star.className = "rym-modern-star";
+
+        if (starStep >= fullStep) {
+          star.classList.add("is-full");
+        } else if (starStep === fullStep - 1) {
+          star.classList.add("is-half");
+        } else {
+          star.classList.add("is-empty");
+        }
+
+        row.append(star);
+      }
+
+      wrapper.append(row);
+    }
   }
+}
+
+function enhanceReleaseInlineStars() {
+  transformReleaseInlineStars();
+
+  if (
+    document.documentElement.dataset.rymModernInlineStarsObserver === "true"
+  ) {
+    return;
+  }
+
+  const observer = new MutationObserver(() => transformReleaseInlineStars());
+
+  observer.observe(document.body, { childList: true, subtree: true });
+  document.documentElement.dataset.rymModernInlineStarsObserver = "true";
 }
 
 function enhanceReleaseTrackListingHeader() {
@@ -616,33 +765,67 @@ function enhanceReleaseTrackListingHeader() {
   }
 }
 
+function enhanceReleaseReviewPagination() {
+  const reviewList = document.querySelector("#reviews_shell .review_list");
+
+  if (!reviewList) {
+    return;
+  }
+
+  for (const nav of [
+    ...reviewList.querySelectorAll(".navspan, .ui_pagination"),
+  ]) {
+    if (nav.closest(".rym-modern-review-pagination")) {
+      continue;
+    }
+
+    const row = document.createElement("div");
+    const sort = nav.closest(".review_sort");
+
+    row.className = "rym-modern-review-pagination";
+
+    if (sort) {
+      sort.after(row);
+    } else {
+      nav.before(row);
+    }
+
+    row.append(nav);
+  }
+}
+
 function enhanceReleaseUserRating() {
-  const ratingLabel = [
-    ...document.querySelectorAll(".album_info .info_hdr"),
-  ].find((header) => header.textContent.trim().toLowerCase() === "rym rating");
-  const ratingRow = ratingLabel?.closest("tr");
   const catalogControls = document.querySelector(
     ".section_my_catalog .release_my_catalog",
   );
   const reviewEditor = document.querySelector(".section_my_catalog #my_review");
-  const albumInfo = ratingRow?.closest(".album_info");
-  const albumInfoOuter = albumInfo?.closest(".album_info_outer");
-  const existingRow = document.querySelector(
-    ".rym-modern-release-user-rating-row",
+  const releaseArtFrame = document.querySelector(
+    ".page_release .page_release_art_frame",
+  );
+  const albumInfoOuter = document.querySelector(".album_info_outer");
+  const mediaLinks =
+    [...document.querySelectorAll(".page_release .media_link_container")].find(
+      (container) => container.querySelector(".ui_media_link_btn"),
+    ) ?? document.querySelector(".page_release .media_link_container");
+  const existingPersonalCard = document.querySelector(
+    ".rym-modern-release-personal-card",
   );
 
-  if (!ratingRow || !catalogControls || existingRow) {
+  if (!catalogControls || !releaseArtFrame || existingPersonalCard) {
     return;
   }
 
-  const row = document.createElement("tr");
-  const header = document.createElement("th");
-  const content = document.createElement("td");
+  const personalCard = document.createElement("section");
+  const stickyStack = document.createElement("div");
+  const heading = document.createElement("h2");
   const frame = document.createElement("div");
   const primaryActions = document.createElement("div");
   const rateBlock = document.createElement("div");
   const rateLabel = document.createElement("div");
   const secondaryActions = document.createElement("div");
+  const streamingDisclosure = document.createElement("details");
+  const streamingSummary = document.createElement("summary");
+  const streamingPanel = document.createElement("div");
   const ratingControl = catalogControls.querySelector(".my_catalog_rating");
   const catalogAction = catalogControls.querySelector(".my_catalog_catalog");
   const listeningAction = catalogControls.querySelector(
@@ -658,16 +841,20 @@ function enhanceReleaseUserRating() {
     ".release_touch_guidance",
   );
 
-  row.className = "rym-modern-release-user-rating-row";
-  header.className = "info_hdr";
-  header.textContent = "Your rating";
-  content.colSpan = 2;
+  stickyStack.className = "rym-modern-release-sticky-stack";
+  personalCard.className = "rym-modern-release-personal-card";
+  heading.className = "rym-modern-release-personal-title";
+  heading.textContent = "Your rating";
   frame.className = "rym-modern-release-user-rating";
   primaryActions.className = "rym-modern-release-user-rating-primary";
   rateBlock.className = "rym-modern-release-user-rating-rate";
   rateLabel.className = "rym-modern-release-user-rating-rate-label";
   rateLabel.textContent = "Rate";
   secondaryActions.className = "rym-modern-release-user-rating-secondary";
+  streamingDisclosure.className = "rym-modern-release-streaming";
+  streamingSummary.className = "rym-modern-release-streaming-summary";
+  streamingPanel.className = "rym-modern-release-streaming-panel";
+  streamingSummary.textContent = "Listen";
 
   for (const action of [catalogAction, listeningAction, tagAction]) {
     if (action) {
@@ -691,9 +878,17 @@ function enhanceReleaseUserRating() {
 
   catalogControls.replaceChildren(primaryActions, rateBlock, secondaryActions);
   frame.append(catalogControls);
-  content.append(frame);
-  row.append(header, content);
-  ratingRow.before(row);
+  personalCard.append(heading, frame);
+
+  if (mediaLinks) {
+    mediaLinks.classList.add("rym-modern-release-streaming-links");
+    streamingPanel.append(mediaLinks);
+    streamingDisclosure.append(streamingSummary, streamingPanel);
+    personalCard.append(streamingDisclosure);
+  }
+
+  releaseArtFrame.before(stickyStack);
+  stickyStack.append(releaseArtFrame, personalCard);
 
   if (reviewEditor && albumInfoOuter) {
     reviewEditor.classList.add("rym-modern-release-review-editor");
@@ -705,8 +900,137 @@ function enhanceReleaseUserRating() {
     ?.classList.add("rym-modern-release-catalog-source");
 }
 
+function enhanceReleaseRatingHitArea() {
+  const ratingConstructor = globalThis.RYMrating;
+
+  if (
+    typeof ratingConstructor !== "function" ||
+    ratingConstructor.prototype.rymModernHitArea === true
+  ) {
+    return;
+  }
+
+  const ratingFromPointer = (event, element) => {
+    const stars = element.querySelector(".rating_stars");
+    const rect = stars?.getBoundingClientRect();
+    const pointer = event.touches?.item(0) ?? event.changedTouches?.item(0);
+    const clientX = pointer?.clientX ?? event.clientX;
+
+    if (!rect || !Number.isFinite(clientX)) {
+      return 0;
+    }
+
+    const zeroZone = Math.max(6, rect.width * 0.06);
+    const x = clientX - rect.left;
+
+    if (x <= zeroZone) {
+      return 0;
+    }
+
+    if (x >= rect.width) {
+      return 10;
+    }
+
+    return Math.max(
+      1,
+      Math.min(10, Math.ceil(((x - zeroZone) / (rect.width - zeroZone)) * 10)),
+    );
+  };
+
+  ratingConstructor.prototype.rymModernHitArea = true;
+  ratingConstructor.prototype.onMouseMove = function onMouseMove(
+    event,
+    element,
+  ) {
+    if (!this.loading && !this.isTouch) {
+      this.setStars(ratingFromPointer(event, element));
+    }
+  };
+  ratingConstructor.prototype.onClick = function onClick(event, element) {
+    if (!this.isTouch && !this.loading) {
+      const rating = ratingFromPointer(event, element);
+
+      this.setRating(rating);
+      this.rating = rating;
+    }
+  };
+  ratingConstructor.prototype.onTouchStart = function onTouchStart(
+    event,
+    element,
+  ) {
+    if (!this.loading) {
+      this.isTouch = true;
+      this.setStars(ratingFromPointer(event, element));
+      event.preventDefault();
+    }
+  };
+  ratingConstructor.prototype.onTouchMove = function onTouchMove(
+    event,
+    element,
+  ) {
+    if (!this.loading) {
+      this.setStars(ratingFromPointer(event, element));
+      event.preventDefault();
+    }
+  };
+}
+
+function collectReleaseRankEntries(rankedContent) {
+  const entries = [];
+
+  for (const rankNode of rankedContent.querySelectorAll("b")) {
+    const rank = rankNode.textContent.trim();
+
+    if (!rank) {
+      continue;
+    }
+
+    const parts = [];
+    let cursor = rankNode.nextSibling;
+    let link = null;
+
+    while (cursor && cursor.nodeName !== "BR") {
+      if (cursor instanceof HTMLAnchorElement) {
+        link = cursor;
+        parts.push(cursor.textContent.trim());
+      } else {
+        parts.push(cursor.textContent ?? "");
+      }
+
+      cursor = cursor.nextSibling;
+    }
+
+    const context = parts.join(" ").replace(/\s+/g, " ").trim();
+    const contextLower = context.toLowerCase();
+    const label =
+      contextLower.includes("overall") || contextLower.includes("all-time")
+        ? "overall"
+        : /\b\d{4}\b/.test(context)
+          ? "that year"
+          : context.replace(/^for\s+/i, "") || "overall";
+
+    entries.push({
+      href: link?.href,
+      label,
+      rank,
+    });
+  }
+
+  return entries;
+}
+
 function enhanceReleaseDateRank() {
   const rows = [...document.querySelectorAll(".album_info tr")];
+  const artistRow = rows.find(
+    (row) =>
+      row.querySelector(".info_hdr")?.textContent.trim().toLowerCase() ===
+      "artist",
+  );
+  const typeRow = rows.find(
+    (row) =>
+      row.querySelector(".info_hdr")?.textContent.trim().toLowerCase() ===
+      "type",
+  );
   const releasedRow = rows.find(
     (row) =>
       row.querySelector(".info_hdr")?.textContent.trim().toLowerCase() ===
@@ -719,29 +1043,298 @@ function enhanceReleaseDateRank() {
   );
   const releasedContent = releasedRow?.querySelector("td");
   const rankedContent = rankedRow?.querySelector("td");
-  const rank = rankedContent?.querySelector("b")?.textContent.trim();
-  const chartLink = rankedContent?.querySelector("a[href*='/charts/']");
+  const rankEntries = rankedContent
+    ? collectReleaseRankEntries(rankedContent)
+    : [];
+
+  if (!releasedContent) {
+    return;
+  }
 
   if (
-    !releasedContent ||
-    !rankedRow ||
-    !rank ||
-    !chartLink ||
-    releasedContent.querySelector(".rym-modern-release-rank")
+    rankedRow &&
+    rankEntries.length > 0 &&
+    !releasedContent.querySelector(".rym-modern-release-rank-list")
+  ) {
+    const rankList = document.createElement("span");
+    const separator = document.createElement("span");
+
+    separator.className = "rym-modern-release-meta-separator";
+    separator.textContent = " ";
+    rankList.className = "rym-modern-release-rank-list";
+
+    for (const entry of rankEntries) {
+      const rankElement = document.createElement(entry.href ? "a" : "span");
+
+      rankElement.className = "rym-modern-release-rank";
+      rankElement.textContent = `ranked #${entry.rank} ${entry.label}`;
+
+      if (entry.href) {
+        rankElement.href = entry.href;
+      }
+
+      rankList.append(rankElement);
+    }
+
+    releasedContent.append(separator, rankList);
+    rankedRow.remove();
+  }
+
+  if (
+    document.querySelector(".rym-modern-release-summary-row") ||
+    !artistRow ||
+    !typeRow
   ) {
     return;
   }
 
-  const rankLink = document.createElement("a");
-  const separator = document.createElement("span");
+  const summaryRow = document.createElement("tr");
+  const summaryCell = document.createElement("td");
+  const summaryGrid = document.createElement("div");
 
-  separator.className = "rym-modern-release-meta-separator";
-  separator.textContent = " ";
-  rankLink.className = "rym-modern-release-rank";
-  rankLink.href = chartLink.href;
-  rankLink.textContent = `ranked #${rank} that year`;
-  releasedContent.append(separator, rankLink);
-  rankedRow.remove();
+  summaryRow.className = "rym-modern-release-summary-row";
+  summaryCell.colSpan = 3;
+  summaryGrid.className = "rym-modern-release-summary-grid";
+
+  for (const [label, row] of [
+    ["Artist", artistRow],
+    ["Type", typeRow],
+    ["Release", releasedRow],
+  ]) {
+    const value = row?.querySelector("td");
+
+    if (!value) {
+      continue;
+    }
+
+    const field = document.createElement("div");
+    const fieldLabel = document.createElement("span");
+    const fieldValue = document.createElement("span");
+
+    field.className = "rym-modern-release-summary-field";
+    fieldLabel.className = "rym-modern-release-summary-label";
+    fieldLabel.textContent = label;
+    fieldValue.className = "rym-modern-release-summary-value";
+    fieldValue.append(...value.childNodes);
+    field.append(fieldLabel, fieldValue);
+    summaryGrid.append(field);
+  }
+
+  summaryCell.append(summaryGrid);
+  summaryRow.append(summaryCell);
+  artistRow.before(summaryRow);
+  artistRow.remove();
+  typeRow.remove();
+  releasedRow.remove();
+}
+
+function enhanceReleaseRecordedLanguage() {
+  const rows = [...document.querySelectorAll(".album_info tr")];
+  const recordedRow = rows.find(
+    (row) =>
+      row.querySelector(".info_hdr")?.textContent.trim().toLowerCase() ===
+      "recorded",
+  );
+  const languageRow = rows.find(
+    (row) =>
+      row.querySelector(".info_hdr")?.textContent.trim().toLowerCase() ===
+      "language",
+  );
+  const recordedContent = recordedRow?.querySelector("td");
+  const languageContent = languageRow?.querySelector("td");
+
+  if (
+    !recordedRow ||
+    !languageRow ||
+    !recordedContent ||
+    !languageContent ||
+    document.querySelector(".rym-modern-release-language-recorded-row")
+  ) {
+    return;
+  }
+
+  const pairedRow = document.createElement("tr");
+  const pairedCell = document.createElement("td");
+  const grid = document.createElement("div");
+
+  pairedRow.className = "rym-modern-release-language-recorded-row";
+  pairedCell.colSpan = 3;
+  grid.className = "rym-modern-release-language-recorded-grid";
+
+  for (const [label, content] of [
+    ["Language", languageContent],
+    ["Recorded", recordedContent],
+  ]) {
+    const field = document.createElement("div");
+    const fieldLabel = document.createElement("span");
+    const fieldValue = document.createElement("span");
+
+    field.className = "rym-modern-release-language-recorded-field";
+    fieldLabel.className = "rym-modern-release-summary-label";
+    fieldLabel.textContent = label;
+    fieldValue.className = "rym-modern-release-summary-value";
+    fieldValue.append(...content.childNodes);
+    field.append(fieldLabel, fieldValue);
+    grid.append(field);
+  }
+
+  pairedCell.append(grid);
+  pairedRow.append(pairedCell);
+  languageRow.before(pairedRow);
+  recordedRow.remove();
+  languageRow.remove();
+
+  return true;
+}
+
+function observeReleaseRecordedLanguage() {
+  const albumInfo = document.querySelector(".album_info");
+
+  if (
+    !albumInfo ||
+    albumInfo.dataset.rymModernRecordedLanguageObserver === "true"
+  ) {
+    return;
+  }
+
+  const pairRows = () => enhanceReleaseRecordedLanguage();
+  const observer = new MutationObserver(pairRows);
+
+  pairRows();
+  requestAnimationFrame(pairRows);
+  window.setTimeout(pairRows, 250);
+  observer.observe(albumInfo, { childList: true, subtree: true });
+  albumInfo.dataset.rymModernRecordedLanguageObserver = "true";
+}
+
+function enhanceReleaseGenres() {
+  for (const genreGroup of document.querySelectorAll(
+    ".page_release .release_pri_genres, .page_release .release_sec_genres",
+  )) {
+    for (const node of genreGroup.childNodes) {
+      if (node.nodeType === Node.TEXT_NODE) {
+        node.textContent = node.textContent.replaceAll(",", "");
+      }
+    }
+  }
+}
+
+function findReleaseContributionsSection() {
+  const heading = [
+    ...document.querySelectorAll(".release_page_header h2"),
+  ].find((node) => node.textContent.trim().toLowerCase() === "contributions");
+  let section = heading?.parentElement;
+
+  while (
+    section &&
+    !(
+      section.querySelector(".contributor_header") &&
+      section.querySelector(".contrib_btn")
+    )
+  ) {
+    section = section.parentElement;
+  }
+
+  return section;
+}
+
+function enhanceReleaseContributions() {
+  const section = findReleaseContributionsSection();
+
+  if (!section || section.dataset.rymModernEnhanced === "true") {
+    return;
+  }
+
+  const header = section.querySelector(".contributor_header");
+  const actions = [...section.querySelectorAll("div")].find((node) =>
+    node.querySelector(".contrib_btn"),
+  );
+
+  if (!header || !actions) {
+    return;
+  }
+
+  const body = document.createElement("div");
+  const contributors = document.createElement("span");
+  const details = document.createElement("details");
+  const summary = document.createElement("summary");
+  const actionCount = actions.querySelectorAll("a").length;
+
+  body.className = "page_object_contributions";
+  contributors.className = "contributors";
+  actions.classList.add("contribution_links");
+  details.className = "rym-modern-contribution-actions";
+  summary.textContent = `Contribution options ${actionCount}`;
+
+  for (let node = header.nextSibling; node && node !== actions; ) {
+    const next = node.nextSibling;
+
+    if (node.nodeType === Node.ELEMENT_NODE && node.matches("a.user")) {
+      contributors.append(node);
+    } else {
+      node.remove();
+    }
+
+    node = next;
+  }
+
+  details.append(summary, actions);
+  body.append(header, contributors, details);
+  section.append(body);
+  section.classList.add("rym-modern-contributions");
+  section.dataset.rymModernEnhanced = "true";
+}
+
+function enhanceReleaseCommentsScrollIntent() {
+  for (const list of document.querySelectorAll(
+    ".page_release #rym-modern-release-comments .comments_list",
+  )) {
+    if (list.dataset.rymModernScrollIntent === "true") {
+      continue;
+    }
+
+    let hoverTimer = null;
+    let isScrollArmed = false;
+
+    const disarm = () => {
+      isScrollArmed = false;
+      list.classList.remove("rym-modern-scroll-armed");
+      window.clearTimeout(hoverTimer);
+      hoverTimer = null;
+    };
+
+    list.addEventListener("pointerenter", () => {
+      window.clearTimeout(hoverTimer);
+      hoverTimer = window.setTimeout(() => {
+        isScrollArmed = true;
+        list.classList.add("rym-modern-scroll-armed");
+      }, 1000);
+    });
+
+    list.addEventListener("pointerleave", disarm);
+    list.addEventListener("pointerdown", () => {
+      isScrollArmed = true;
+      list.classList.add("rym-modern-scroll-armed");
+    });
+    list.addEventListener(
+      "wheel",
+      (event) => {
+        if (isScrollArmed) {
+          return;
+        }
+
+        event.preventDefault();
+        window.scrollBy({
+          left: event.deltaX,
+          top: event.deltaY,
+          behavior: "auto",
+        });
+      },
+      { passive: false },
+    );
+
+    list.dataset.rymModernScrollIntent = "true";
+  }
 }
 
 function getReleaseSection(selector) {
@@ -796,14 +1389,19 @@ function enhanceReleasePage() {
   const credits = document.querySelector(".hide-for-small > .section_credits");
   const discussion = getReleaseSection(".page_object_section_discussion");
   const suggestions = getReleaseSection(".section_suggestions");
-  const releaseGrid = document.querySelector(".release_page > div > .row");
+  const releaseMainColumn = document.querySelector("#column_container_right");
   const panels = [];
 
   enhanceReleaseDateRank();
+  observeReleaseRecordedLanguage();
+  enhanceReleaseGenres();
   enhanceReleaseUserRating();
+  enhanceReleaseRatingHitArea();
   enhanceReleaseInlineStars();
   enhanceReleaseTrackListingHeader();
+  enhanceReleaseReviewPagination();
   enhanceReleaseRatingDistribution();
+  enhanceReleaseContributions();
 
   if (reviewsShell) {
     const reviewsPanel = createReleasePanel(
@@ -812,14 +1410,16 @@ function enhanceReleasePage() {
     );
 
     reviewsShell.before(reviewsPanel);
-    reviewsPanel.append(reviewsShell);
     panels.push(reviewsPanel);
 
     if (comments) {
       comments.id = "rym-modern-release-comments";
       comments.classList.add("rym-modern-release-main-section");
       reviewsPanel.append(comments);
+      enhanceReleaseCommentsScrollIntent();
     }
+
+    reviewsPanel.append(reviewsShell);
   }
 
   if (lists) {
@@ -829,7 +1429,7 @@ function enhanceReleasePage() {
   const tabTargets = [
     {
       id: "rym-modern-release-reviews",
-      label: "Reviews",
+      label: "Discussion",
       section: reviewsShell,
       panel: panels[0],
     },
@@ -850,7 +1450,7 @@ function enhanceReleasePage() {
     },
     {
       id: "rym-modern-release-discussion",
-      label: "Discussion",
+      label: "Forum",
       section: discussion,
     },
   ].filter((target) => target.panel || target.section);
@@ -908,9 +1508,9 @@ function enhanceReleasePage() {
     }
   }
 
-  if (suggestions && releaseGrid) {
+  if (suggestions && releaseMainColumn) {
     suggestions.classList.add("rym-modern-release-bottom-section");
-    releaseGrid.after(suggestions);
+    releaseMainColumn.append(suggestions);
   }
 
   document.documentElement.dataset.rymModernReleaseEnhanced = "true";
