@@ -4131,7 +4131,7 @@ html#page_release #content {
     margin-top: 14px;
   }
 
-  /* Personal card (rating widget) — full width, compact on mobile */
+  /* Personal card — full width */
   .page_release .rym-modern-release-personal-card {
     grid-column: 1 / -1;
     margin: 10px 0 0;
@@ -4141,33 +4141,66 @@ html#page_release #content {
     display: block;
   }
 
-  .page_release .rym-modern-release-user-rating-primary {
-    grid-template-columns: minmax(0, 1fr);
-  }
-
-  /* Secondary actions and Listen collapsed by default; shown when expanded */
-  .page_release .rym-modern-release-user-rating .listening_btn,
-  .page_release .rym-modern-release-user-rating .tag_btn,
+  /* Hide primary row (Set listening, Tags stay accessible via ···) */
+  .page_release .rym-modern-release-user-rating-primary,
   .page_release .rym-modern-release-user-rating-secondary,
   .page_release .rym-modern-release-streaming {
     display: none !important;
   }
 
-  .page_release
-    .rym-modern-release-user-rating.rym-modern-rating-expanded
-    .listening_btn,
-  .page_release
-    .rym-modern-release-user-rating.rym-modern-rating-expanded
-    .tag_btn {
-    display: flex !important;
+  /* Row 1: stars (left) · bump (right) */
+  .page_release .rym-modern-release-user-rating-rate {
+    align-items: center;
+    flex-direction: row;
+    gap: 0;
+    justify-content: space-between;
+    min-height: 54px;
+    padding: 10px 0 10px 14px;
   }
 
+  /* Bump sits inline with the stars — reset its action-button sizing */
+  .page_release .rym-modern-release-user-rating-rate .bump_btn {
+    flex-shrink: 0;
+    min-height: 54px;
+    padding: 8px 14px !important;
+    width: auto;
+  }
+
+  /* Row 2: action row — Catalog · Review · ··· */
+  .rym-modern-rating-action-row {
+    border-top: 1px solid rgb(15 17 23 / 42%);
+    display: flex;
+    width: 100%;
+  }
+
+  .rym-modern-rating-action-row .catalog_btn,
+  .rym-modern-rating-action-row .review_btn {
+    flex: 1;
+    min-height: 54px;
+  }
+
+  /* ··· button */
+  .rym-modern-rating-more-btn {
+    background: none;
+    border: none;
+    border-left: 1px solid rgb(15 17 23 / 42%);
+    color: var(--rym-text-muted);
+    cursor: pointer;
+    font-family: var(--rym-font);
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    min-height: 54px;
+    padding: 8px 16px;
+  }
+
+  /* Expanded: show Set listening, Tags, Track ratings, Listen */
   .page_release
     .rym-modern-release-user-rating.rym-modern-rating-expanded
-    .rym-modern-release-user-rating-secondary,
+    .rym-modern-release-user-rating-primary,
   .page_release
     .rym-modern-release-user-rating.rym-modern-rating-expanded
-    .rym-modern-release-streaming {
+    .rym-modern-release-user-rating-secondary {
     display: grid !important;
   }
 
@@ -4175,31 +4208,6 @@ html#page_release #content {
     .rym-modern-release-user-rating.rym-modern-rating-expanded
     .rym-modern-release-streaming {
     display: block !important;
-  }
-
-  /* Rate row — compact horizontal layout */
-  .page_release .rym-modern-release-user-rating-rate {
-    flex-direction: row;
-    justify-content: space-between;
-    min-height: 56px;
-    padding: 10px;
-  }
-
-  /* More options toggle button */
-  .rym-modern-rating-more-btn {
-    background: none;
-    border: none;
-    border-top: 1px solid rgb(15 17 23 / 42%);
-    color: var(--rym-text-muted);
-    cursor: pointer;
-    font-family: var(--rym-font);
-    font-size: 12px;
-    font-weight: 700;
-    letter-spacing: 0.04em;
-    padding: 10px;
-    text-align: center;
-    text-transform: uppercase;
-    width: 100%;
   }
 
   /* Hide rows moved to Info tab or replaced by hero meta */

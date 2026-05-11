@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Rate Your Music Modern
 // @namespace    github.com/112345brian/rate-your-music-modern
-// @version      0.7.6
+// @version      0.7.7
 // @description  Behavior enhancements for the Rate Your Music Modern userstyle.
 // @author       bri
 // @homepageURL  https://github.com/112345brian/rate-your-music-modern
@@ -1836,20 +1836,46 @@ function buildBottomNav() {
 
 function buildMobileRatingMore(personalCard) {
   const frame = personalCard.querySelector(".rym-modern-release-user-rating");
-  if (!frame || frame.querySelector(".rym-modern-rating-more-btn")) return;
+  if (!frame || frame.querySelector(".rym-modern-rating-action-row")) return;
+
+  const rateRow = frame.querySelector(".rym-modern-release-user-rating-rate");
+  const rateLabel = rateRow?.querySelector(".rym-modern-release-user-rating-rate-label");
+  const bumpBtn = frame.querySelector(".bump_btn");
+  const catalogBtn = frame.querySelector(".catalog_btn");
+  const reviewBtn = frame.querySelector(".review_btn");
+
+  // Remove "Rate" label — stars speak for themselves
+  rateLabel?.remove();
+
+  // Move bump into the rate row (stars on left, bump on right)
+  if (bumpBtn && rateRow) {
+    rateRow.append(bumpBtn);
+  }
+
+  // Build action row: [Catalog] [Review] [···]
+  const actionRow = document.createElement("div");
+  actionRow.className = "rym-modern-rating-action-row";
 
   const moreBtn = document.createElement("button");
   moreBtn.className = "rym-modern-rating-more-btn";
-  moreBtn.textContent = "More options";
+  moreBtn.setAttribute("aria-label", "More options");
+  moreBtn.textContent = "···";
 
   let expanded = false;
   moreBtn.addEventListener("click", () => {
     expanded = !expanded;
     frame.classList.toggle("rym-modern-rating-expanded", expanded);
-    moreBtn.textContent = expanded ? "Fewer options" : "More options";
   });
 
-  frame.append(moreBtn);
+  if (catalogBtn) actionRow.append(catalogBtn);
+  if (reviewBtn) actionRow.append(reviewBtn);
+  actionRow.append(moreBtn);
+
+  if (rateRow) {
+    rateRow.after(actionRow);
+  } else {
+    frame.append(actionRow);
+  }
 }
 
 function enhanceMobileRelease() {
