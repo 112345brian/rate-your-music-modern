@@ -312,6 +312,52 @@ test("modernizes the release preview layout", async ({ page }) => {
   await page.goto(
     pathToFileURL(`${process.cwd()}/assets/release-page/preview.html`).href,
   );
+  await page.evaluate(() => {
+    const suggestions = document.querySelector("ul.suggestions");
+
+    if (!suggestions) {
+      return;
+    }
+
+    suggestions.innerHTML = `
+      <li>
+        <div class="page_discography_line">
+          <div class="page_discography_img"></div>
+          <div class="page_discography_average">3.46</div>
+          <div class="page_discography_ratings">2,636</div>
+          <div class="page_discography_line_1 recommended">
+            <a class="release" href="#">Speed Run</a>
+            <span class="page_discography_artist_names">
+              <a class="artist" href="#">Frost Children</a>
+            </span>
+          </div>
+          <div class="page_discography_line_2">
+            <span class="page_discography_date">2023</span>
+            <span class="page_discography_attribute">Album</span>
+            <span>Electropop, Electro House</span>
+          </div>
+        </div>
+      </li>
+      <li>
+        <div class="page_discography_line">
+          <div class="page_discography_img"></div>
+          <div class="page_discography_average">3.19</div>
+          <div class="page_discography_ratings">918</div>
+          <div class="page_discography_line_1">
+            <a class="release" href="#">Clearing</a>
+            <span class="page_discography_artist_names">
+              <a class="artist" href="#">Hyd</a>
+            </span>
+          </div>
+          <div class="page_discography_line_2">
+            <span class="page_discography_date">2022</span>
+            <span class="page_discography_attribute">Album</span>
+            <span>Alt-Pop, Electropop</span>
+          </div>
+        </div>
+      </li>
+    `;
+  });
 
   await expect(page).toHaveTitle(/Song for Alpha/);
   await expect(page.locator(".album_title")).toContainText("Song for Alpha");
@@ -606,6 +652,18 @@ test("modernizes the release preview layout", async ({ page }) => {
           .querySelector(".rym-modern-release-tabs")
           .compareDocumentPosition(suggestions) &
         Node.DOCUMENT_POSITION_FOLLOWING,
+      suggestionItemBackground: getComputedStyle(
+        suggestions.querySelector("li"),
+      ).backgroundColor,
+      suggestionItemBorderRadius: getComputedStyle(
+        suggestions.querySelector("li"),
+      ).borderRadius,
+      suggestionItemBorderBottomStyle: getComputedStyle(
+        suggestions.querySelector("li"),
+      ).borderBottomStyle,
+      suggestionLineDisplay: getComputedStyle(
+        suggestions.querySelector(".page_discography_line"),
+      ).display,
       commentsFillPanel:
         Math.abs(
           comments.querySelector(".comments").getBoundingClientRect().width -
@@ -697,6 +755,10 @@ test("modernizes the release preview layout", async ({ page }) => {
   expect(releaseOrder.commentsShareColumn).toBe(true);
   expect(releaseOrder.suggestionsInMainColumn).toBe(true);
   expect(Boolean(releaseOrder.suggestionsAfterTabs)).toBe(true);
+  expect(releaseOrder.suggestionItemBackground).toBe("rgba(0, 0, 0, 0)");
+  expect(releaseOrder.suggestionItemBorderRadius).toBe("0px");
+  expect(releaseOrder.suggestionItemBorderBottomStyle).toBe("solid");
+  expect(releaseOrder.suggestionLineDisplay).toBe("grid");
   expect(releaseOrder.commentsFillPanel).toBe(true);
   expect(releaseOrder.commentsListMaxHeight).not.toBe("none");
   expect(releaseOrder.commentsListOverflowY).toBe("auto");
