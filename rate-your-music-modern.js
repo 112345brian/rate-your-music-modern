@@ -1372,6 +1372,34 @@ function createReleasePanel(id, className = "") {
   return panel;
 }
 
+function isMobileViewport() {
+  return window.matchMedia("(max-width: 42rem)").matches;
+}
+
+function openMobileDiscussionOverlay(panel) {
+  if (!panel.querySelector(".rym-mobile-overlay-close")) {
+    const header = document.createElement("div");
+    header.className = "rym-mobile-overlay-header";
+    const title = document.createElement("span");
+    title.className = "rym-mobile-overlay-title";
+    title.textContent = "Discussion";
+    const closeBtn = document.createElement("button");
+    closeBtn.className = "rym-mobile-overlay-close";
+    closeBtn.setAttribute("aria-label", "Close");
+    closeBtn.textContent = "✕";
+    closeBtn.addEventListener("click", () => {
+      panel.classList.remove("rym-mobile-overlay-open");
+      panel.hidden = true;
+      document.documentElement.classList.remove("rym-mobile-overlay-active");
+    });
+    header.append(title, closeBtn);
+    panel.prepend(header);
+  }
+  panel.hidden = false;
+  panel.classList.add("rym-mobile-overlay-open");
+  document.documentElement.classList.add("rym-mobile-overlay-active");
+}
+
 function enhanceReleasePage() {
   if (
     !document.documentElement.classList.contains("page_release") ||
@@ -1482,6 +1510,21 @@ function enhanceReleasePage() {
       tab.addEventListener("click", (event) => {
         event.preventDefault();
 
+        const openOverlay = document.querySelector(".rym-mobile-overlay-open");
+        if (openOverlay) {
+          openOverlay.classList.remove("rym-mobile-overlay-open");
+          openOverlay.hidden = true;
+          document.documentElement.classList.remove("rym-mobile-overlay-active");
+        }
+
+        if (
+          isMobileViewport() &&
+          target.id === "rym-modern-release-reviews"
+        ) {
+          openMobileDiscussionOverlay(target.panel);
+          return;
+        }
+
         for (const panel of panels) {
           panel.hidden = panel.id !== target.id;
         }
@@ -1568,4 +1611,33 @@ enhanceArtistSongStats();
 enhanceDiscographyFilters();
 enhanceContributions();
 enhanceReleasePage();
+enhanceMobileRelease();
 enhanceResponsiveInlineGroups();
+
+function enhanceMobileRelease() {
+  if (!isMobileViewport()) return;
+  if (!document.documentElement.classList.contains("page_release")) return;
+
+  const tabBar = document.querySelector(".rym-modern-release-tabs");
+  if (!tabBar) return;
+
+  // Move tab bar to right after the hero section, before the tracklist
+  const mainInfo = document.querySelector(".section_main_info");
+  if (!mainInfo) return;
+
+  mainInfo.after(tabBar);
+
+  // Scroll active panel into view when a non-Discussion tab is clicked
+  for (const tab of tabBar.querySelectorAll(".rym-modern-release-tab")) {
+    tab.addEventListener("click", () => {
+      const targetId = tab.dataset.target;
+      if (!targetId || targetId === "rym-modern-release-reviews") return;
+      const panel = document.getElementById(targetId);
+      if (panel && !panel.hidden) {
+        requestAnimationFrame(() =>
+          panel.scrollIntoView({ behavior: "smooth", block: "start" }),
+        );
+      }
+    });
+  }
+}
