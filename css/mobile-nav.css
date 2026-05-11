@@ -2,7 +2,7 @@
   display: none;
 }
 
-@media (width <= 42rem) {
+@media (max-width: 42rem) {
   .mobile_header_menu {
     display: none !important;
   }

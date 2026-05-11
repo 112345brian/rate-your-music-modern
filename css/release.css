@@ -2589,7 +2589,7 @@ html#page_release #content {
   grid-area: ratings;
 }
 
-@media only screen and (width <= 42rem) {
+@media only screen and (max-width: 42rem) {
   .page_release .rym-modern-release-bottom-section .page_discography_line {
     grid-template-areas:
       "image title"
@@ -2617,7 +2617,7 @@ html#page_release #content {
   }
 }
 
-@media only screen and (width <= 42rem) {
+@media only screen and (max-width: 42rem) {
   html#page_release #content {
     max-width: min(100%, calc(100vw - 28px)) !important;
     padding: 18px 14px 34px !important;
@@ -2649,7 +2649,7 @@ html#page_release #content {
   }
 }
 
-@media only screen and (width <= 42rem) {
+@media only screen and (max-width: 42rem) {
   html#page_release #content {
     max-width: 100% !important;
     padding: 12px 10px 28px !important;
@@ -2719,7 +2719,7 @@ html#page_release #content {
   }
 }
 
-@media only screen and (width <= 42rem) {
+@media only screen and (max-width: 42rem) {
   /* Mobile hero: cover left, title right, metadata full-width below */
   .page_release .section_main_info .page_section {
     display: grid;

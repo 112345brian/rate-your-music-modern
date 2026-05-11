@@ -904,7 +904,7 @@
   color: #d9efff !important;
 }
 
-@media only screen and (width <= 82rem) {
+@media only screen and (max-width: 82rem) {
   .page_artist .artist_page_section {
     column-gap: 0;
     overflow-x: visible;
@@ -961,7 +961,7 @@
   }
 }
 
-@media only screen and (width <= 36rem) {
+@media only screen and (max-width: 36rem) {
   .rym-modern-info-row {
     gap: 0.35rem;
     grid-template-columns: 1fr;

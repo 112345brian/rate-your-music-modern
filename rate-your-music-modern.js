@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Rate Your Music Modern
 // @namespace    github.com/112345brian/rate-your-music-modern
-// @version      0.6.0
+// @version      0.6.1
 // @description  Behavior enhancements for the Rate Your Music Modern userstyle.
 // @author       bri
 // @homepageURL  https://github.com/112345brian/rate-your-music-modern
@@ -1603,16 +1603,25 @@ function enhanceResponsiveInlineGroups() {
   observeInlineFit(".rym-modern-disco-filters", "--rym-filter-scale", 0.64);
 }
 
-enhancePage();
-enhanceArtistInfo();
-enhanceArtistTabs();
-enhanceArtistSongStats();
-enhanceDiscographyFilters();
-enhanceContributions();
-enhanceReleasePage();
-enhanceMobileRelease();
-buildBottomNav();
-enhanceResponsiveInlineGroups();
+const _enhancements = [
+  buildBottomNav,
+  enhancePage,
+  enhanceArtistInfo,
+  enhanceArtistTabs,
+  enhanceArtistSongStats,
+  enhanceDiscographyFilters,
+  enhanceContributions,
+  enhanceReleasePage,
+  enhanceMobileRelease,
+  enhanceResponsiveInlineGroups,
+];
+for (const fn of _enhancements) {
+  try {
+    fn();
+  } catch (e) {
+    console.error("[rym-modern]", fn.name, e);
+  }
+}
 
 function buildBottomNav() {
   if (document.querySelector(".rym-modern-bottom-nav")) {

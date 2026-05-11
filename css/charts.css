@@ -258,7 +258,7 @@
   margin-top: 0.15rem;
 }
 
-@media only screen and (width <= 52rem) {
+@media only screen and (max-width: 52rem) {
   #page_charts .page_charts_section_charts_item.object_release {
     grid-template-columns: 38px 92px minmax(0, 1fr);
     min-height: 124px;

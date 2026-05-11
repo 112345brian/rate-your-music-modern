@@ -1,7 +1,7 @@
 /* ==UserStyle==
 @name           Rate Your Music Modern
 @namespace      github.com/112345brian/rate-your-music-modern
-@version        0.8.0
+@version        0.8.1
 @description    Modern visual treatment for Rate Your Music.
 @author         bri
 @homepageURL    https://github.com/112345brian/rate-your-music-modern
@@ -1195,7 +1195,7 @@
     color: #d9efff !important;
   }
 
-  @media only screen and (width <= 82rem) {
+  @media only screen and (max-width: 82rem) {
     .page_artist .artist_page_section {
       column-gap: 0;
       overflow-x: visible;
@@ -1252,7 +1252,7 @@
     }
   }
 
-  @media only screen and (width <= 36rem) {
+  @media only screen and (max-width: 36rem) {
     .rym-modern-info-row {
       gap: 0.35rem;
       grid-template-columns: 1fr;
@@ -3934,7 +3934,7 @@
     grid-area: ratings;
   }
 
-  @media only screen and (width <= 42rem) {
+  @media only screen and (max-width: 42rem) {
     .page_release .rym-modern-release-bottom-section .page_discography_line {
       grid-template-areas:
         "image title"
@@ -3962,7 +3962,7 @@
     }
   }
 
-  @media only screen and (width <= 42rem) {
+  @media only screen and (max-width: 42rem) {
     html#page_release #content {
       max-width: min(100%, calc(100vw - 28px)) !important;
       padding: 18px 14px 34px !important;
@@ -3994,7 +3994,7 @@
     }
   }
 
-  @media only screen and (width <= 42rem) {
+  @media only screen and (max-width: 42rem) {
     html#page_release #content {
       max-width: 100% !important;
       padding: 12px 10px 28px !important;
@@ -4064,7 +4064,7 @@
     }
   }
 
-  @media only screen and (width <= 42rem) {
+  @media only screen and (max-width: 42rem) {
     /* Mobile hero: cover left, title right, metadata full-width below */
     .page_release .section_main_info .page_section {
       display: grid;
@@ -4442,7 +4442,7 @@
     margin-top: 0.15rem;
   }
 
-  @media only screen and (width <= 52rem) {
+  @media only screen and (max-width: 52rem) {
     #page_charts .page_charts_section_charts_item.object_release {
       grid-template-columns: 38px 92px minmax(0, 1fr);
       min-height: 124px;
@@ -4479,7 +4479,7 @@
     display: none;
   }
 
-  @media (width <= 42rem) {
+  @media (max-width: 42rem) {
     .mobile_header_menu {
       display: none !important;
     }
