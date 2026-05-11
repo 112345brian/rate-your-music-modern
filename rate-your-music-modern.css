@@ -4418,12 +4418,16 @@
       overflow: hidden;
     }
 
-    /* Compact Prev/Next nav — show only the guidance links, hide album art */
+    /* Compact Prev/Next nav — full-width row, guidance links only */
     .page_release .section_release_navigation {
+      grid-column: 1 / -1;
       margin: 8px 0 0;
     }
 
-    .page_release .section_release_navigation .release_navigation_links {
+    .page_release .section_release_navigation .release_navigation_links,
+    .page_release
+      .section_release_navigation
+      .release_navigation_guidance::before {
       display: none !important;
     }
 
