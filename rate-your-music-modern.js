@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Rate Your Music Modern
 // @namespace    github.com/112345brian/rate-your-music-modern
-// @version      0.6.3
+// @version      0.6.4
 // @description  Behavior enhancements for the Rate Your Music Modern userstyle.
 // @author       bri
 // @homepageURL  https://github.com/112345brian/rate-your-music-modern
@@ -1629,11 +1629,16 @@ function buildBottomNav() {
   }
 
   if (window.innerWidth <= 672) {
-    let headerEl = document.querySelector(".header_search") ?? document.querySelector(".mobile_header_menu");
-    while (headerEl && headerEl.parentElement !== document.body) {
+    // Walk up from .header_search until we find the ancestor that also
+    // contains .mobile_header_menu — that's the site header container.
+    let headerEl = document.querySelector(".header_search");
+    while (headerEl && headerEl !== document.body) {
+      if (headerEl.querySelector(".mobile_header_menu")) break;
       headerEl = headerEl.parentElement;
     }
-    headerEl?.style.setProperty("display", "none", "important");
+    if (headerEl && headerEl !== document.body) {
+      headerEl.style.setProperty("display", "none", "important");
+    }
   }
 
   const profileImgEl = document.querySelector(".header_user_img");
