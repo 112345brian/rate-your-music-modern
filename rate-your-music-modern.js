@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Rate Your Music Modern
 // @namespace    github.com/112345brian/rate-your-music-modern
-// @version      0.8.0
+// @version      0.9.0
 // @description  Behavior enhancements for the Rate Your Music Modern userstyle.
 // @author       bri
 // @homepageURL  https://github.com/112345brian/rate-your-music-modern
@@ -1846,7 +1846,7 @@ function buildMobileRatingMore(personalCard) {
   const listeningBtn = frame.querySelector(".listening_btn");
   const tagBtn = frame.querySelector(".tag_btn");
   const trackRatingBtn = frame.querySelector(".track_rating_btn");
-  const streamingEl = frame.querySelector(".rym-modern-release-streaming");
+  const streamingEl = personalCard.querySelector(".rym-modern-release-streaming");
   const streamingLinks = streamingEl?.querySelector(".rym-modern-release-streaming-links");
   const hasStreaming = streamingLinks && streamingLinks.children.length > 0;
 
@@ -1930,6 +1930,10 @@ function enhanceMobileRelease() {
   const albumInfoOuter = mainInfo.querySelector(".album_info_outer");
   const personalCard = document.querySelector(".rym-modern-release-personal-card");
   if (albumInfoOuter && personalCard) {
+    // Move release nav (Prev/Next) to appear between hero and ratings
+    const navEl = document.querySelector(".section_release_navigation");
+    if (navEl) albumInfoOuter.before(navEl);
+
     albumInfoOuter.after(personalCard);
     buildMobileRatingMore(personalCard);
   }

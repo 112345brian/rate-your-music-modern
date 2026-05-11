@@ -1,7 +1,7 @@
 /* ==UserStyle==
 @name           Rate Your Music Modern
 @namespace      github.com/112345brian/rate-your-music-modern
-@version        1.0.0
+@version        1.1.0
 @description    Modern visual treatment for Rate Your Music.
 @author         bri
 @homepageURL    https://github.com/112345brian/rate-your-music-modern
@@ -4194,19 +4194,13 @@
       display: none !important;
     }
 
-    /* Bump inline with stars — hide icon, show text only */
+    /* Bump inline with stars — icon at top, text below */
     .page_release .rym-modern-release-user-rating-rate .bump_btn {
       flex-shrink: 0;
       min-height: 54px;
-      overflow: hidden;
-      padding: 8px 14px !important;
-      position: static !important;
+      padding: 36px 14px 8px !important;
+      position: relative !important;
       width: auto;
-    }
-
-    .page_release .rym-modern-release-user-rating-rate .bump_btn::before,
-    .page_release .rym-modern-release-user-rating-rate .bump_btn::after {
-      display: none !important;
     }
 
     /* Row 2: action row — Play · Review · ··· */
@@ -4312,7 +4306,7 @@
     /* Info tab panel sections */
     .rym-modern-info-section {
       border-bottom: 1px solid var(--rym-border);
-      padding: 14px 0;
+      padding: 8px 0;
     }
 
     .rym-modern-info-section:last-child {
@@ -4324,7 +4318,7 @@
       font-size: 11px;
       font-weight: 800;
       letter-spacing: 0.08em;
-      margin-bottom: 8px;
+      margin-bottom: 4px;
       text-transform: uppercase;
     }
 
@@ -4422,6 +4416,29 @@
 
     html.rym-mobile-overlay-active {
       overflow: hidden;
+    }
+
+    /* Compact Prev/Next nav — show only the guidance links, hide album art */
+    .page_release .section_release_navigation {
+      margin: 8px 0 0;
+    }
+
+    .page_release .section_release_navigation .release_navigation_links {
+      display: none !important;
+    }
+
+    .page_release .section_release_navigation .release_navigation_guidance {
+      padding: 4px 6px;
+    }
+
+    .page_release .section_release_navigation .release_navigation_guidance a {
+      font-size: 13px;
+      padding: 5px 8px;
+    }
+
+    /* Tighten rating cards on mobile */
+    .page_release .section_main_info .album_info_outer {
+      margin-top: 10px;
     }
   }
 
