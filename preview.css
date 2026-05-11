@@ -4131,6 +4131,46 @@ html#page_release #content {
     margin-top: 14px;
   }
 
+  /* Personal card (rating widget) — full width, compact on mobile */
+  .page_release .rym-modern-release-personal-card {
+    grid-column: 1 / -1;
+    margin: 10px 0 0;
+  }
+
+  /* Compact layout: single row with catalog + rate side by side */
+  .page_release .rym-modern-release-user-rating .release_my_catalog {
+    display: block;
+  }
+
+  .page_release .rym-modern-release-user-rating-primary {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  /* Hide Set listening, Tags on mobile — show only Catalog */
+  .page_release .rym-modern-release-user-rating .listening_btn,
+  .page_release .rym-modern-release-user-rating .tag_btn {
+    display: none !important;
+  }
+
+  /* Catalog button alone — full width row */
+  .page_release .rym-modern-release-user-rating-primary {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  /* Hide all secondary actions and Listen on mobile */
+  .page_release .rym-modern-release-user-rating-secondary,
+  .page_release .rym-modern-release-streaming {
+    display: none !important;
+  }
+
+  /* Rate row — more compact */
+  .page_release .rym-modern-release-user-rating-rate {
+    min-height: 56px;
+    padding: 10px;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
   /* Hide rows moved to Info tab or replaced by hero meta */
   .page_release table.album_info tr.rym-modern-mobile-hidden {
     display: none !important;
