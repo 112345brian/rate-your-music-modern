@@ -2815,7 +2815,7 @@ html#page_release #content {
     display: block;
   }
 
-  /* Hide primary row (Set listening, Tags stay accessible via ···) */
+  /* Primary/secondary rows emptied by JS — keep them hidden */
   .page_release .rym-modern-release-user-rating-primary,
   .page_release .rym-modern-release-user-rating-secondary,
   .page_release .rym-modern-release-streaming {
@@ -2832,7 +2832,7 @@ html#page_release #content {
     padding: 10px 0 10px 14px;
   }
 
-  /* Bump sits inline with the stars — reset its action-button sizing */
+  /* Bump inline with stars */
   .page_release .rym-modern-release-user-rating-rate .bump_btn {
     flex-shrink: 0;
     min-height: 54px;
@@ -2840,14 +2840,56 @@ html#page_release #content {
     width: auto;
   }
 
-  /* Row 2: action row — Catalog · Review · ··· */
+  /* Row 2: action row — Play · Review · ··· */
   .rym-modern-rating-action-row {
     border-top: 1px solid rgb(15 17 23 / 42%);
     display: flex;
     width: 100%;
   }
 
-  .rym-modern-rating-action-row .catalog_btn,
+  /* Play button */
+  .rym-modern-rating-play-btn {
+    align-items: center;
+    background: none;
+    border: none;
+    border-radius: 0;
+    color: var(--rym-link-hover);
+    cursor: pointer;
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    font-family: var(--rym-font);
+    font-size: 13px;
+    font-weight: 760;
+    gap: 6px;
+    justify-content: center;
+    min-height: 54px;
+    padding: 8px 10px;
+  }
+
+  .rym-modern-rating-play-btn--disabled {
+    color: var(--rym-text-muted);
+    cursor: default;
+    opacity: 0.4;
+  }
+
+  .rym-modern-rating-play-icon {
+    font-size: 16px;
+    line-height: 1;
+  }
+
+  .rym-modern-rating-play-label {
+    font-size: 13px;
+    font-weight: 760;
+    line-height: 1;
+  }
+
+  /* Streaming panel shown via play button (JS controls hidden attr) */
+  .page_release .rym-modern-release-streaming:not([hidden]) {
+    display: block !important;
+  }
+
+  /* Review button in action row */
   .rym-modern-rating-action-row .review_btn {
     flex: 1;
     min-height: 54px;
@@ -2868,14 +2910,23 @@ html#page_release #content {
     padding: 8px 16px;
   }
 
-  /* Expanded: show Set listening, Tags, Track ratings, Listen */
-  .page_release .rym-modern-release-user-rating.rym-modern-rating-expanded .rym-modern-release-user-rating-primary,
-  .page_release .rym-modern-release-user-rating.rym-modern-rating-expanded .rym-modern-release-user-rating-secondary {
-    display: grid !important;
+  /* Expanded section (··· panel): Set listening, Tags, Catalog, Track ratings */
+  .rym-modern-rating-expanded-section {
+    border-top: 1px solid rgb(15 17 23 / 42%);
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    width: 100%;
   }
 
-  .page_release .rym-modern-release-user-rating.rym-modern-rating-expanded .rym-modern-release-streaming {
-    display: block !important;
+  .rym-modern-rating-expanded-section[hidden] {
+    display: none;
+  }
+
+  .rym-modern-rating-expanded-section .catalog_btn,
+  .rym-modern-rating-expanded-section .listening_btn,
+  .rym-modern-rating-expanded-section .tag_btn,
+  .rym-modern-rating-expanded-section .track_rating_btn {
+    min-height: 54px;
   }
 
   /* Hide rows moved to Info tab or replaced by hero meta */

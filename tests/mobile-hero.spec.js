@@ -150,6 +150,49 @@ test.describe("mobile release page", () => {
     await expect(infoTab).toHaveAttribute("aria-current", "true");
   });
 
+  test("rating widget: rate row is visible with bump button", async ({
+    browser,
+  }) => {
+    const { page } = await loadReleasePage(browser);
+    const rateRow = page.locator(".rym-modern-release-user-rating-rate");
+    await expect(rateRow).toBeVisible();
+    // Bump button is moved into the rate row by JS
+    await expect(rateRow.locator(".bump_btn")).toBeVisible();
+  });
+
+  test("rating widget: action row has play, review, and more buttons", async ({
+    browser,
+  }) => {
+    const { page } = await loadReleasePage(browser);
+    const actionRow = page.locator(".rym-modern-rating-action-row");
+    await expect(actionRow).toBeVisible();
+    await expect(actionRow.locator(".rym-modern-rating-play-btn")).toBeVisible();
+    await expect(actionRow.locator(".review_btn")).toBeVisible();
+    await expect(actionRow.locator(".rym-modern-rating-more-btn")).toBeVisible();
+  });
+
+  test("rating widget: catalog is not in the action row", async ({
+    browser,
+  }) => {
+    const { page } = await loadReleasePage(browser);
+    const actionRow = page.locator(".rym-modern-rating-action-row");
+    await expect(actionRow.locator(".catalog_btn")).toHaveCount(0);
+  });
+
+  test("rating widget: ··· expands to show catalog and other options", async ({
+    browser,
+  }) => {
+    const { page } = await loadReleasePage(browser);
+    const expandedSection = page.locator(".rym-modern-rating-expanded-section");
+    await expect(expandedSection).toBeHidden();
+
+    await page.locator(".rym-modern-rating-more-btn").click();
+    await page.waitForTimeout(100);
+
+    await expect(expandedSection).toBeVisible();
+    await expect(expandedSection.locator(".catalog_btn")).toBeVisible();
+  });
+
   test("Discussion overlay opens with close button and sub-tabs", async ({
     browser,
   }) => {

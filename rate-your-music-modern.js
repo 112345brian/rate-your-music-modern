@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Rate Your Music Modern
 // @namespace    github.com/112345brian/rate-your-music-modern
-// @version      0.7.7
+// @version      0.7.8
 // @description  Behavior enhancements for the Rate Your Music Modern userstyle.
 // @author       bri
 // @homepageURL  https://github.com/112345brian/rate-your-music-modern
@@ -1843,38 +1843,72 @@ function buildMobileRatingMore(personalCard) {
   const bumpBtn = frame.querySelector(".bump_btn");
   const catalogBtn = frame.querySelector(".catalog_btn");
   const reviewBtn = frame.querySelector(".review_btn");
+  const listeningBtn = frame.querySelector(".listening_btn");
+  const tagBtn = frame.querySelector(".tag_btn");
+  const trackRatingBtn = frame.querySelector(".track_rating_btn");
+  const streamingEl = frame.querySelector(".rym-modern-release-streaming");
+  const streamingLinks = streamingEl?.querySelector(".rym-modern-release-streaming-links");
+  const hasStreaming = streamingLinks && streamingLinks.children.length > 0;
 
   // Remove "Rate" label — stars speak for themselves
   rateLabel?.remove();
 
-  // Move bump into the rate row (stars on left, bump on right)
+  // Move bump into the rate row (stars left, bump right)
   if (bumpBtn && rateRow) {
     rateRow.append(bumpBtn);
   }
 
-  // Build action row: [Catalog] [Review] [···]
-  const actionRow = document.createElement("div");
-  actionRow.className = "rym-modern-rating-action-row";
+  // Play button — opens streaming options inline; greyed if none available
+  const playBtn = document.createElement("button");
+  playBtn.className = "rym-modern-rating-play-btn";
+  playBtn.setAttribute("aria-label", "Play options");
+  playBtn.innerHTML = `<span class="rym-modern-rating-play-icon">▶</span><span class="rym-modern-rating-play-label">Play</span>`;
 
+  if (!hasStreaming) {
+    playBtn.disabled = true;
+    playBtn.classList.add("rym-modern-rating-play-btn--disabled");
+  } else if (streamingEl) {
+    streamingEl.hidden = true;
+    let playOpen = false;
+    playBtn.addEventListener("click", () => {
+      playOpen = !playOpen;
+      streamingEl.hidden = !playOpen;
+      playBtn.classList.toggle("rym-modern-rating-play-btn--active", playOpen);
+    });
+  }
+
+  // Expanded section (shown via ···): Set listening, Tags, Catalog, Track ratings
+  const expandedSection = document.createElement("div");
+  expandedSection.className = "rym-modern-rating-expanded-section";
+  expandedSection.hidden = true;
+
+  for (const btn of [listeningBtn, tagBtn, catalogBtn, trackRatingBtn]) {
+    if (btn) expandedSection.append(btn);
+  }
+
+  // ··· toggle
   const moreBtn = document.createElement("button");
   moreBtn.className = "rym-modern-rating-more-btn";
   moreBtn.setAttribute("aria-label", "More options");
   moreBtn.textContent = "···";
 
-  let expanded = false;
   moreBtn.addEventListener("click", () => {
-    expanded = !expanded;
-    frame.classList.toggle("rym-modern-rating-expanded", expanded);
+    const nowOpen = expandedSection.hidden;
+    expandedSection.hidden = !nowOpen;
   });
 
-  if (catalogBtn) actionRow.append(catalogBtn);
+  // Row 2: [Play] [Review] [···]
+  const actionRow = document.createElement("div");
+  actionRow.className = "rym-modern-rating-action-row";
+
+  actionRow.append(playBtn);
   if (reviewBtn) actionRow.append(reviewBtn);
   actionRow.append(moreBtn);
 
   if (rateRow) {
-    rateRow.after(actionRow);
+    rateRow.after(actionRow, expandedSection);
   } else {
-    frame.append(actionRow);
+    frame.append(actionRow, expandedSection);
   }
 }
 
