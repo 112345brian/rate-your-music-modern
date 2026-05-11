@@ -1,7 +1,7 @@
 /* ==UserStyle==
 @name           Rate Your Music Modern
 @namespace      github.com/112345brian/rate-your-music-modern
-@version        0.6.9
+@version        0.7.0
 @description    Modern visual treatment for Rate Your Music.
 @author         bri
 @homepageURL    https://github.com/112345brian/rate-your-music-modern
@@ -2659,21 +2659,57 @@
     font-weight: 900;
   }
 
+  .page_release .section_credits ul.credits {
+    column-gap: 28px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  }
+
   .page_release .section_credits ul.credits li {
-    background: rgb(148 163 184 / 7%) !important;
-    border: 1px solid rgb(148 163 184 / 12%);
-    border-radius: 7px;
+    background: transparent !important;
+    border: 0;
+    border-bottom: 1px solid rgb(148 163 184 / 13%);
+    border-radius: 0;
     color: var(--rym-text-soft);
     display: block;
     font-size: 13px !important;
-    margin-bottom: 6px;
-    padding: 8px !important;
+    margin-bottom: 0;
+    min-width: 0;
+    padding: 9px 0 !important;
+  }
+
+  .page_release .section_credits ul.credits li.expand_button {
+    grid-column: 1 / -1;
+  }
+
+  .page_release .section_credits ul.credits li div {
+    display: block;
+  }
+
+  .page_release .section_credits ul.credits li > a.artist,
+  .page_release .section_credits ul.credits li > span:first-child,
+  .page_release .credits_artist a,
+  .page_release .credits_artist span {
+    color: var(--rym-link-hover) !important;
+    display: block;
+    font-size: 14px !important;
+    font-weight: 780 !important;
+    line-height: 1.25 !important;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
   .page_release .credits_roles,
   .page_release .role_name,
   .page_release .role_tracks {
     color: var(--rym-text-muted) !important;
+  }
+
+  .page_release .credits_roles,
+  .page_release .section_credits .role_name {
+    font-size: 12px !important;
+    line-height: 1.35 !important;
   }
 
   .page_release #reviews_shell,

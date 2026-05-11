@@ -683,6 +683,15 @@ test("modernizes the release preview layout", async ({ page }) => {
   await releaseTabs.getByRole("link", { name: /^Credits/ }).click();
   await expect(page.locator("#rym-modern-release-credits")).toBeVisible();
   await expect(page.locator("#rym-modern-release-issues")).toBeHidden();
+  await expect(
+    page.locator("#rym-modern-release-credits ul.credits").first(),
+  ).toHaveCSS("display", "grid");
+  await expect(
+    page.locator("#rym-modern-release-credits ul.credits li").first(),
+  ).toHaveCSS("border-radius", "0px");
+  await expect(
+    page.locator("#rym-modern-release-credits ul.credits li").first(),
+  ).toHaveCSS("background-color", "rgba(0, 0, 0, 0)");
 
   await releaseTabs.getByRole("link", { name: /^Lists/ }).click();
   await expect(page.locator("#rym-modern-release-lists")).toBeVisible();
