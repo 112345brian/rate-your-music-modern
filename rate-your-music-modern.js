@@ -1611,7 +1611,168 @@ enhanceDiscographyFilters();
 enhanceContributions();
 enhanceReleasePage();
 enhanceMobileRelease();
+buildBottomNav();
 enhanceResponsiveInlineGroups();
+
+function buildBottomNav() {
+  if (document.querySelector(".rym-modern-bottom-nav")) {
+    return;
+  }
+
+  const profileImgEl = document.querySelector(".header_user_img");
+  const bgStyle = profileImgEl?.style.backgroundImage;
+  const bgUrl = bgStyle?.match(/url\(['"]?([^'"()]+)['"]?\)/)?.[1];
+  const profileSrc = bgUrl ? bgUrl.replace(/^\/\//, "https://") : null;
+  const profileLink = document.querySelector(
+    ".header_profile a[href*='/~'], .header_profile_main a[href*='/~']",
+  );
+  const profileHref = profileLink?.href ?? "/account/";
+
+  const mobileMenuAnchors = [
+    ...document.querySelectorAll(".mobile_header_menu a"),
+  ];
+  const exploreItems =
+    mobileMenuAnchors.length > 0
+      ? mobileMenuAnchors.map((a) => ({
+          href: a.href,
+          label: a.textContent.trim(),
+        }))
+      : [
+          { href: "/newreleases/", label: "New Music" },
+          { href: "/genres/", label: "Genres" },
+          { href: "/charts/", label: "Charts" },
+          { href: "/lists/", label: "Lists" },
+          { href: "/forums/", label: "Forums" },
+        ];
+
+  const homeSvg = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>`;
+  const gridSvg = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>`;
+  const searchSvg = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>`;
+  const personSvg = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>`;
+
+  function createNavLink(href, iconHtml, label, avatarSrc) {
+    const link = document.createElement("a");
+
+    link.className = "rym-modern-bottom-nav-item";
+    link.href = href;
+
+    const icon = document.createElement("span");
+
+    icon.className = "rym-modern-bottom-nav-icon";
+
+    if (avatarSrc) {
+      const img = document.createElement("img");
+
+      img.className = "rym-modern-bottom-nav-avatar";
+      img.src = avatarSrc;
+      img.alt = "";
+      icon.append(img);
+    } else {
+      icon.innerHTML = iconHtml;
+    }
+
+    const labelEl = document.createElement("span");
+
+    labelEl.className = "rym-modern-bottom-nav-label";
+    labelEl.textContent = label;
+    link.append(icon, labelEl);
+
+    return link;
+  }
+
+  const nav = document.createElement("nav");
+
+  nav.className = "rym-modern-bottom-nav";
+  nav.setAttribute("aria-label", "Main navigation");
+
+  nav.append(createNavLink("/", homeSvg, "Home"));
+
+  const exploreBtn = document.createElement("button");
+
+  exploreBtn.type = "button";
+  exploreBtn.className =
+    "rym-modern-bottom-nav-item rym-modern-bottom-nav-explore";
+  exploreBtn.setAttribute("aria-expanded", "false");
+  exploreBtn.setAttribute("aria-controls", "rym-modern-explore-tray");
+
+  const exploreIcon = document.createElement("span");
+
+  exploreIcon.className = "rym-modern-bottom-nav-icon";
+  exploreIcon.innerHTML = gridSvg;
+
+  const exploreLabel = document.createElement("span");
+
+  exploreLabel.className = "rym-modern-bottom-nav-label";
+  exploreLabel.textContent = "Explore";
+  exploreBtn.append(exploreIcon, exploreLabel);
+  nav.append(exploreBtn);
+
+  const searchLink = createNavLink("/search/", searchSvg, "Search");
+
+  searchLink.addEventListener("click", (event) => {
+    const searchInput = document.querySelector(".header_search input");
+
+    if (searchInput) {
+      event.preventDefault();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      searchInput.focus();
+    }
+  });
+  nav.append(searchLink);
+
+  nav.append(createNavLink(profileHref, personSvg, "Account", profileSrc));
+
+  const tray = document.createElement("div");
+
+  tray.id = "rym-modern-explore-tray";
+  tray.className = "rym-modern-explore-tray";
+  tray.hidden = true;
+  tray.setAttribute("aria-hidden", "true");
+
+  const backdrop = document.createElement("div");
+
+  backdrop.className = "rym-modern-explore-backdrop";
+
+  const panel = document.createElement("div");
+
+  panel.className = "rym-modern-explore-panel";
+
+  for (const item of exploreItems) {
+    const link = document.createElement("a");
+
+    link.className = "rym-modern-explore-link";
+    link.href = item.href;
+    link.textContent = item.label;
+    panel.append(link);
+  }
+
+  tray.append(backdrop, panel);
+
+  function openTray() {
+    tray.hidden = false;
+    tray.setAttribute("aria-hidden", "false");
+    exploreBtn.setAttribute("aria-expanded", "true");
+    exploreBtn.classList.add("rym-modern-bottom-nav-item--active");
+  }
+
+  function closeTray() {
+    tray.hidden = true;
+    tray.setAttribute("aria-hidden", "true");
+    exploreBtn.setAttribute("aria-expanded", "false");
+    exploreBtn.classList.remove("rym-modern-bottom-nav-item--active");
+  }
+
+  exploreBtn.addEventListener("click", () => {
+    if (tray.hidden) {
+      openTray();
+    } else {
+      closeTray();
+    }
+  });
+
+  backdrop.addEventListener("click", closeTray);
+  document.body.append(nav, tray);
+}
 
 function enhanceMobileRelease() {
   if (!isMobileViewport()) return;

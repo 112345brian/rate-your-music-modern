@@ -4474,4 +4474,137 @@
     gap: 1rem;
     grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   }
+
+  .rym-modern-bottom-nav {
+    display: none;
+  }
+
+  @media (width <= 42rem) {
+    .mobile_header_menu {
+      display: none !important;
+    }
+
+    body {
+      padding-bottom: calc(56px + env(safe-area-inset-bottom)) !important;
+    }
+
+    .rym-modern-bottom-nav {
+      align-items: stretch;
+      background: var(--rym-surface);
+      border-top: 1px solid var(--rym-border);
+      bottom: 0;
+      display: flex;
+      left: 0;
+      padding-bottom: env(safe-area-inset-bottom);
+      position: fixed;
+      right: 0;
+      z-index: 1002;
+    }
+
+    .rym-modern-bottom-nav-item {
+      align-items: center;
+      background: none;
+      border: none;
+      color: var(--rym-text-muted);
+      cursor: pointer;
+      display: flex;
+      flex: 1;
+      flex-direction: column;
+      font-family: var(--rym-font);
+      gap: 4px;
+      justify-content: center;
+      min-height: 56px;
+      padding: 8px 4px;
+      text-decoration: none;
+      transition:
+        color 100ms ease,
+        background-color 100ms ease;
+    }
+
+    .rym-modern-bottom-nav-item:hover,
+    .rym-modern-bottom-nav-item:active,
+    .rym-modern-bottom-nav-item--active {
+      background: rgb(120 183 255 / 8%);
+      color: var(--rym-link-hover);
+    }
+
+    .rym-modern-bottom-nav-icon {
+      align-items: center;
+      display: flex;
+      height: 24px;
+      justify-content: center;
+      width: 24px;
+    }
+
+    .rym-modern-bottom-nav-icon svg {
+      height: 24px;
+      width: 24px;
+    }
+
+    .rym-modern-bottom-nav-avatar {
+      border-radius: 50%;
+      height: 24px;
+      object-fit: cover;
+      width: 24px;
+    }
+
+    .rym-modern-bottom-nav-label {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      line-height: 1;
+    }
+
+    .rym-modern-explore-tray {
+      inset: 0;
+      position: fixed;
+      z-index: 1001;
+    }
+
+    .rym-modern-explore-tray[hidden] {
+      display: none;
+    }
+
+    .rym-modern-explore-backdrop {
+      background: rgb(0 0 0 / 55%);
+      inset: 0;
+      position: absolute;
+    }
+
+    .rym-modern-explore-panel {
+      background: var(--rym-surface-raised);
+      border: 1px solid var(--rym-border);
+      border-bottom: none;
+      border-radius: 16px 16px 0 0;
+      bottom: calc(56px + env(safe-area-inset-bottom));
+      display: grid;
+      gap: 8px;
+      grid-template-columns: 1fr 1fr;
+      left: 0;
+      padding: 16px;
+      position: absolute;
+      right: 0;
+    }
+
+    .rym-modern-explore-link {
+      align-items: center;
+      background: rgb(120 183 255 / 8%);
+      border: 1px solid rgb(120 183 255 / 16%);
+      border-radius: 10px;
+      color: var(--rym-text-soft) !important;
+      display: flex;
+      font-size: 16px;
+      font-weight: 720;
+      justify-content: center;
+      min-height: 56px;
+      padding: 14px 12px;
+      text-decoration: none !important;
+    }
+
+    .rym-modern-explore-link:hover {
+      background: rgb(120 183 255 / 14%);
+      border-color: rgb(120 183 255 / 28%);
+      color: var(--rym-link-hover) !important;
+    }
+  }
 }

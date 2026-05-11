@@ -18,6 +18,7 @@ const SOURCE_FILES = [
   "css/artist.css",
   "css/release.css",
   "css/charts.css",
+  "css/mobile-nav.css",
 ];
 
 const parts = await Promise.all(SOURCE_FILES.map((f) => readFile(f, "utf8")));
