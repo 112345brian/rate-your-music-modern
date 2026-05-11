@@ -803,6 +803,10 @@ function enhanceReleaseUserRating() {
     ".page_release .page_release_art_frame",
   );
   const albumInfoOuter = document.querySelector(".album_info_outer");
+  const mediaLinks =
+    [...document.querySelectorAll(".page_release .media_link_container")].find(
+      (container) => container.querySelector(".ui_media_link_btn"),
+    ) ?? document.querySelector(".page_release .media_link_container");
   const existingPersonalCard = document.querySelector(
     ".rym-modern-release-personal-card",
   );
@@ -819,6 +823,9 @@ function enhanceReleaseUserRating() {
   const rateBlock = document.createElement("div");
   const rateLabel = document.createElement("div");
   const secondaryActions = document.createElement("div");
+  const streamingDisclosure = document.createElement("details");
+  const streamingSummary = document.createElement("summary");
+  const streamingPanel = document.createElement("div");
   const ratingControl = catalogControls.querySelector(".my_catalog_rating");
   const catalogAction = catalogControls.querySelector(".my_catalog_catalog");
   const listeningAction = catalogControls.querySelector(
@@ -844,6 +851,10 @@ function enhanceReleaseUserRating() {
   rateLabel.className = "rym-modern-release-user-rating-rate-label";
   rateLabel.textContent = "Rate";
   secondaryActions.className = "rym-modern-release-user-rating-secondary";
+  streamingDisclosure.className = "rym-modern-release-streaming";
+  streamingSummary.className = "rym-modern-release-streaming-summary";
+  streamingPanel.className = "rym-modern-release-streaming-panel";
+  streamingSummary.textContent = "Listen";
 
   for (const action of [catalogAction, listeningAction, tagAction]) {
     if (action) {
@@ -868,6 +879,14 @@ function enhanceReleaseUserRating() {
   catalogControls.replaceChildren(primaryActions, rateBlock, secondaryActions);
   frame.append(catalogControls);
   personalCard.append(heading, frame);
+
+  if (mediaLinks) {
+    mediaLinks.classList.add("rym-modern-release-streaming-links");
+    streamingPanel.append(mediaLinks);
+    streamingDisclosure.append(streamingSummary, streamingPanel);
+    personalCard.append(streamingDisclosure);
+  }
+
   releaseArtFrame.before(stickyStack);
   stickyStack.append(releaseArtFrame, personalCard);
 

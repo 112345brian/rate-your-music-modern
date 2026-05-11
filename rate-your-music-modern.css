@@ -1,7 +1,7 @@
 /* ==UserStyle==
 @name           Rate Your Music Modern
 @namespace      github.com/112345brian/rate-your-music-modern
-@version        0.7.7
+@version        0.7.8
 @description    Modern visual treatment for Rate Your Music.
 @author         bri
 @homepageURL    https://github.com/112345brian/rate-your-music-modern
@@ -1989,6 +1989,115 @@
     top: 2.55rem;
   }
 
+  .page_release .rym-modern-release-streaming {
+    border-top: 1px solid rgb(15 17 23 / 58%);
+    position: relative;
+  }
+
+  .page_release .rym-modern-release-streaming-summary {
+    align-items: center;
+    color: var(--rym-text-soft);
+    cursor: pointer;
+    display: flex;
+    font-size: 13px;
+    font-weight: 780;
+    gap: 8px;
+    justify-content: center;
+    list-style: none;
+    min-height: 44px;
+    padding: 10px 12px;
+    text-align: center;
+  }
+
+  .page_release .rym-modern-release-streaming-summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .page_release .rym-modern-release-streaming-summary::before {
+    color: var(--rym-link-hover);
+    content: "▶";
+    font-size: 12px;
+    line-height: 1;
+  }
+
+  .page_release
+    .rym-modern-release-streaming[open]
+    .rym-modern-release-streaming-summary {
+    background: rgb(120 183 255 / 8%);
+    color: var(--rym-link-hover);
+  }
+
+  .page_release .rym-modern-release-streaming-panel {
+    background: var(--rym-surface-raised);
+    border: 1px solid var(--rym-border);
+    border-radius: 8px;
+    box-shadow: var(--rym-shadow);
+    display: none;
+    left: 10px;
+    padding: 12px;
+    position: absolute;
+    right: 10px;
+    top: calc(100% + 8px);
+    z-index: 7;
+  }
+
+  .page_release
+    .rym-modern-release-streaming[open]
+    .rym-modern-release-streaming-panel {
+    display: block;
+  }
+
+  .page_release .rym-modern-release-streaming-links {
+    background: transparent !important;
+    display: block !important;
+    margin: 0 !important;
+    min-height: 0 !important;
+  }
+
+  .page_release .rym-modern-release-streaming-links > div {
+    margin: 0 !important;
+  }
+
+  .page_release .rym-modern-release-streaming-links .ui_media_links_container {
+    display: block !important;
+  }
+
+  .page_release .rym-modern-release-streaming-links .ui_media_links {
+    align-content: stretch;
+    display: flex !important;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: stretch !important;
+  }
+
+  .page_release .rym-modern-release-streaming-links .ui_media_link_btn {
+    align-items: center;
+    background: rgb(120 183 255 / 10%) !important;
+    border: 1px solid rgb(120 183 255 / 22%);
+    border-radius: 999px;
+    color: var(--rym-text-soft) !important;
+    display: inline-flex !important;
+    flex: 1 1 calc(50% - 4px);
+    font-size: 12px;
+    font-weight: 760;
+    height: 34px !important;
+    justify-content: center;
+    min-width: 104px;
+    padding: 0 10px;
+    text-decoration: none !important;
+    width: auto !important;
+  }
+
+  .page_release .rym-modern-release-streaming-links .ui_media_link_btn::after {
+    content: attr(title);
+  }
+
+  .page_release .rym-modern-release-streaming-links .ui_media_link_btn:hover {
+    background: rgb(120 183 255 / 18%) !important;
+    border-color: rgb(120 183 255 / 38%);
+    color: var(--rym-link-hover) !important;
+  }
+
   .page_release .rym-modern-release-review-editor {
     max-width: 760px;
   }
@@ -2240,7 +2349,6 @@
     width: 100% !important;
   }
 
-  .page_release .media_link_container,
   .page_release iframe,
   .page_release a[href*="submit_media_link"] {
     display: none !important;

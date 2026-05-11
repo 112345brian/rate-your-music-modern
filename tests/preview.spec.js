@@ -369,6 +369,17 @@ test("modernizes the release preview layout", async ({ page }) => {
   await expect(
     page.locator(".rym-modern-release-personal-card .my_catalog_rating"),
   ).toBeVisible();
+  await expect(page.locator(".rym-modern-release-streaming")).toBeVisible();
+  await expect(
+    page.locator(".rym-modern-release-streaming .media_link_container"),
+  ).toBeHidden();
+  await page.locator(".rym-modern-release-streaming-summary").click();
+  await expect(
+    page.locator(".rym-modern-release-streaming .media_link_container"),
+  ).toBeVisible();
+  await expect(
+    page.locator(".rym-modern-release-streaming .ui_media_link_btn").first(),
+  ).toBeVisible();
   const personalStars = page.locator(
     ".rym-modern-release-personal-card .rating_stars",
   );
