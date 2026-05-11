@@ -922,30 +922,27 @@ small,
 .artist_info .info_content:has(a.genre) {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: 6px 14px;
   margin-top: 0 !important;
 }
 
 .artist_info a.genre {
-  align-items: center;
-  background: rgb(120 183 255 / 12%);
-  border: 1px solid rgb(120 183 255 / 28%);
-  border-radius: 999px;
   color: var(--rym-link-hover) !important;
-  display: inline-flex;
-  font-size: 13px;
+  display: inline;
+  font-size: 15px;
   font-weight: 720;
   letter-spacing: 0;
-  line-height: 1;
-  padding: 6px 9px;
+  line-height: 1.35;
+  padding: 0;
   text-decoration: none;
   text-transform: lowercase;
 }
 
 .artist_info a.genre:hover {
-  background: rgb(120 183 255 / 20%);
-  border-color: rgb(120 183 255 / 46%);
   color: #d7ebff !important;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
 }
 
 .artist_info .info_content:has(.twitter-share-button),
@@ -1236,8 +1233,8 @@ small,
   }
 
   .page_artist .artist_info a.genre {
-    font-size: 12px;
-    padding: 5px 8px;
+    font-size: 14px;
+    padding: 0;
   }
 }
 
@@ -2118,7 +2115,7 @@ html#page_release #content {
 .page_release .release_sec_genres {
   display: inline-flex;
   flex-wrap: wrap;
-  gap: 7px 8px;
+  gap: 5px 13px;
 }
 
 .page_release table.album_info tr.release_genres {
@@ -2136,7 +2133,7 @@ html#page_release #content {
   display: flex;
   float: none !important;
   flex-wrap: wrap;
-  gap: 7px 8px;
+  gap: 5px 13px;
   max-width: 100%;
 }
 
@@ -2159,28 +2156,30 @@ html#page_release #content {
 }
 
 .page_release table.album_info a.genre {
-  align-items: center;
-  border-radius: 999px;
-  display: inline-flex;
-  font-size: 12px !important;
+  border-radius: 0;
+  display: inline;
+  font-size: 14px !important;
   font-weight: 740 !important;
-  line-height: 1;
-  padding: 6px 9px;
+  line-height: 1.35;
+  padding: 0;
   text-decoration: none;
   text-transform: lowercase;
 }
 
 .page_release .release_pri_genres a.genre {
-  background: rgb(120 183 255 / 15%);
-  border: 1px solid rgb(120 183 255 / 34%);
   color: var(--rym-link-hover) !important;
 }
 
 .page_release .release_sec_genres a.genre {
-  background: rgb(148 163 184 / 9%);
-  border: 1px solid rgb(148 163 184 / 18%);
   color: var(--rym-text-soft) !important;
   font-weight: 680 !important;
+}
+
+.page_release table.album_info a.genre:hover {
+  color: #d7ebff !important;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
 }
 
 .page_release .release_pri_descriptors {

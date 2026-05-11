@@ -645,30 +645,27 @@
 .artist_info .info_content:has(a.genre) {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: 6px 14px;
   margin-top: 0 !important;
 }
 
 .artist_info a.genre {
-  align-items: center;
-  background: rgb(120 183 255 / 12%);
-  border: 1px solid rgb(120 183 255 / 28%);
-  border-radius: 999px;
   color: var(--rym-link-hover) !important;
-  display: inline-flex;
-  font-size: 13px;
+  display: inline;
+  font-size: 15px;
   font-weight: 720;
   letter-spacing: 0;
-  line-height: 1;
-  padding: 6px 9px;
+  line-height: 1.35;
+  padding: 0;
   text-decoration: none;
   text-transform: lowercase;
 }
 
 .artist_info a.genre:hover {
-  background: rgb(120 183 255 / 20%);
-  border-color: rgb(120 183 255 / 46%);
   color: #d7ebff !important;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
 }
 
 .artist_info .info_content:has(.twitter-share-button),
@@ -959,8 +956,8 @@
   }
 
   .page_artist .artist_info a.genre {
-    font-size: 12px;
-    padding: 5px 8px;
+    font-size: 14px;
+    padding: 0;
   }
 }
 

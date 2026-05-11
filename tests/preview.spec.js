@@ -206,6 +206,14 @@ test("loads generated previews for saved RYM assets", async ({ page }) => {
     .innerText();
 
   expect(genreText).not.toContain(",");
+  await expect(page.locator(".artist_info a.genre").first()).toHaveCSS(
+    "background-color",
+    "rgba(0, 0, 0, 0)",
+  );
+  await expect(page.locator(".artist_info a.genre").first()).toHaveCSS(
+    "border-radius",
+    "0px",
+  );
   expect(followerText).not.toContain(",");
   await expect(page.locator(".rym-modern-see-all-followers")).toHaveText(
     "See all 21",
@@ -507,6 +515,14 @@ test("modernizes the release preview layout", async ({ page }) => {
   await expect(page.locator(".release_sec_genres a.genre").first()).toHaveCSS(
     "color",
     "rgb(197, 206, 218)",
+  );
+  await expect(page.locator(".release_pri_genres a.genre").first()).toHaveCSS(
+    "background-color",
+    "rgba(0, 0, 0, 0)",
+  );
+  await expect(page.locator(".release_pri_genres a.genre").first()).toHaveCSS(
+    "border-radius",
+    "0px",
   );
   await expect(
     page.locator(".rym-modern-release-lists-disclosure"),
