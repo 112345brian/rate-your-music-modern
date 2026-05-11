@@ -4,6 +4,8 @@
 
 @media (max-width: 42rem) {
   #header,
+  #site_header,
+  .site_header,
   .mobile_header_menu {
     display: none !important;
   }
