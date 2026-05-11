@@ -3,17 +3,11 @@
 }
 
 @media (max-width: 42rem) {
+  header,
   #header,
   #site_header,
   .site_header,
-  .header_logo,
-  .header_search,
-  .header_user_img,
-  .header_profile,
-  .header_profile_main,
-  .mobile_header_menu,
-  *:has(> .header_logo),
-  *:has(> .header_search) {
+  .mobile_header_menu {
     display: none !important;
   }
 

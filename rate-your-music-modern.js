@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Rate Your Music Modern
 // @namespace    github.com/112345brian/rate-your-music-modern
-// @version      0.7.1
+// @version      0.7.2
 // @description  Behavior enhancements for the Rate Your Music Modern userstyle.
 // @author       bri
 // @homepageURL  https://github.com/112345brian/rate-your-music-modern
@@ -1668,25 +1668,15 @@ function buildBottomNav() {
   }
 
   if (window.innerWidth <= 672) {
-    // Walk up from .header_search until the ancestor also contains .header_logo
-    // or .header_user_img — those are siblings of the search bar in the header.
-    let headerEl = document.querySelector(".header_search");
-    while (headerEl && headerEl !== document.body) {
-      if (
-        headerEl.querySelector(".header_logo") ||
-        headerEl.querySelector(".header_user_img")
-      )
-        break;
-      headerEl = headerEl.parentElement;
-    }
-    if (headerEl && headerEl !== document.body) {
-      headerEl.style.setProperty("display", "none", "important");
-    } else {
-      // Fallback: hide the direct parent of .header_logo
-      document
-        .querySelector(".header_logo")
-        ?.parentElement?.style.setProperty("display", "none", "important");
-    }
+    // The RYM site header is a <header> element. Hide it directly.
+    const siteHeader =
+      document.querySelector("body > header") ??
+      document.querySelector(".header_logo")?.closest("header");
+    siteHeader?.style.setProperty("display", "none", "important");
+    // Also hide the mobile nav menu which sits outside the <header>
+    document
+      .querySelector(".mobile_header_menu")
+      ?.style.setProperty("display", "none", "important");
   }
 
   const profileImgEl = document.querySelector(".header_user_img");
