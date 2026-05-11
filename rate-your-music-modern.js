@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Rate Your Music Modern
 // @namespace    github.com/112345brian/rate-your-music-modern
-// @version      0.6.4
+// @version      0.7.0
 // @description  Behavior enhancements for the Rate Your Music Modern userstyle.
 // @author       bri
 // @homepageURL  https://github.com/112345brian/rate-your-music-modern
@@ -1806,9 +1806,68 @@ function enhanceMobileRelease() {
   const mainInfo = document.querySelector(".section_main_info");
   if (!mainInfo) return;
 
+  buildMobileHeroMeta(mainInfo);
+
+  const infoPanel = buildMobileInfoPanel();
+
   mainInfo.after(tabBar);
 
+  if (infoPanel) {
+    const firstPanel = document.querySelector(".rym-modern-release-tab-panel");
+    if (firstPanel) {
+      firstPanel.before(infoPanel);
+    } else {
+      tabBar.after(infoPanel);
+    }
+
+    const infoTab = document.createElement("a");
+    infoTab.className = "rym-modern-release-tab";
+    infoTab.href = "#rym-modern-release-info";
+    infoTab.dataset.target = "rym-modern-release-info";
+    infoTab.textContent = "Info";
+    infoTab.setAttribute("aria-current", "true");
+    tabBar.prepend(infoTab);
+
+    for (const tab of tabBar.querySelectorAll(
+      ".rym-modern-release-tab:not(:first-child)",
+    )) {
+      tab.setAttribute("aria-current", "false");
+    }
+
+    for (const panel of document.querySelectorAll(
+      ".rym-modern-release-tab-panel:not(#rym-modern-release-info)",
+    )) {
+      panel.hidden = true;
+    }
+
+    infoTab.addEventListener("click", (event) => {
+      event.preventDefault();
+      for (const panel of document.querySelectorAll(
+        ".rym-modern-release-tab-panel",
+      )) {
+        panel.hidden = panel !== infoPanel;
+      }
+      for (const tab of tabBar.querySelectorAll(".rym-modern-release-tab")) {
+        tab.setAttribute("aria-current", String(tab === infoTab));
+      }
+      history.replaceState(null, "", "#rym-modern-release-info");
+    });
+
+    tabBar.addEventListener(
+      "click",
+      (event) => {
+        const tab = event.target.closest(".rym-modern-release-tab");
+        if (tab && tab !== infoTab) {
+          infoPanel.hidden = true;
+          infoTab.setAttribute("aria-current", "false");
+        }
+      },
+      true,
+    );
+  }
+
   for (const tab of tabBar.querySelectorAll(".rym-modern-release-tab")) {
+    if (tab.dataset.target === "rym-modern-release-info") continue;
     tab.addEventListener("click", () => {
       const targetId = tab.dataset.target;
       if (!targetId || targetId === "rym-modern-release-reviews") return;
@@ -1820,4 +1879,104 @@ function enhanceMobileRelease() {
       }
     });
   }
+}
+
+function buildMobileHeroMeta(mainInfo) {
+  const summaryRow = mainInfo.querySelector(".rym-modern-release-summary-row");
+  const titleEl = mainInfo.querySelector(".album_title");
+  if (!summaryRow || !titleEl) return;
+
+  const fields = {};
+  for (const field of summaryRow.querySelectorAll(
+    ".rym-modern-release-summary-field",
+  )) {
+    const label = field
+      .querySelector(".rym-modern-release-summary-label")
+      ?.textContent.trim()
+      .toLowerCase();
+    const value = field.querySelector(".rym-modern-release-summary-value");
+    if (label && value) fields[label] = value;
+  }
+
+  const heroMeta = document.createElement("div");
+  heroMeta.className = "rym-modern-mobile-hero-meta";
+
+  const typeText = fields.type?.textContent.trim();
+  const artistValue = fields.artist;
+  if (typeText || artistValue) {
+    const line = document.createElement("div");
+    line.className = "rym-modern-mobile-hero-type-artist";
+    if (typeText) line.append(typeText);
+    if (typeText && artistValue) line.append(" by ");
+    if (artistValue) line.append(...artistValue.cloneNode(true).childNodes);
+    heroMeta.append(line);
+  }
+
+  const releaseValue = fields.release;
+  if (releaseValue) {
+    const line = document.createElement("div");
+    line.className = "rym-modern-mobile-hero-release";
+    line.append(...releaseValue.cloneNode(true).childNodes);
+    heroMeta.append(line);
+  }
+
+  titleEl.after(heroMeta);
+  summaryRow.classList.add("rym-modern-mobile-hidden");
+}
+
+function buildMobileInfoPanel() {
+  const albumInfoRows = [...document.querySelectorAll(".album_info tr")];
+
+  const genreRow = albumInfoRows.find(
+    (row) =>
+      row.querySelector(".info_hdr")?.textContent.trim().toLowerCase() ===
+      "genres",
+  );
+  const descriptorRow = albumInfoRows.find(
+    (row) =>
+      row.querySelector(".info_hdr")?.textContent.trim().toLowerCase() ===
+      "descriptors",
+  );
+  const tracklist = getReleaseSection(".section_tracklisting");
+
+  if (!genreRow && !descriptorRow && !tracklist) return null;
+
+  const panel = document.createElement("div");
+  panel.id = "rym-modern-release-info";
+  panel.className = "rym-modern-release-tab-panel rym-modern-release-info-panel";
+
+  if (genreRow) {
+    genreRow.classList.add("rym-modern-mobile-hidden");
+    const sec = document.createElement("div");
+    sec.className = "rym-modern-info-section";
+    const lbl = document.createElement("div");
+    lbl.className = "rym-modern-info-label";
+    lbl.textContent = "Genres";
+    const content = document.createElement("div");
+    content.className = "rym-modern-info-genres";
+    const pri = genreRow.querySelector(".release_pri_genres");
+    const sec2 = genreRow.querySelector(".release_sec_genres");
+    if (pri) content.append(pri.cloneNode(true));
+    if (sec2) content.append(sec2.cloneNode(true));
+    sec.append(lbl, content);
+    panel.append(sec);
+  }
+
+  if (descriptorRow) {
+    descriptorRow.classList.add("rym-modern-mobile-hidden");
+    const sec = document.createElement("div");
+    sec.className = "rym-modern-info-section";
+    const lbl = document.createElement("div");
+    lbl.className = "rym-modern-info-label";
+    lbl.textContent = "Descriptors";
+    const descriptors = descriptorRow.querySelector(".release_pri_descriptors");
+    if (descriptors) sec.append(lbl, descriptors.cloneNode(true));
+    panel.append(sec);
+  }
+
+  if (tracklist) {
+    panel.append(tracklist);
+  }
+
+  return panel;
 }
