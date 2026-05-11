@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Rate Your Music Modern
 // @namespace    github.com/112345brian/rate-your-music-modern
-// @version      0.5.0
+// @version      0.6.0
 // @description  Behavior enhancements for the Rate Your Music Modern userstyle.
 // @author       bri
 // @homepageURL  https://github.com/112345brian/rate-your-music-modern
