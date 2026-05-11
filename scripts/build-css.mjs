@@ -4,7 +4,7 @@ import prettier from "prettier";
 const USERSTYLE_HEADER = `/* ==UserStyle==
 @name           Rate Your Music Modern
 @namespace      github.com/112345brian/rate-your-music-modern
-@version        0.6.8
+@version        0.6.9
 @description    Modern visual treatment for Rate Your Music.
 @author         bri
 @homepageURL    https://github.com/112345brian/rate-your-music-modern

@@ -1,7 +1,7 @@
 /* ==UserStyle==
 @name           Rate Your Music Modern
 @namespace      github.com/112345brian/rate-your-music-modern
-@version        0.6.8
+@version        0.6.9
 @description    Modern visual treatment for Rate Your Music.
 @author         bri
 @homepageURL    https://github.com/112345brian/rate-your-music-modern
@@ -2540,25 +2540,29 @@
 
   .page_release ul.tracks li.track {
     align-items: center;
-    background: rgb(120 183 255 / 5%) !important;
-    border: 1px solid transparent !important;
-    border-radius: 7px !important;
+    background: transparent !important;
+    border: 0 !important;
+    border-bottom: 1px solid rgb(148 163 184 / 13%) !important;
+    border-radius: 0 !important;
     display: block;
-    margin-bottom: 5px !important;
-    min-height: 42px;
-    padding: 7px 8px !important;
+    margin-bottom: 0 !important;
+    min-height: 38px;
+    padding: 9px 4px !important;
   }
 
   .page_release ul.tracks li.track:hover {
-    background: rgb(120 183 255 / 10%) !important;
-    border-color: rgb(120 183 255 / 18%) !important;
+    background: rgb(120 183 255 / 6%) !important;
+  }
+
+  .page_release ul.tracks li.track:last-child {
+    border-bottom: 0 !important;
   }
 
   .page_release .tracklist_line {
     align-items: center;
     display: grid;
-    gap: 8px;
-    grid-template-columns: auto minmax(0, 1fr) auto;
+    column-gap: 10px;
+    grid-template-columns: 28px minmax(0, 1fr) auto;
     width: 100% !important;
   }
 
@@ -2583,6 +2587,15 @@
     padding: 0 !important;
   }
 
+  .page_release .tracklist_title > span {
+    min-width: 0;
+  }
+
+  .page_release .tracklist_title a.song {
+    display: inline;
+    overflow-wrap: anywhere;
+  }
+
   .page_release .tracklist_duration {
     color: var(--rym-text-muted) !important;
     font-size: 12px !important;
@@ -2593,6 +2606,7 @@
     float: none !important;
     grid-column: 3;
     grid-row: 1;
+    justify-self: end;
   }
 
   .page_release .page_release_section_tracks_track_stats_scores {

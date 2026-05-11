@@ -454,6 +454,14 @@ test("modernizes the release preview layout", async ({ page }) => {
   await expect(
     page.locator(".section_tracklisting .rym-modern-track-total").first(),
   ).toHaveText("Total length: 63:05");
+  await expect(page.locator("ul.tracks li.track").first()).toHaveCSS(
+    "border-radius",
+    "0px",
+  );
+  await expect(page.locator("ul.tracks li.track").first()).toHaveCSS(
+    "background-color",
+    "rgba(0, 0, 0, 0)",
+  );
   await expect(page.locator(".section_videos")).toHaveCSS(
     "border-top-style",
     "solid",
