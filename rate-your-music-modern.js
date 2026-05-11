@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Rate Your Music Modern
 // @namespace    github.com/112345brian/rate-your-music-modern
-// @version      0.7.0
+// @version      0.7.1
 // @description  Behavior enhancements for the Rate Your Music Modern userstyle.
 // @author       bri
 // @homepageURL  https://github.com/112345brian/rate-your-music-modern
@@ -1378,11 +1378,44 @@ function isMobileViewport() {
 
 function openMobileDiscussionOverlay(panel) {
   if (!panel.querySelector(".rym-mobile-overlay-close")) {
-    const header = document.createElement("div");
-    header.className = "rym-mobile-overlay-header";
-    const title = document.createElement("span");
-    title.className = "rym-mobile-overlay-title";
-    title.textContent = "Discussion";
+    const overlayHeader = document.createElement("div");
+    overlayHeader.className = "rym-mobile-overlay-header";
+
+    const reviewsEl = panel.querySelector("#reviews_shell");
+    const commentsEl = panel.querySelector(
+      ".section_comments, #rym-modern-release-comments",
+    );
+    const subSections = [
+      { label: "Reviews", el: reviewsEl },
+      { label: "Comments", el: commentsEl },
+    ].filter((s) => s.el);
+
+    const tabRow = document.createElement("div");
+    tabRow.className = "rym-mobile-discussion-tabs";
+
+    for (const { label, el } of subSections) {
+      const tab = document.createElement("button");
+      tab.className = "rym-mobile-discussion-tab";
+      tab.textContent = label;
+      tab.addEventListener("click", () => {
+        for (const { el: sEl } of subSections) {
+          sEl.hidden = sEl !== el;
+        }
+        for (const t of tabRow.querySelectorAll(".rym-mobile-discussion-tab")) {
+          t.setAttribute("aria-current", String(t === tab));
+        }
+        panel.scrollTop = 0;
+      });
+      tabRow.append(tab);
+    }
+
+    if (subSections.length > 0) {
+      tabRow.firstElementChild?.setAttribute("aria-current", "true");
+      for (let i = 1; i < subSections.length; i++) {
+        subSections[i].el.hidden = true;
+      }
+    }
+
     const closeBtn = document.createElement("button");
     closeBtn.className = "rym-mobile-overlay-close";
     closeBtn.setAttribute("aria-label", "Close");
@@ -1391,10 +1424,16 @@ function openMobileDiscussionOverlay(panel) {
       panel.classList.remove("rym-mobile-overlay-open");
       panel.hidden = true;
       document.documentElement.classList.remove("rym-mobile-overlay-active");
+      for (const { el } of subSections) {
+        el.hidden = false;
+      }
     });
-    header.append(title, closeBtn);
-    panel.prepend(header);
+
+    overlayHeader.append(tabRow, closeBtn);
+    panel.prepend(overlayHeader);
   }
+
+  panel.scrollTop = 0;
   panel.hidden = false;
   panel.classList.add("rym-mobile-overlay-open");
   document.documentElement.classList.add("rym-mobile-overlay-active");
@@ -1629,15 +1668,24 @@ function buildBottomNav() {
   }
 
   if (window.innerWidth <= 672) {
-    // Walk up from .header_search until we find the ancestor that also
-    // contains .mobile_header_menu — that's the site header container.
+    // Walk up from .header_search until the ancestor also contains .header_logo
+    // or .header_user_img — those are siblings of the search bar in the header.
     let headerEl = document.querySelector(".header_search");
     while (headerEl && headerEl !== document.body) {
-      if (headerEl.querySelector(".mobile_header_menu")) break;
+      if (
+        headerEl.querySelector(".header_logo") ||
+        headerEl.querySelector(".header_user_img")
+      )
+        break;
       headerEl = headerEl.parentElement;
     }
     if (headerEl && headerEl !== document.body) {
       headerEl.style.setProperty("display", "none", "important");
+    } else {
+      // Fallback: hide the direct parent of .header_logo
+      document
+        .querySelector(".header_logo")
+        ?.parentElement?.style.setProperty("display", "none", "important");
     }
   }
 

@@ -6,7 +6,14 @@
   #header,
   #site_header,
   .site_header,
-  .mobile_header_menu {
+  .header_logo,
+  .header_search,
+  .header_user_img,
+  .header_profile,
+  .header_profile_main,
+  .mobile_header_menu,
+  *:has(> .header_logo),
+  *:has(> .header_search) {
     display: none !important;
   }
 
