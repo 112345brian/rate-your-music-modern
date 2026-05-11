@@ -42,18 +42,27 @@
 #page_charts .page_charts_section_charts_items {
   display: grid;
   gap: 14px;
+  min-width: 0;
 }
 
 #page_charts .page_section_charts_item_wrapper {
   display: block;
+  min-width: 0;
 }
 
 .page_charts_section_charts_item {
-  align-items: center;
-  display: grid;
-  gap: 1rem;
-  grid-template-columns: auto minmax(0, 1fr) auto;
-  padding: 0.9rem 1rem;
+  min-width: 0;
+  overflow-x: clip;
+}
+
+@media only screen and (min-width: 48.125em) {
+  .page_charts_section_charts_item {
+    align-items: center;
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    padding: 0.9rem 1rem;
+  }
 }
 
 #page_charts .page_charts_section_charts_item.object_release {
