@@ -2708,10 +2708,24 @@ html#page_release #content {
 .page_release #rym-modern-release-reviews,
 .page_release #rym-modern-release-comments,
 .page_release #rym-modern-release-comments .comments,
-.page_release #rym-modern-release-comments .comments_list,
 .page_release #rym-modern-release-comments .comments_post {
   max-width: none !important;
   width: 100% !important;
+}
+
+.page_release #rym-modern-release-comments .comments_list {
+  max-height: min(600px, 70vh) !important;
+  max-width: none !important;
+  overscroll-behavior: contain;
+  overflow-y: auto !important;
+  scrollbar-color: rgb(148 163 184 / 45%) transparent;
+  width: 100% !important;
+}
+
+.page_release
+  #rym-modern-release-comments
+  .comments_list:not(.rym-modern-scroll-armed) {
+  cursor: default;
 }
 
 .page_release .rym-modern-release-tabs {

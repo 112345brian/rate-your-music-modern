@@ -591,6 +591,8 @@ test("modernizes the release preview layout", async ({ page }) => {
       commentsListOverflowY: getComputedStyle(
         comments.querySelector(".comments_list"),
       ).overflowY,
+      commentsScrollIntent:
+        comments.querySelector(".comments_list").dataset.rymModernScrollIntent,
       reviewPaginationOnOwnLine: (() => {
         const sort = document.querySelector(".review_sort");
         const pagination = document.querySelector(
@@ -666,8 +668,9 @@ test("modernizes the release preview layout", async ({ page }) => {
   expect(releaseOrder.suggestionsInMainColumn).toBe(true);
   expect(Boolean(releaseOrder.suggestionsAfterTabs)).toBe(true);
   expect(releaseOrder.commentsFillPanel).toBe(true);
-  expect(releaseOrder.commentsListMaxHeight).toBe("none");
-  expect(releaseOrder.commentsListOverflowY).toBe("visible");
+  expect(releaseOrder.commentsListMaxHeight).not.toBe("none");
+  expect(releaseOrder.commentsListOverflowY).toBe("auto");
+  expect(releaseOrder.commentsScrollIntent).toBe("true");
   expect(releaseOrder.reviewPaginationOnOwnLine).toBe(true);
   expect(releaseOrder.reviewColumnsAligned).toBe(true);
   expect(releaseOrder.friendStarsFit).toBe(true);

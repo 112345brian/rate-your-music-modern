@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Rate Your Music Modern
 // @namespace    github.com/112345brian/rate-your-music-modern
-// @version      0.4.9
+// @version      0.5.0
 // @description  Behavior enhancements for the Rate Your Music Modern userstyle.
 // @author       bri
 // @homepageURL  https://github.com/112345brian/rate-your-music-modern
@@ -1266,6 +1266,58 @@ function enhanceReleaseContributions() {
   section.dataset.rymModernEnhanced = "true";
 }
 
+function enhanceReleaseCommentsScrollIntent() {
+  for (const list of document.querySelectorAll(
+    ".page_release #rym-modern-release-comments .comments_list",
+  )) {
+    if (list.dataset.rymModernScrollIntent === "true") {
+      continue;
+    }
+
+    let hoverTimer = null;
+    let isScrollArmed = false;
+
+    const disarm = () => {
+      isScrollArmed = false;
+      list.classList.remove("rym-modern-scroll-armed");
+      window.clearTimeout(hoverTimer);
+      hoverTimer = null;
+    };
+
+    list.addEventListener("pointerenter", () => {
+      window.clearTimeout(hoverTimer);
+      hoverTimer = window.setTimeout(() => {
+        isScrollArmed = true;
+        list.classList.add("rym-modern-scroll-armed");
+      }, 1000);
+    });
+
+    list.addEventListener("pointerleave", disarm);
+    list.addEventListener("pointerdown", () => {
+      isScrollArmed = true;
+      list.classList.add("rym-modern-scroll-armed");
+    });
+    list.addEventListener(
+      "wheel",
+      (event) => {
+        if (isScrollArmed) {
+          return;
+        }
+
+        event.preventDefault();
+        window.scrollBy({
+          left: event.deltaX,
+          top: event.deltaY,
+          behavior: "auto",
+        });
+      },
+      { passive: false },
+    );
+
+    list.dataset.rymModernScrollIntent = "true";
+  }
+}
+
 function getReleaseSection(selector) {
   return [...document.querySelectorAll(selector)].find(
     (section) => !section.closest(".show-for-small"),
@@ -1345,6 +1397,7 @@ function enhanceReleasePage() {
       comments.id = "rym-modern-release-comments";
       comments.classList.add("rym-modern-release-main-section");
       reviewsPanel.append(comments);
+      enhanceReleaseCommentsScrollIntent();
     }
 
     reviewsPanel.append(reviewsShell);
