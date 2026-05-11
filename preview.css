@@ -3489,7 +3489,7 @@ html#page_release #content {
   background: transparent !important;
   border: 0 !important;
   display: grid;
-  gap: 8px;
+  gap: 0;
   list-style: none;
   margin: 0 !important;
   max-height: none !important;
@@ -3498,9 +3498,10 @@ html#page_release #content {
 }
 
 .page_release li.issue_info {
-  background: rgb(148 163 184 / 7%) !important;
-  border: 1px solid rgb(148 163 184 / 12%) !important;
-  border-radius: 8px !important;
+  background: transparent !important;
+  border: 0 !important;
+  border-bottom: 1px solid rgb(148 163 184 / 16%) !important;
+  border-radius: 0 !important;
   color: var(--rym-text-soft) !important;
   display: grid !important;
   gap: 8px 12px;
@@ -3513,6 +3514,12 @@ html#page_release #content {
 .page_release li.issue_info.release_view {
   display: block !important;
   min-height: 0;
+  padding: 12px 0 !important;
+  text-align: left;
+}
+
+.page_release li.issue_info:last-child {
+  border-bottom: 0 !important;
 }
 
 .page_release .issue_img {
@@ -3524,7 +3531,28 @@ html#page_release #content {
 
 .page_release .issue_info_top,
 .page_release .issue_info_bottom {
+  height: auto !important;
+  line-height: 1.25 !important;
   min-width: 0;
+  padding: 0 !important;
+}
+
+.page_release .issue_info_bottom {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 10px;
+}
+
+.page_release .issue_year,
+.page_release .issue_formats,
+.page_release .issue_label,
+.page_release .issue_countries {
+  display: inline-flex !important;
+  float: none !important;
+  margin: 0 !important;
+  min-width: 0 !important;
+  width: auto !important;
 }
 
 .page_release .issue_title a,
