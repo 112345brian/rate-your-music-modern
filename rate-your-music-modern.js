@@ -1846,6 +1846,13 @@ function enhanceMobileRelease() {
 
   buildMobileHeroMeta(mainInfo);
 
+  // Move rating widget to sit between the ratings cards and the tab bar
+  const albumInfoOuter = mainInfo.querySelector(".album_info_outer");
+  const personalCard = document.querySelector(".rym-modern-release-personal-card");
+  if (albumInfoOuter && personalCard) {
+    albumInfoOuter.after(personalCard);
+  }
+
   const infoPanel = buildMobileInfoPanel();
 
   mainInfo.after(tabBar);
@@ -1969,13 +1976,25 @@ function buildMobileInfoPanel() {
     .querySelector(".album_info .release_pri_descriptors")
     ?.closest("tr");
 
+  // Language: either already paired with Recorded, or still a plain TR
+  const languagePairedRow = document.querySelector(
+    ".album_info .rym-modern-release-language-recorded-row",
+  );
+  const languagePlainRow = !languagePairedRow
+    ? [...document.querySelectorAll(".album_info tr")].find(
+        (row) =>
+          row.querySelector(".info_hdr")?.textContent.trim().toLowerCase() ===
+          "language",
+      )
+    : null;
+
   // Use the show-for-small tracklist (already mobile-visible, avoids duplicate
   // with the hide-for-small desktop tracklist which stays hidden on mobile)
   const tracklist =
     document.querySelector(".show-for-small .section_tracklisting") ??
     getReleaseSection(".section_tracklisting");
 
-  if (!genreRow && !descriptorRow && !tracklist) return null;
+  if (!genreRow && !descriptorRow && !tracklist && !languagePairedRow && !languagePlainRow) return null;
 
   const panel = document.createElement("div");
   panel.id = "rym-modern-release-info";
@@ -2007,6 +2026,31 @@ function buildMobileInfoPanel() {
     lbl.textContent = "Descriptors";
     const descriptors = descriptorRow.querySelector(".release_pri_descriptors");
     if (descriptors) sec.append(lbl, descriptors.cloneNode(true));
+    panel.append(sec);
+  }
+
+  if (languagePairedRow) {
+    languagePairedRow.classList.add("rym-modern-mobile-hidden");
+    const sec = document.createElement("div");
+    sec.className = "rym-modern-info-section";
+    const grid = languagePairedRow.querySelector(
+      ".rym-modern-release-language-recorded-grid",
+    );
+    if (grid) sec.append(grid.cloneNode(true));
+    panel.append(sec);
+  } else if (languagePlainRow) {
+    languagePlainRow.classList.add("rym-modern-mobile-hidden");
+    const sec = document.createElement("div");
+    sec.className = "rym-modern-info-section";
+    const lbl = document.createElement("div");
+    lbl.className = "rym-modern-info-label";
+    lbl.textContent = "Language";
+    const td = languagePlainRow.querySelector("td");
+    if (td) {
+      const val = document.createElement("div");
+      val.append(...[...td.childNodes].map((n) => n.cloneNode(true)));
+      sec.append(lbl, val);
+    }
     panel.append(sec);
   }
 

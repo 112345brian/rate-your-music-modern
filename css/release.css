@@ -2652,6 +2652,7 @@ html#page_release #content {
 @media only screen and (max-width: 42rem) {
   html#page_release #content {
     max-width: 100% !important;
+    overflow-x: hidden;
     padding: 12px 10px 28px !important;
     width: 100% !important;
   }
@@ -2666,9 +2667,16 @@ html#page_release #content {
     grid-template-columns: 1fr;
   }
 
+  /* Override 66rem stacking — show rating + friends side by side on mobile */
+  .page_release .rym-modern-release-rating-summary {
+    gap: 8px;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  }
+
   .page_release .rym-modern-release-rating-card,
   .page_release .rym-modern-release-friends-card {
     grid-template-columns: minmax(0, 1fr);
+    padding: 10px;
   }
 
   .page_release .rym-modern-release-friends-preview .catalog_line {
@@ -2853,16 +2861,18 @@ html#page_release #content {
     display: none !important;
   }
 
-  /* Full-screen overlay for Discussion */
+  /* Full-screen overlay for Discussion — stops above bottom nav */
   .rym-mobile-overlay-open {
     position: fixed;
-    inset: 0;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: calc(56px + env(safe-area-inset-bottom));
     z-index: 200;
     background: var(--mono-f);
     overflow-y: auto;
     overscroll-behavior: contain;
     display: block !important;
-    padding-bottom: calc(56px + env(safe-area-inset-bottom));
   }
 
   .rym-mobile-overlay-header {
