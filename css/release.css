@@ -914,6 +914,7 @@ html#page_release #content {
 }
 
 .page_release div.section_release_navigation {
+  background: var(--rym-bg) !important;
   border: 0 !important;
   isolation: isolate;
   margin-top: 14px;
@@ -923,12 +924,7 @@ html#page_release #content {
 }
 
 .page_release div.section_release_navigation::before {
-  background: linear-gradient(
-    to bottom,
-    rgb(15 17 23 / 0%),
-    rgb(15 17 23 / 72%) 46%,
-    var(--rym-bg) 100%
-  );
+  background: var(--rym-bg);
   content: "";
   inset: -42px -8px auto;
   height: 72px;
@@ -938,7 +934,7 @@ html#page_release #content {
 }
 
 .page_release div.release_navigation {
-  background: rgb(28 34 48 / 95%) !important;
+  background: var(--rym-surface) !important;
   border: 1px solid var(--rym-border);
   border-radius: var(--rym-radius);
   box-shadow: 0 16px 34px rgb(0 0 0 / 32%);
@@ -958,7 +954,7 @@ html#page_release #content {
 }
 
 .page_release div.release_navigation_guidance {
-  background: rgb(8 13 24 / 38%);
+  background: var(--rym-surface-raised) !important;
   border-bottom: 1px solid rgb(120 183 255 / 14%) !important;
   color: var(--rym-text-muted) !important;
   padding: 8px;

@@ -587,6 +587,12 @@ test("modernizes the release preview layout", async ({ page }) => {
       releaseNavigationZIndex: Number(
         getComputedStyle(releaseNavigation).zIndex,
       ),
+      releaseNavigationBackground:
+        getComputedStyle(releaseNavigation).backgroundColor,
+      releaseNavigationLeadInBackground: getComputedStyle(
+        releaseNavigation,
+        "::before",
+      ).backgroundColor,
       leftColumnHeight: leftColumn.getBoundingClientRect().height,
       rightColumnHeight: rightColumn.getBoundingClientRect().height,
       commentsBeforeReviews:
@@ -679,6 +685,10 @@ test("modernizes the release preview layout", async ({ page }) => {
   );
   expect(releaseOrder.releaseNavigationZIndex).toBeGreaterThan(
     releaseOrder.stickyStackZIndex,
+  );
+  expect(releaseOrder.releaseNavigationBackground).toBe("rgb(15, 17, 23)");
+  expect(releaseOrder.releaseNavigationLeadInBackground).toBe(
+    "rgb(15, 17, 23)",
   );
   expect(releaseOrder.leftColumnHeight).toBeGreaterThanOrEqual(
     releaseOrder.rightColumnHeight - 2,
