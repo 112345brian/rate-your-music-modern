@@ -9,7 +9,7 @@ const USERSTYLE_HEADER = `/* ==UserStyle==
 @author         bri
 @homepageURL    https://github.com/112345brian/rate-your-music-modern
 @supportURL     https://github.com/112345brian/rate-your-music-modern/issues
-@updateURL      https://raw.githubusercontent.com/112345brian/rate-your-music-modern/mobile-layout/rate-your-music-modern.css
+@updateURL      https://raw.githubusercontent.com/112345brian/rate-your-music-modern/main/rate-your-music-modern.css
 @preprocessor   default
 ==/UserStyle== */`;
 
