@@ -858,6 +858,51 @@ test("modernizes the release preview layout", async ({ page }) => {
   ).toHaveCSS("border-bottom-style", "solid");
 });
 
+test("modernizes the charts preview rows", async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto(
+    pathToFileURL(`${process.cwd()}/assets/charts-page/preview.html`).href,
+  );
+
+  const firstChartItem = page
+    .locator(".page_charts_section_charts_item.object_release")
+    .first();
+
+  await expect(firstChartItem).toBeVisible();
+  await expect(
+    firstChartItem.locator(".page_charts_section_charts_item_title"),
+  ).toContainText("Caminhos de água");
+  await expect(
+    firstChartItem.locator(".page_charts_section_charts_item_credited_text"),
+  ).toContainText("Kaátaìra");
+
+  const chartRowLayout = await firstChartItem.evaluate((item) => {
+    const cover = item
+      .querySelector(".page_charts_section_charts_item_image_link")
+      .getBoundingClientRect();
+    const title = item
+      .querySelector(".page_charts_section_charts_item_title")
+      .getBoundingClientRect();
+    const titleStyle = getComputedStyle(
+      item.querySelector(".page_charts_section_charts_item_title"),
+    );
+    const artistStyle = getComputedStyle(
+      item.querySelector(".page_charts_section_charts_item_credited_text a"),
+    );
+
+    return {
+      artistFontSize: Number.parseFloat(artistStyle.fontSize),
+      titleFontSize: Number.parseFloat(titleStyle.fontSize),
+      titleStartsAfterCover: title.left >= cover.right + 16,
+    };
+  });
+
+  expect(chartRowLayout.titleStartsAfterCover).toBe(true);
+  expect(chartRowLayout.titleFontSize).toBeGreaterThan(
+    chartRowLayout.artistFontSize,
+  );
+});
+
 test("uses the release distribution as the second column without friend ratings", async ({
   page,
 }) => {
