@@ -2837,12 +2837,19 @@ html#page_release #content {
     display: none !important;
   }
 
-  /* Bump inline with stars */
+  /* Bump inline with stars — hide icon, show text only */
   .page_release .rym-modern-release-user-rating-rate .bump_btn {
     flex-shrink: 0;
     min-height: 54px;
+    overflow: hidden;
     padding: 8px 14px !important;
+    position: static !important;
     width: auto;
+  }
+
+  .page_release .rym-modern-release-user-rating-rate .bump_btn::before,
+  .page_release .rym-modern-release-user-rating-rate .bump_btn::after {
+    display: none !important;
   }
 
   /* Row 2: action row — Play · Review · ··· */
