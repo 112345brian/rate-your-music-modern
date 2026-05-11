@@ -3065,6 +3065,10 @@ html#page_release #content {
     margin: 8px 0 0;
   }
 
+  .page_release .section_release_navigation::before {
+    display: none !important;
+  }
+
   /* Hide the pill-style guidance row on mobile */
   .page_release .section_release_navigation .release_navigation_guidance {
     display: none !important;
