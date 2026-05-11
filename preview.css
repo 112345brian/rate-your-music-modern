@@ -4163,19 +4163,13 @@ html#page_release #content {
     display: none !important;
   }
 
-  /* Bump inline with stars — hide icon, show text only */
+  /* Bump inline with stars — icon at top, text below */
   .page_release .rym-modern-release-user-rating-rate .bump_btn {
     flex-shrink: 0;
     min-height: 54px;
-    overflow: hidden;
-    padding: 8px 14px !important;
-    position: static !important;
+    padding: 36px 14px 8px !important;
+    position: relative !important;
     width: auto;
-  }
-
-  .page_release .rym-modern-release-user-rating-rate .bump_btn::before,
-  .page_release .rym-modern-release-user-rating-rate .bump_btn::after {
-    display: none !important;
   }
 
   /* Row 2: action row — Play · Review · ··· */
@@ -4281,7 +4275,7 @@ html#page_release #content {
   /* Info tab panel sections */
   .rym-modern-info-section {
     border-bottom: 1px solid var(--rym-border);
-    padding: 14px 0;
+    padding: 8px 0;
   }
 
   .rym-modern-info-section:last-child {
@@ -4293,7 +4287,7 @@ html#page_release #content {
     font-size: 11px;
     font-weight: 800;
     letter-spacing: 0.08em;
-    margin-bottom: 8px;
+    margin-bottom: 4px;
     text-transform: uppercase;
   }
 
@@ -4391,6 +4385,119 @@ html#page_release #content {
 
   html.rym-mobile-overlay-active {
     overflow: hidden;
+  }
+
+  /* ── Unified card: ratings + nav + personal widget ── */
+  .rym-modern-mobile-unified-card {
+    background: var(--rym-surface);
+    border: 1px solid var(--rym-border);
+    border-radius: var(--rym-radius);
+    grid-column: 1 / -1;
+    margin-top: 10px;
+    overflow: hidden;
+  }
+
+  /* Rating summary: flush, no individual card borders */
+  .rym-modern-mobile-unified-card .album_info_outer {
+    margin: 0 !important;
+  }
+
+  .rym-modern-mobile-unified-card .rym-modern-release-rating-summary {
+    gap: 0;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  }
+
+  .rym-modern-mobile-unified-card .rym-modern-release-rating-card,
+  .rym-modern-mobile-unified-card .rym-modern-release-friends-card {
+    background: none !important;
+    border: none !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    padding: 10px !important;
+  }
+
+  .rym-modern-mobile-unified-card .rym-modern-release-friends-card {
+    border-left: 1px solid var(--rym-border) !important;
+  }
+
+  /* Nav strip */
+  .page_release .section_release_navigation {
+    border-top: 1px solid var(--rym-border);
+    margin: 0;
+  }
+
+  .page_release .section_release_navigation::before {
+    display: none !important;
+  }
+
+  .page_release .section_release_navigation .release_navigation {
+    background: none !important;
+    border: none !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+  }
+
+  /* Guidance row: plain direction labels, no pills */
+  .page_release .section_release_navigation .release_navigation_guidance {
+    background: none !important;
+    border-bottom: none !important;
+    padding: 6px 8px 2px !important;
+  }
+
+  .page_release .section_release_navigation .release_navigation_guidance a {
+    background: none !important;
+    border: none !important;
+    border-radius: 0 !important;
+    color: var(--rym-text-muted) !important;
+    font-size: 11px !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.04em;
+    padding: 0 !important;
+    text-transform: uppercase;
+  }
+
+  /* Links row: small art thumbnails */
+  .page_release .section_release_navigation .release_navigation_links {
+    display: grid !important;
+    gap: 6px;
+    grid-template-columns: 28px minmax(0, 1fr) minmax(0, 1fr) 28px;
+    min-height: auto;
+    padding: 2px 8px 6px;
+  }
+
+  .page_release .section_release_navigation .prev_image,
+  .page_release .section_release_navigation .next_image {
+    border-radius: 4px;
+    height: 28px !important;
+    width: 28px !important;
+  }
+
+  .page_release .section_release_navigation .prev_link {
+    text-align: left;
+  }
+
+  .page_release .section_release_navigation .next_link {
+    text-align: right;
+  }
+
+  .page_release .section_release_navigation .prev_link a,
+  .page_release .section_release_navigation .next_link a {
+    font-size: 12px;
+  }
+
+  /* Personal card strip */
+  .rym-modern-mobile-unified-card .rym-modern-release-personal-card {
+    background: none !important;
+    border: none !important;
+    border-top: 1px solid var(--rym-border) !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    margin: 0 !important;
+  }
+
+  /* Rate row is already separated by the card's border-top — remove double border */
+  .rym-modern-mobile-unified-card .rym-modern-release-user-rating-rate {
+    border-top: none !important;
   }
 }
 

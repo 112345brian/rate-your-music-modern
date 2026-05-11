@@ -1,7 +1,7 @@
 /* ==UserStyle==
 @name           Rate Your Music Modern
 @namespace      github.com/112345brian/rate-your-music-modern
-@version        1.2.0
+@version        1.3.0
 @description    Modern visual treatment for Rate Your Music.
 @author         bri
 @homepageURL    https://github.com/112345brian/rate-your-music-modern
@@ -4418,28 +4418,82 @@
       overflow: hidden;
     }
 
-    /* Compact Prev/Next nav — small art thumbnails, no pills */
-    .page_release .section_release_navigation {
+    /* ── Unified card: ratings + nav + personal widget ── */
+    .rym-modern-mobile-unified-card {
+      background: var(--rym-surface);
+      border: 1px solid var(--rym-border);
+      border-radius: var(--rym-radius);
       grid-column: 1 / -1;
-      margin: 8px 0 0;
+      margin-top: 10px;
+      overflow: hidden;
+    }
+
+    /* Rating summary: flush, no individual card borders */
+    .rym-modern-mobile-unified-card .album_info_outer {
+      margin: 0 !important;
+    }
+
+    .rym-modern-mobile-unified-card .rym-modern-release-rating-summary {
+      gap: 0;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    }
+
+    .rym-modern-mobile-unified-card .rym-modern-release-rating-card,
+    .rym-modern-mobile-unified-card .rym-modern-release-friends-card {
+      background: none !important;
+      border: none !important;
+      border-radius: 0 !important;
+      box-shadow: none !important;
+      padding: 10px !important;
+    }
+
+    .rym-modern-mobile-unified-card .rym-modern-release-friends-card {
+      border-left: 1px solid var(--rym-border) !important;
+    }
+
+    /* Nav strip */
+    .page_release .section_release_navigation {
+      border-top: 1px solid var(--rym-border);
+      margin: 0;
     }
 
     .page_release .section_release_navigation::before {
       display: none !important;
     }
 
-    /* Hide the pill-style guidance row on mobile */
-    .page_release .section_release_navigation .release_navigation_guidance {
-      display: none !important;
+    .page_release .section_release_navigation .release_navigation {
+      background: none !important;
+      border: none !important;
+      border-radius: 0 !important;
+      box-shadow: none !important;
     }
 
-    /* Show the links row but compact */
+    /* Guidance row: plain direction labels, no pills */
+    .page_release .section_release_navigation .release_navigation_guidance {
+      background: none !important;
+      border-bottom: none !important;
+      padding: 6px 8px 2px !important;
+    }
+
+    .page_release .section_release_navigation .release_navigation_guidance a {
+      background: none !important;
+      border: none !important;
+      border-radius: 0 !important;
+      color: var(--rym-text-muted) !important;
+      font-size: 11px !important;
+      font-weight: 700 !important;
+      letter-spacing: 0.04em;
+      padding: 0 !important;
+      text-transform: uppercase;
+    }
+
+    /* Links row: small art thumbnails */
     .page_release .section_release_navigation .release_navigation_links {
       display: grid !important;
       gap: 6px;
       grid-template-columns: 28px minmax(0, 1fr) minmax(0, 1fr) 28px;
       min-height: auto;
-      padding: 6px 8px;
+      padding: 2px 8px 6px;
     }
 
     .page_release .section_release_navigation .prev_image,
@@ -4462,9 +4516,19 @@
       font-size: 12px;
     }
 
-    /* Tighten rating cards on mobile */
-    .page_release .section_main_info .album_info_outer {
-      margin-top: 10px;
+    /* Personal card strip */
+    .rym-modern-mobile-unified-card .rym-modern-release-personal-card {
+      background: none !important;
+      border: none !important;
+      border-top: 1px solid var(--rym-border) !important;
+      border-radius: 0 !important;
+      box-shadow: none !important;
+      margin: 0 !important;
+    }
+
+    /* Rate row is already separated by the card's border-top — remove double border */
+    .rym-modern-mobile-unified-card .rym-modern-release-user-rating-rate {
+      border-top: none !important;
     }
   }
 

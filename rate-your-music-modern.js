@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Rate Your Music Modern
 // @namespace    github.com/112345brian/rate-your-music-modern
-// @version      0.9.0
+// @version      1.0.0
 // @description  Behavior enhancements for the Rate Your Music Modern userstyle.
 // @author       bri
 // @homepageURL  https://github.com/112345brian/rate-your-music-modern
@@ -1926,15 +1926,19 @@ function enhanceMobileRelease() {
 
   buildMobileHeroMeta(mainInfo);
 
-  // Move rating widget to sit between the ratings cards and the tab bar
+  // Unified card: ratings + nav + personal widget in one bordered container
   const albumInfoOuter = mainInfo.querySelector(".album_info_outer");
   const personalCard = document.querySelector(".rym-modern-release-personal-card");
   if (albumInfoOuter && personalCard) {
-    // Move release nav (Prev/Next) to appear between hero and ratings
     const navEl = document.querySelector(".section_release_navigation");
-    if (navEl) albumInfoOuter.before(navEl);
 
-    albumInfoOuter.after(personalCard);
+    const unifiedCard = document.createElement("div");
+    unifiedCard.className = "rym-modern-mobile-unified-card";
+    albumInfoOuter.replaceWith(unifiedCard);
+    unifiedCard.append(albumInfoOuter);
+    if (navEl) unifiedCard.append(navEl);
+    unifiedCard.append(personalCard);
+
     buildMobileRatingMore(personalCard);
   }
 
