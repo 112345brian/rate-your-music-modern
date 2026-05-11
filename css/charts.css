@@ -55,7 +55,7 @@
   overflow-x: clip;
 }
 
-@media only screen and (min-width: 48.125em) {
+@media only screen and (width >= 48.125em) {
   .page_charts_section_charts_item {
     align-items: center;
     display: grid;

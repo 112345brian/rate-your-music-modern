@@ -640,7 +640,7 @@ function createReleaseFriendsPreview() {
       const imageUrl = avatar.getAttribute("data-bkg");
 
       if (imageUrl) {
-        avatar.style.backgroundImage = `url(${imageUrl.replace(/^\/\//, "https://")})` ;
+        avatar.style.backgroundImage = `url(${imageUrl.replace(/^\/\//, "https://")})`;
       }
     }
 
@@ -1514,13 +1514,12 @@ function enhanceReleasePage() {
         if (openOverlay) {
           openOverlay.classList.remove("rym-mobile-overlay-open");
           openOverlay.hidden = true;
-          document.documentElement.classList.remove("rym-mobile-overlay-active");
+          document.documentElement.classList.remove(
+            "rym-mobile-overlay-active",
+          );
         }
 
-        if (
-          isMobileViewport() &&
-          target.id === "rym-modern-release-reviews"
-        ) {
+        if (isMobileViewport() && target.id === "rym-modern-release-reviews") {
           openMobileDiscussionOverlay(target.panel);
           return;
         }
