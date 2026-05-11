@@ -2811,7 +2811,6 @@ html#page_release #content {
     margin: 10px 0 0;
   }
 
-  /* Compact layout: single row with catalog + rate side by side */
   .page_release .rym-modern-release-user-rating .release_my_catalog {
     display: block;
   }
@@ -2820,29 +2819,51 @@ html#page_release #content {
     grid-template-columns: minmax(0, 1fr);
   }
 
-  /* Hide Set listening, Tags on mobile — show only Catalog */
+  /* Secondary actions and Listen collapsed by default; shown when expanded */
   .page_release .rym-modern-release-user-rating .listening_btn,
-  .page_release .rym-modern-release-user-rating .tag_btn {
-    display: none !important;
-  }
-
-  /* Catalog button alone — full width row */
-  .page_release .rym-modern-release-user-rating-primary {
-    grid-template-columns: minmax(0, 1fr);
-  }
-
-  /* Hide all secondary actions and Listen on mobile */
+  .page_release .rym-modern-release-user-rating .tag_btn,
   .page_release .rym-modern-release-user-rating-secondary,
   .page_release .rym-modern-release-streaming {
     display: none !important;
   }
 
-  /* Rate row — more compact */
+  .page_release .rym-modern-release-user-rating.rym-modern-rating-expanded .listening_btn,
+  .page_release .rym-modern-release-user-rating.rym-modern-rating-expanded .tag_btn {
+    display: flex !important;
+  }
+
+  .page_release .rym-modern-release-user-rating.rym-modern-rating-expanded .rym-modern-release-user-rating-secondary,
+  .page_release .rym-modern-release-user-rating.rym-modern-rating-expanded .rym-modern-release-streaming {
+    display: grid !important;
+  }
+
+  .page_release .rym-modern-release-user-rating.rym-modern-rating-expanded .rym-modern-release-streaming {
+    display: block !important;
+  }
+
+  /* Rate row — compact horizontal layout */
   .page_release .rym-modern-release-user-rating-rate {
-    min-height: 56px;
-    padding: 10px;
     flex-direction: row;
     justify-content: space-between;
+    min-height: 56px;
+    padding: 10px;
+  }
+
+  /* More options toggle button */
+  .rym-modern-rating-more-btn {
+    background: none;
+    border: none;
+    border-top: 1px solid rgb(15 17 23 / 42%);
+    color: var(--rym-text-muted);
+    cursor: pointer;
+    font-family: var(--rym-font);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    padding: 10px;
+    text-align: center;
+    text-transform: uppercase;
+    width: 100%;
   }
 
   /* Hide rows moved to Info tab or replaced by hero meta */

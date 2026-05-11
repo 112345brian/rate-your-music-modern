@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Rate Your Music Modern
 // @namespace    github.com/112345brian/rate-your-music-modern
-// @version      0.7.5
+// @version      0.7.6
 // @description  Behavior enhancements for the Rate Your Music Modern userstyle.
 // @author       bri
 // @homepageURL  https://github.com/112345brian/rate-your-music-modern
@@ -1834,6 +1834,24 @@ function buildBottomNav() {
   document.body.append(nav, tray);
 }
 
+function buildMobileRatingMore(personalCard) {
+  const frame = personalCard.querySelector(".rym-modern-release-user-rating");
+  if (!frame || frame.querySelector(".rym-modern-rating-more-btn")) return;
+
+  const moreBtn = document.createElement("button");
+  moreBtn.className = "rym-modern-rating-more-btn";
+  moreBtn.textContent = "More options";
+
+  let expanded = false;
+  moreBtn.addEventListener("click", () => {
+    expanded = !expanded;
+    frame.classList.toggle("rym-modern-rating-expanded", expanded);
+    moreBtn.textContent = expanded ? "Fewer options" : "More options";
+  });
+
+  frame.append(moreBtn);
+}
+
 function enhanceMobileRelease() {
   if (!isMobileViewport()) return;
   if (!document.documentElement.classList.contains("page_release")) return;
@@ -1851,6 +1869,7 @@ function enhanceMobileRelease() {
   const personalCard = document.querySelector(".rym-modern-release-personal-card");
   if (albumInfoOuter && personalCard) {
     albumInfoOuter.after(personalCard);
+    buildMobileRatingMore(personalCard);
   }
 
   const infoPanel = buildMobileInfoPanel();
