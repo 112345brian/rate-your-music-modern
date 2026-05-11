@@ -475,6 +475,10 @@ test("modernizes the release preview layout", async ({ page }) => {
     "solid",
   );
   await expect(page.locator(".section_videos iframe")).toBeVisible();
+  await expect(page.locator(".section_videos iframe")).toHaveCSS(
+    "border-top-style",
+    "solid",
+  );
   const videoSectionLayout = await page.evaluate(() => {
     const section = document.querySelector(".section_videos");
     const frame = section?.querySelector("iframe");

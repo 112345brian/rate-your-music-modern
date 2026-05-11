@@ -2375,13 +2375,18 @@ html#page_release #content {
 .page_release .section_videos object {
   aspect-ratio: 16 / 9;
   background: rgb(8 13 24 / 72%) !important;
-  border: 0 !important;
+  border: 1px solid rgb(120 183 255 / 32%) !important;
+  border-radius: 8px;
+  box-shadow: 0 10px 24px rgb(0 0 0 / 28%);
   display: block !important;
   height: auto !important;
   width: 100% !important;
 }
 
 .page_release .section_videos img {
+  border: 1px solid rgb(120 183 255 / 32%) !important;
+  border-radius: 8px;
+  box-shadow: 0 10px 24px rgb(0 0 0 / 28%);
   display: block;
   height: auto !important;
   object-fit: cover;
