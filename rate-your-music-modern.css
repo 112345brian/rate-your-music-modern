@@ -4159,6 +4159,12 @@
       display: none !important;
     }
 
+    /* Hide the desktop (hide-for-small) tracklist on mobile — we use the
+     show-for-small version, which gets moved into the Info panel */
+    .page_release .hide-for-small .section_tracklisting {
+      display: none !important;
+    }
+
     /* Info tab panel sections */
     .rym-modern-info-section {
       border-bottom: 1px solid var(--rym-border);

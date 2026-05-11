@@ -69,9 +69,22 @@ test.describe("mobile release page", () => {
     ).toBeVisible();
     await expect(infoPanel.locator(".release_pri_genres")).toBeVisible();
     // Tracklist
-    await expect(
-      infoPanel.locator(".section_tracklisting"),
-    ).toBeVisible();
+    await expect(infoPanel.locator(".section_tracklisting")).toBeVisible();
+  });
+
+  test("tracklist appears exactly once on page", async ({ browser }) => {
+    const { page } = await loadReleasePage(browser);
+    // Only one visible tracklist — the one in the Info panel
+    const visibleTracklists = page.locator(".section_tracklisting:visible");
+    await expect(visibleTracklists).toHaveCount(1);
+  });
+
+  test("genre row is hidden from album_info table", async ({ browser }) => {
+    const { page } = await loadReleasePage(browser);
+    const genreRow = page.locator(".album_info tr.release_genres");
+    if ((await genreRow.count()) > 0) {
+      await expect(genreRow).toBeHidden();
+    }
   });
 
   test("non-Info tabs are hidden by default", async ({ browser }) => {

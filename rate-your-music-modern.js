@@ -1963,19 +1963,17 @@ function buildMobileHeroMeta(mainInfo) {
 }
 
 function buildMobileInfoPanel() {
-  const albumInfoRows = [...document.querySelectorAll(".album_info tr")];
+  // Use class-based selector — more reliable than matching .info_hdr text
+  const genreRow = document.querySelector(".album_info tr.release_genres");
+  const descriptorRow = document
+    .querySelector(".album_info .release_pri_descriptors")
+    ?.closest("tr");
 
-  const genreRow = albumInfoRows.find(
-    (row) =>
-      row.querySelector(".info_hdr")?.textContent.trim().toLowerCase() ===
-      "genres",
-  );
-  const descriptorRow = albumInfoRows.find(
-    (row) =>
-      row.querySelector(".info_hdr")?.textContent.trim().toLowerCase() ===
-      "descriptors",
-  );
-  const tracklist = getReleaseSection(".section_tracklisting");
+  // Use the show-for-small tracklist (already mobile-visible, avoids duplicate
+  // with the hide-for-small desktop tracklist which stays hidden on mobile)
+  const tracklist =
+    document.querySelector(".show-for-small .section_tracklisting") ??
+    getReleaseSection(".section_tracklisting");
 
   if (!genreRow && !descriptorRow && !tracklist) return null;
 

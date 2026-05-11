@@ -1181,7 +1181,7 @@ small,
   color: #d9efff !important;
 }
 
-@media only screen and (width <= 82rem) {
+@media only screen and (max-width: 82rem) {
   .page_artist .artist_page_section {
     column-gap: 0;
     overflow-x: visible;
@@ -1238,7 +1238,7 @@ small,
   }
 }
 
-@media only screen and (width <= 36rem) {
+@media only screen and (max-width: 36rem) {
   .rym-modern-info-row {
     gap: 0.35rem;
     grid-template-columns: 1fr;
@@ -3903,7 +3903,7 @@ html#page_release #content {
   grid-area: ratings;
 }
 
-@media only screen and (width <= 42rem) {
+@media only screen and (max-width: 42rem) {
   .page_release .rym-modern-release-bottom-section .page_discography_line {
     grid-template-areas:
       "image title"
@@ -3931,7 +3931,7 @@ html#page_release #content {
   }
 }
 
-@media only screen and (width <= 42rem) {
+@media only screen and (max-width: 42rem) {
   html#page_release #content {
     max-width: min(100%, calc(100vw - 28px)) !important;
     padding: 18px 14px 34px !important;
@@ -3963,7 +3963,7 @@ html#page_release #content {
   }
 }
 
-@media only screen and (width <= 42rem) {
+@media only screen and (max-width: 42rem) {
   html#page_release #content {
     max-width: 100% !important;
     padding: 12px 10px 28px !important;
@@ -4033,12 +4033,12 @@ html#page_release #content {
   }
 }
 
-@media only screen and (width <= 42rem) {
-  /* Mobile hero: cover left, title right, metadata full-width below */
+@media only screen and (max-width: 42rem) {
+  /* Mobile hero: cover left spanning rows, title + meta right */
   .page_release .section_main_info .page_section {
     display: grid;
-    grid-template-columns: 110px 1fr;
-    gap: 0 12px;
+    grid-template-columns: 120px 1fr;
+    gap: 0 14px;
     align-items: start;
   }
 
@@ -4049,14 +4049,15 @@ html#page_release #content {
   .page_release .section_main_info .page_section > .album_title {
     grid-column: 2;
     grid-row: 1;
-    font-size: clamp(15px, 5vw, 20px) !important;
-    line-height: 1.25 !important;
-    padding-top: 2px;
+    font-size: clamp(20px, 7vw, 30px) !important;
+    font-weight: 800 !important;
+    line-height: 1.15 !important;
+    padding-top: 0;
   }
 
   .page_release .section_main_info .page_section > .show-for-small {
     grid-column: 1;
-    grid-row: 1 / 3;
+    grid-row: 1 / 4;
     text-align: left !important;
   }
 
@@ -4068,22 +4069,94 @@ html#page_release #content {
     .section_main_info
     .page_section
     > .show-for-small
+    [class^="coverart_"] {
+    width: 100% !important;
+    height: auto !important;
+    overflow: visible !important;
+  }
+
+  .page_release
+    .section_main_info
+    .page_section
+    > .show-for-small
     [class^="coverart_"]
     img {
+    border-radius: 10px;
     display: block;
-    width: 100%;
-    height: auto;
-    border-radius: 3px;
+    height: auto !important;
+    width: 100% !important;
   }
 
   .page_release .section_main_info .page_section > .show-for-small iframe {
     display: none;
   }
 
+  /* Hero meta: "Album by Artist" + release year/rank */
+  .page_release
+    .section_main_info
+    .page_section
+    > .rym-modern-mobile-hero-meta {
+    grid-column: 2;
+    grid-row: 2;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    margin-top: 5px;
+  }
+
+  .rym-modern-mobile-hero-type-artist {
+    color: var(--rym-text-soft);
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1.3;
+  }
+
+  .rym-modern-mobile-hero-release {
+    color: var(--rym-text-muted);
+    font-size: 12px;
+    line-height: 1.4;
+  }
+
   .page_release .section_main_info .album_info_outer {
     grid-column: 1 / -1;
-    grid-row: 2;
+    grid-row: 3;
     margin-top: 14px;
+  }
+
+  /* Hide rows moved to Info tab or replaced by hero meta */
+  .page_release table.album_info tr.rym-modern-mobile-hidden {
+    display: none !important;
+  }
+
+  /* Hide the desktop (hide-for-small) tracklist on mobile — we use the
+   show-for-small version, which gets moved into the Info panel */
+  .page_release .hide-for-small .section_tracklisting {
+    display: none !important;
+  }
+
+  /* Info tab panel sections */
+  .rym-modern-info-section {
+    border-bottom: 1px solid var(--rym-border);
+    padding: 14px 0;
+  }
+
+  .rym-modern-info-section:last-child {
+    border-bottom: none;
+  }
+
+  .rym-modern-info-label {
+    color: var(--rym-text-muted);
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+  }
+
+  .rym-modern-info-genres {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 8px;
   }
 
   /* Sticky tab bar */
@@ -4115,6 +4188,7 @@ html#page_release #content {
     overflow-y: auto;
     overscroll-behavior: contain;
     display: block !important;
+    padding-bottom: calc(56px + env(safe-area-inset-bottom));
   }
 
   .rym-mobile-overlay-header {
@@ -4124,24 +4198,48 @@ html#page_release #content {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 12px 16px;
+    gap: 12px;
+    padding: 10px 12px 10px 16px;
     background: var(--mono-f);
     border-bottom: 1px solid var(--mono-e);
   }
 
-  .rym-mobile-overlay-title {
-    font-size: 15px;
-    font-weight: 600;
-    color: var(--rym-text);
+  /* Reviews / Comments sub-tab bar inside the overlay */
+  .rym-mobile-discussion-tabs {
+    display: flex;
+    gap: 4px;
+    flex: 1;
+    min-width: 0;
+  }
+
+  .rym-mobile-discussion-tab {
+    background: none;
+    border: none;
+    border-radius: 8px;
+    color: var(--rym-text-muted);
+    cursor: pointer;
+    font-family: var(--rym-font);
+    font-size: 14px;
+    font-weight: 700;
+    padding: 6px 12px;
+    transition:
+      background-color 100ms ease,
+      color 100ms ease;
+  }
+
+  .rym-mobile-discussion-tab[aria-current="true"] {
+    background: rgb(120 183 255 / 10%);
+    color: var(--rym-link-hover);
   }
 
   .rym-mobile-overlay-close {
     background: none;
     border: none;
     color: var(--rym-text-muted);
+    cursor: pointer;
+    flex-shrink: 0;
     font-size: 20px;
     line-height: 1;
-    cursor: pointer;
     padding: 4px 8px;
   }
 
@@ -4410,7 +4508,7 @@ html#page_release #content {
   margin-top: 0.15rem;
 }
 
-@media only screen and (width <= 52rem) {
+@media only screen and (max-width: 52rem) {
   #page_charts .page_charts_section_charts_item.object_release {
     grid-template-columns: 38px 92px minmax(0, 1fr);
     min-height: 124px;
@@ -4447,7 +4545,11 @@ html#page_release #content {
   display: none;
 }
 
-@media (width <= 42rem) {
+@media (max-width: 42rem) {
+  header,
+  #header,
+  #site_header,
+  .site_header,
   .mobile_header_menu {
     display: none !important;
   }
