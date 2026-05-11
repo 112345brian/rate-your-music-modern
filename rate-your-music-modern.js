@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Rate Your Music Modern
 // @namespace    github.com/112345brian/rate-your-music-modern
-// @version      0.7.8
+// @version      0.7.9
 // @description  Behavior enhancements for the Rate Your Music Modern userstyle.
 // @author       bri
 // @homepageURL  https://github.com/112345brian/rate-your-music-modern
@@ -1864,11 +1864,13 @@ function buildMobileRatingMore(personalCard) {
   playBtn.setAttribute("aria-label", "Play options");
   playBtn.innerHTML = `<span class="rym-modern-rating-play-icon">▶</span><span class="rym-modern-rating-play-label">Play</span>`;
 
+  // Always hide the streaming element — Play button controls its visibility
+  if (streamingEl) streamingEl.hidden = true;
+
   if (!hasStreaming) {
     playBtn.disabled = true;
     playBtn.classList.add("rym-modern-rating-play-btn--disabled");
   } else if (streamingEl) {
-    streamingEl.hidden = true;
     let playOpen = false;
     playBtn.addEventListener("click", () => {
       playOpen = !playOpen;

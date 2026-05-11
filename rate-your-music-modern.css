@@ -1,7 +1,7 @@
 /* ==UserStyle==
 @name           Rate Your Music Modern
 @namespace      github.com/112345brian/rate-your-music-modern
-@version        0.9.8
+@version        0.9.9
 @description    Modern visual treatment for Rate Your Music.
 @author         bri
 @homepageURL    https://github.com/112345brian/rate-your-music-modern
@@ -4187,6 +4187,11 @@
       justify-content: space-between;
       min-height: 54px;
       padding: 10px 0 10px 14px;
+    }
+
+    /* Hide the "---" unrated number between stars and bump */
+    .page_release .rym-modern-release-user-rating-rate .rating_num {
+      display: none !important;
     }
 
     /* Bump inline with stars */

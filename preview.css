@@ -4158,6 +4158,11 @@ html#page_release #content {
     padding: 10px 0 10px 14px;
   }
 
+  /* Hide the "---" unrated number between stars and bump */
+  .page_release .rym-modern-release-user-rating-rate .rating_num {
+    display: none !important;
+  }
+
   /* Bump inline with stars */
   .page_release .rym-modern-release-user-rating-rate .bump_btn {
     flex-shrink: 0;
