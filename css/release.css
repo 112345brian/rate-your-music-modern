@@ -3059,24 +3059,44 @@ html#page_release #content {
     overflow: hidden;
   }
 
-  /* Compact Prev/Next nav — full-width row, guidance links only */
+  /* Compact Prev/Next nav — small art thumbnails, no pills */
   .page_release .section_release_navigation {
     grid-column: 1 / -1;
     margin: 8px 0 0;
   }
 
-  .page_release .section_release_navigation .release_navigation_links,
-  .page_release .section_release_navigation .release_navigation_guidance::before {
+  /* Hide the pill-style guidance row on mobile */
+  .page_release .section_release_navigation .release_navigation_guidance {
     display: none !important;
   }
 
-  .page_release .section_release_navigation .release_navigation_guidance {
-    padding: 4px 6px;
+  /* Show the links row but compact */
+  .page_release .section_release_navigation .release_navigation_links {
+    display: grid !important;
+    gap: 6px;
+    grid-template-columns: 28px minmax(0, 1fr) minmax(0, 1fr) 28px;
+    min-height: auto;
+    padding: 6px 8px;
   }
 
-  .page_release .section_release_navigation .release_navigation_guidance a {
-    font-size: 13px;
-    padding: 5px 8px;
+  .page_release .section_release_navigation .prev_image,
+  .page_release .section_release_navigation .next_image {
+    border-radius: 4px;
+    height: 28px !important;
+    width: 28px !important;
+  }
+
+  .page_release .section_release_navigation .prev_link {
+    text-align: left;
+  }
+
+  .page_release .section_release_navigation .next_link {
+    text-align: right;
+  }
+
+  .page_release .section_release_navigation .prev_link a,
+  .page_release .section_release_navigation .next_link a {
+    font-size: 12px;
   }
 
   /* Tighten rating cards on mobile */
