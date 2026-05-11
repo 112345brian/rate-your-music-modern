@@ -3,6 +3,7 @@
 }
 
 @media (max-width: 42rem) {
+  #header,
   .mobile_header_menu {
     display: none !important;
   }
