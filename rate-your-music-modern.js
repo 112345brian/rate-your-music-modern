@@ -6,8 +6,8 @@
 // @author       bri
 // @homepageURL  https://github.com/112345brian/rate-your-music-modern
 // @supportURL   https://github.com/112345brian/rate-your-music-modern/issues
-// @updateURL    https://raw.githubusercontent.com/112345brian/rate-your-music-modern/rating-on-left/rate-your-music-modern.js
-// @downloadURL  https://raw.githubusercontent.com/112345brian/rate-your-music-modern/rating-on-left/rate-your-music-modern.js
+// @updateURL    https://raw.githubusercontent.com/112345brian/rate-your-music-modern/mobile-layout/rate-your-music-modern.js
+// @downloadURL  https://raw.githubusercontent.com/112345brian/rate-your-music-modern/mobile-layout/rate-your-music-modern.js
 // @match        https://rateyourmusic.com/*
 // @match        http://127.0.0.1:5173/*
 // @match        http://localhost:5173/*
@@ -640,7 +640,7 @@ function createReleaseFriendsPreview() {
       const imageUrl = avatar.getAttribute("data-bkg");
 
       if (imageUrl) {
-        avatar.style.backgroundImage = `url(${imageUrl.replace(/^\/\//, "https://")})`;
+        avatar.style.backgroundImage = `url(${imageUrl.replace(/^\/\//, "https://")})` ;
       }
     }
 
@@ -1621,13 +1621,11 @@ function enhanceMobileRelease() {
   const tabBar = document.querySelector(".rym-modern-release-tabs");
   if (!tabBar) return;
 
-  // Move tab bar to right after the hero section, before the tracklist
   const mainInfo = document.querySelector(".section_main_info");
   if (!mainInfo) return;
 
   mainInfo.after(tabBar);
 
-  // Scroll active panel into view when a non-Discussion tab is clicked
   for (const tab of tabBar.querySelectorAll(".rym-modern-release-tab")) {
     tab.addEventListener("click", () => {
       const targetId = tab.dataset.target;
