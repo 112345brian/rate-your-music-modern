@@ -1,7 +1,7 @@
 /* ==UserStyle==
 @name           Rate Your Music Modern
 @namespace      github.com/112345brian/rate-your-music-modern
-@version        0.7.6
+@version        0.7.7
 @description    Modern visual treatment for Rate Your Music.
 @author         bri
 @homepageURL    https://github.com/112345brian/rate-your-music-modern
@@ -3488,17 +3488,22 @@
 
   .page_release .page_object_discussion_threads {
     display: grid;
-    gap: 8px;
+    gap: 0;
     list-style: none;
     margin: 0 !important;
     padding: 0 !important;
   }
 
   .page_release .page_object_discussion_thread {
-    background: rgb(148 163 184 / 7%);
-    border: 1px solid rgb(148 163 184 / 12%);
-    border-radius: 7px;
-    padding: 10px;
+    background: transparent !important;
+    border: 0 !important;
+    border-bottom: 1px solid rgb(148 163 184 / 16%) !important;
+    border-radius: 0 !important;
+    padding: 12px 0 !important;
+  }
+
+  .page_release .page_object_discussion_thread:last-child {
+    border-bottom: 0 !important;
   }
 
   .page_release .page_object_discussion_group_name {

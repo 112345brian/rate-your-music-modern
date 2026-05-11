@@ -830,6 +830,21 @@ test("modernizes the release preview layout", async ({ page }) => {
   await releaseTabs.getByRole("link", { name: /^Forum/ }).click();
   await expect(page.locator("#rym-modern-release-discussion")).toBeVisible();
   await expect(page.locator("#rym-modern-release-lists")).toBeHidden();
+  await expect(
+    page
+      .locator("#rym-modern-release-discussion .page_object_discussion_thread")
+      .first(),
+  ).toHaveCSS("background-color", "rgba(0, 0, 0, 0)");
+  await expect(
+    page
+      .locator("#rym-modern-release-discussion .page_object_discussion_thread")
+      .first(),
+  ).toHaveCSS("border-radius", "0px");
+  await expect(
+    page
+      .locator("#rym-modern-release-discussion .page_object_discussion_thread")
+      .first(),
+  ).toHaveCSS("border-bottom-style", "solid");
 });
 
 test("uses the release distribution as the second column without friend ratings", async ({
