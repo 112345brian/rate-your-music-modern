@@ -4868,6 +4868,10 @@
       padding-bottom: calc(56px + env(safe-area-inset-bottom)) !important;
     }
 
+    footer {
+      padding-bottom: 8px !important;
+    }
+
     .rym-modern-bottom-nav {
       align-items: stretch;
       background: var(--rym-surface);
