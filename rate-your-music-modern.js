@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Rate Your Music Modern
 // @namespace    github.com/112345brian/rate-your-music-modern
-// @version      1.1.0
+// @version      1.2.0
 // @description  Behavior enhancements for the Rate Your Music Modern userstyle.
 // @author       bri
 // @homepageURL  https://github.com/112345brian/rate-your-music-modern
@@ -1385,9 +1385,11 @@ function openMobileDiscussionOverlay(panel) {
     const commentsEl = panel.querySelector(
       ".section_comments, #rym-modern-release-comments",
     );
+    const forumEl = panel.querySelector(".page_object_section_discussion");
     const subSections = [
       { label: "Reviews", el: reviewsEl },
       { label: "Comments", el: commentsEl },
+      { label: "Forum", el: forumEl },
     ].filter((s) => s.el);
 
     const tabRow = document.createElement("div");
@@ -1914,6 +1916,50 @@ function buildMobileRatingMore(personalCard) {
   }
 }
 
+function buildMobileInfoSubTabs(infoPanel, tabBar) {
+  // Wrap current info content in an Overview sub-panel
+  const overviewPanel = document.createElement("div");
+  overviewPanel.className = "rym-modern-info-sub-panel";
+  overviewPanel.id = "rym-modern-info-overview";
+  while (infoPanel.firstChild) overviewPanel.append(infoPanel.firstChild);
+
+  const creditsPanel = document.getElementById("rym-modern-release-credits");
+  const issuesPanel = document.getElementById("rym-modern-release-issues");
+
+  const subSections = [
+    { label: "Overview", el: overviewPanel },
+    { label: "Credits", el: creditsPanel },
+    { label: "Issues", el: issuesPanel },
+  ].filter((s) => s.el);
+
+  const subTabBar = document.createElement("div");
+  subTabBar.className = "rym-modern-info-sub-tabs";
+
+  for (const { label, el } of subSections) {
+    const tab = document.createElement("button");
+    tab.className = "rym-modern-info-sub-tab";
+    tab.textContent = label;
+    tab.addEventListener("click", () => {
+      for (const { el: sEl } of subSections) sEl.hidden = sEl !== el;
+      for (const t of subTabBar.querySelectorAll(".rym-modern-info-sub-tab")) {
+        t.setAttribute("aria-current", String(t === tab));
+      }
+    });
+    subTabBar.append(tab);
+  }
+
+  subTabBar.firstElementChild?.setAttribute("aria-current", "true");
+  // Overview visible, rest hidden
+  for (let i = 1; i < subSections.length; i++) subSections[i].el.hidden = true;
+
+  infoPanel.append(subTabBar, ...subSections.map((s) => s.el));
+
+  // Remove Credits and Issues from the main tab bar
+  for (const id of ["rym-modern-release-credits", "rym-modern-release-issues"]) {
+    tabBar.querySelector(`[data-target="${id}"]`)?.remove();
+  }
+}
+
 function enhanceMobileRelease() {
   if (!isMobileViewport()) return;
   if (!document.documentElement.classList.contains("page_release")) return;
@@ -1986,6 +2032,21 @@ function enhanceMobileRelease() {
     )) {
       panel.hidden = true;
     }
+
+    // Move Forum content into the Discussion overlay; remove Forum from main bar
+    const forumPanel = document.getElementById("rym-modern-release-discussion");
+    const reviewsPanel = document.getElementById("rym-modern-release-reviews");
+    if (forumPanel && reviewsPanel) {
+      const forumContent = forumPanel.querySelector(
+        ".page_object_section_discussion",
+      );
+      if (forumContent) reviewsPanel.append(forumContent);
+      forumPanel.remove();
+    }
+    tabBar.querySelector('[data-target="rym-modern-release-discussion"]')?.remove();
+
+    // Build Info sub-tabs (Overview / Credits / Issues)
+    buildMobileInfoSubTabs(infoPanel, tabBar);
 
     infoTab.addEventListener("click", (event) => {
       event.preventDefault();

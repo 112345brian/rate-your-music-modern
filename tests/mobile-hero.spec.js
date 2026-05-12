@@ -215,10 +215,11 @@ test.describe("mobile release page", () => {
     const closeBtn = overlay.locator(".rym-mobile-overlay-close");
     await expect(closeBtn).toBeVisible();
 
-    // Sub-tabs present
+    // Sub-tabs present (Reviews, Comments, and optionally Forum)
     const subTabs = overlay.locator(".rym-mobile-discussion-tab");
-    await expect(subTabs).toHaveCount(2);
     await expect(subTabs.first()).toHaveAttribute("aria-current", "true");
+    const count = await subTabs.count();
+    expect(count).toBeGreaterThanOrEqual(2);
   });
 
   test("Discussion overlay close button dismisses it", async ({ browser }) => {

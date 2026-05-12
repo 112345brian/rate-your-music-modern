@@ -1,7 +1,7 @@
 /* ==UserStyle==
 @name           Rate Your Music Modern
 @namespace      github.com/112345brian/rate-your-music-modern
-@version        1.4.0
+@version        1.5.0
 @description    Modern visual treatment for Rate Your Music.
 @author         bri
 @homepageURL    https://github.com/112345brian/rate-your-music-modern
@@ -4313,6 +4313,47 @@
       display: flex;
       flex-wrap: wrap;
       gap: 4px 8px;
+    }
+
+    /* Info sub-tab bar (Overview / Credits / Issues) */
+    .rym-modern-info-sub-tabs {
+      background: var(--mono-f);
+      border-bottom: 1px solid var(--mono-e);
+      display: flex;
+      gap: 0;
+      overflow-x: auto;
+      padding: 0 4px;
+      position: sticky;
+      scrollbar-width: none;
+      top: 40px;
+      z-index: 49;
+    }
+
+    .rym-modern-info-sub-tabs::-webkit-scrollbar {
+      display: none;
+    }
+
+    .rym-modern-info-sub-tab {
+      background: none;
+      border: none;
+      border-bottom: 2px solid transparent;
+      color: var(--rym-text-muted);
+      cursor: pointer;
+      font-family: var(--rym-font);
+      font-size: 13px;
+      font-weight: 700;
+      margin-bottom: -1px;
+      padding: 8px 10px;
+      white-space: nowrap;
+    }
+
+    .rym-modern-info-sub-tab[aria-current="true"] {
+      border-bottom-color: var(--rym-link-hover);
+      color: var(--rym-link-hover);
+    }
+
+    .rym-modern-info-sub-panel {
+      padding: 0;
     }
 
     /* Sticky tab bar */
