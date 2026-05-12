@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Rate Your Music Modern
 // @namespace    github.com/112345brian/rate-your-music-modern
-// @version      1.0.0
+// @version      1.1.0
 // @description  Behavior enhancements for the Rate Your Music Modern userstyle.
 // @author       bri
 // @homepageURL  https://github.com/112345brian/rate-your-music-modern
@@ -1926,16 +1926,29 @@ function enhanceMobileRelease() {
 
   buildMobileHeroMeta(mainInfo);
 
-  // Unified card: ratings + nav + personal widget in one bordered container
+  // Unified card: hero + ratings + nav + personal widget in one bordered container
+  const pageSection = mainInfo.querySelector(".page_section");
   const albumInfoOuter = mainInfo.querySelector(".album_info_outer");
   const personalCard = document.querySelector(".rym-modern-release-personal-card");
   if (albumInfoOuter && personalCard) {
     const navEl = document.querySelector(".section_release_navigation");
 
+    // Wrap cover + title + meta in a hero section at the top of the card.
+    // Use direct-child search to avoid matching nested show-for-small elements.
+    const heroSection = document.createElement("div");
+    heroSection.className = "rym-modern-mobile-hero-section";
+    const pageSectionKids = pageSection ? [...pageSection.children] : [];
+    const coverEl = pageSectionKids.find((el) => el.classList.contains("show-for-small"));
+    const titleEl = pageSectionKids.find((el) => el.classList.contains("album_title"));
+    const metaEl = pageSectionKids.find((el) => el.classList.contains("rym-modern-mobile-hero-meta"));
+    if (coverEl) heroSection.append(coverEl);
+    if (titleEl) heroSection.append(titleEl);
+    if (metaEl) heroSection.append(metaEl);
+
     const unifiedCard = document.createElement("div");
     unifiedCard.className = "rym-modern-mobile-unified-card";
     albumInfoOuter.replaceWith(unifiedCard);
-    unifiedCard.append(albumInfoOuter);
+    unifiedCard.append(heroSection, albumInfoOuter);
     if (navEl) unifiedCard.append(navEl);
     unifiedCard.append(personalCard);
 
