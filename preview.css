@@ -2197,6 +2197,16 @@ html#page_release #content {
 }
 
 .page_release .rym-modern-release-friends-more,
+.page_release .rym-modern-ratings-count-link {
+  color: var(--rym-link-hover) !important;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.page_release .rym-modern-ratings-count-link:hover {
+  color: var(--rym-accent-strong) !important;
+}
+
 .page_release .rym-modern-release-catalog-link {
   color: var(--rym-link-hover) !important;
   font-size: 13px;
@@ -4462,23 +4472,9 @@ html#page_release #content {
     box-shadow: none !important;
   }
 
-  /* Guidance row: plain direction labels, no pills */
+  /* Guidance row: hidden on mobile — titles in the links row are enough */
   .page_release .section_release_navigation .release_navigation_guidance {
-    background: none !important;
-    border-bottom: none !important;
-    padding: 6px 8px 2px !important;
-  }
-
-  .page_release .section_release_navigation .release_navigation_guidance a {
-    background: none !important;
-    border: none !important;
-    border-radius: 0 !important;
-    color: var(--rym-text-muted) !important;
-    font-size: 11px !important;
-    font-weight: 700 !important;
-    letter-spacing: 0.04em;
-    padding: 0 !important;
-    text-transform: uppercase;
+    display: none !important;
   }
 
   /* Links row: small art thumbnails */

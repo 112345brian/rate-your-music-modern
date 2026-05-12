@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Rate Your Music Modern
 // @namespace    github.com/112345brian/rate-your-music-modern
-// @version      1.2.0
+// @version      1.3.0
 // @description  Behavior enhancements for the Rate Your Music Modern userstyle.
 // @author       bri
 // @homepageURL  https://github.com/112345brian/rate-your-music-modern
@@ -526,6 +526,18 @@ function enhanceReleaseRatingDistribution() {
     createReleaseInfoLabel(ratingLabel.textContent),
     ratingContent,
   );
+
+  // Make "from N ratings" a link to the catalog/ratings section
+  const numRatingsEl = ratingContent.querySelector(".num_ratings");
+  if (numRatingsEl && catalogSection) {
+    numRatingsEl.style.cursor = "pointer";
+    numRatingsEl.classList.add("rym-modern-ratings-count-link");
+    numRatingsEl.addEventListener("click", () => {
+      catalogSection.classList.remove("rym-modern-release-catalog-hidden");
+      history.replaceState(null, "", `#${catalogSection.id}`);
+      catalogSection.scrollIntoView({ block: "start", behavior: "smooth" });
+    });
+  }
   summary.append(ratingCard);
 
   if (friendsContent && friendsPreview) {
