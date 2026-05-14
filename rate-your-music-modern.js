@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Rate Your Music Modern
 // @namespace    github.com/112345brian/rate-your-music-modern
-// @version      1.3.2
+// @version      1.3.3
 // @description  Behavior enhancements for the Rate Your Music Modern userstyle.
 // @author       bri
 // @homepageURL  https://github.com/112345brian/rate-your-music-modern
@@ -526,6 +526,7 @@ function enhanceReleaseRatingDistribution() {
   const summary = document.createElement("div");
   const ratingCard = document.createElement("div");
   const friendsPreview = createReleaseFriendsPreview();
+  const hasFriendRatings = Boolean(friendsContent && friendsPreview);
 
   distribution.className = "rym-modern-rating-distribution";
   distribution.append(chart);
@@ -534,7 +535,7 @@ function enhanceReleaseRatingDistribution() {
   summaryCell.colSpan = 3;
   summary.className = "rym-modern-release-rating-summary";
   summary.classList.add(
-    friendsContent && friendsPreview
+    hasFriendRatings
       ? "rym-modern-release-rating-summary--with-friends"
       : "rym-modern-release-rating-summary--distribution-only",
   );
@@ -555,28 +556,32 @@ function enhanceReleaseRatingDistribution() {
       catalogSection.scrollIntoView({ block: "start", behavior: "smooth" });
     });
   }
-  summary.append(ratingCard);
+  if (hasFriendRatings) {
+    friendsContent.classList.add("rym-modern-release-friends-value");
+    ratingCard.append(createReleaseInfoLabel(friendsLabel.textContent));
+    ratingCard.append(friendsContent);
 
-  if (friendsContent && friendsPreview) {
-    const friendsCard = document.createElement("div");
-
-    friendsCard.className = "rym-modern-release-friends-card";
-    friendsCard.append(createReleaseInfoLabel(friendsLabel.textContent));
-    friendsCard.append(friendsContent);
-    friendsCard.append(friendsPreview);
-    ratingCard.append(distribution);
-    summary.append(friendsCard);
-  } else {
-    const distributionCard = document.createElement("div");
-    const catalogLink = createReleaseCatalogLink("See Catalog");
-
-    distributionCard.className = "rym-modern-release-distribution-card";
-    distributionCard.append(distribution);
-    if (catalogSection) {
-      distributionCard.append(catalogLink);
+    const friendsRatingsEl = friendsContent.querySelector(".num_ratings");
+    if (friendsRatingsEl && catalogSection) {
+      friendsRatingsEl.style.cursor = "pointer";
+      friendsRatingsEl.classList.add("rym-modern-ratings-count-link");
+      friendsRatingsEl.addEventListener("click", () => {
+        catalogSection.classList.remove("rym-modern-release-catalog-hidden");
+        history.replaceState(null, "", `#${catalogSection.id}`);
+        catalogSection.scrollIntoView({ block: "start", behavior: "smooth" });
+      });
     }
-    summary.append(distributionCard);
   }
+
+  const distributionCard = document.createElement("div");
+  const catalogLink = createReleaseCatalogLink("See Catalog");
+
+  distributionCard.className = "rym-modern-release-distribution-card";
+  distributionCard.append(distribution);
+  if (!hasFriendRatings && catalogSection) {
+    distributionCard.append(catalogLink);
+  }
+  summary.append(ratingCard, distributionCard);
 
   friendsRow?.remove();
   summaryCell.append(summary);

@@ -445,31 +445,23 @@ test("modernizes the release preview layout", async ({ page }) => {
     page.locator(".rym-modern-release-rating-summary"),
   ).toBeVisible();
   await expect(
-    page.locator(
-      ".rym-modern-release-rating-card .rym-modern-rating-distribution",
-    ),
+    page.locator(".rym-modern-release-distribution-card #chart_div"),
   ).toBeVisible();
-  await expect(page.locator(".rym-modern-release-friends-card")).toContainText(
+  await expect(page.locator(".rym-modern-release-friends-card")).toHaveCount(0);
+  await expect(page.locator(".rym-modern-release-rating-card")).toContainText(
     "3.00",
   );
   await expect(
-    page.locator(".rym-modern-release-friends-preview .catalog_header.friend"),
-  ).toHaveCount(3);
-  await expect(
-    page
-      .locator(
-        ".rym-modern-release-friends-preview .catalog_rating_system_comment",
-      )
-      .first(),
-  ).toHaveCSS("grid-row-start", "2");
-  await expect(
-    page.locator(".rym-modern-release-distribution-card"),
+    page.locator(".rym-modern-release-friends-more"),
   ).toHaveCount(0);
   await expect(
-    page.locator(".rym-modern-release-friends-more"),
-  ).toHaveAttribute("href", "#rym-modern-release-ratings");
+    page.locator(".rym-modern-release-distribution-card"),
+  ).toHaveCSS("background-color", "rgba(0, 0, 0, 0)");
+  await expect(
+    page.locator(".rym-modern-release-distribution-card"),
+  ).toHaveCSS("border-top-style", "none");
   await expect(page.locator("#rym-modern-release-ratings")).toBeHidden();
-  await page.locator(".rym-modern-release-friends-more").click();
+  await page.locator(".rym-modern-release-friends-value .num_ratings").click();
   await expect(page.locator("#rym-modern-release-ratings")).toBeVisible();
   await expect(page.locator(".rating_info_table .rating_info_tab")).toHaveCount(
     3,
@@ -962,6 +954,9 @@ test("uses the release distribution as the second column without friend ratings"
   await expect(
     page.locator(".rym-modern-release-distribution-card"),
   ).toContainText("See Catalog");
+  await expect(
+    page.locator(".rym-modern-release-distribution-card"),
+  ).toHaveCSS("background-color", "rgba(0, 0, 0, 0)");
   await expect(page.locator(".rym-modern-release-rating-summary")).toHaveClass(
     /rym-modern-release-rating-summary--distribution-only/,
   );
