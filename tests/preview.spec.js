@@ -451,15 +451,15 @@ test("modernizes the release preview layout", async ({ page }) => {
   await expect(page.locator(".rym-modern-release-rating-card")).toContainText(
     "3.00",
   );
-  await expect(
-    page.locator(".rym-modern-release-friends-more"),
-  ).toHaveCount(0);
-  await expect(
-    page.locator(".rym-modern-release-distribution-card"),
-  ).toHaveCSS("background-color", "rgba(0, 0, 0, 0)");
-  await expect(
-    page.locator(".rym-modern-release-distribution-card"),
-  ).toHaveCSS("border-top-style", "none");
+  await expect(page.locator(".rym-modern-release-friends-more")).toHaveCount(0);
+  await expect(page.locator(".rym-modern-release-distribution-card")).toHaveCSS(
+    "background-color",
+    "rgba(0, 0, 0, 0)",
+  );
+  await expect(page.locator(".rym-modern-release-distribution-card")).toHaveCSS(
+    "border-top-style",
+    "none",
+  );
   await expect(page.locator("#rym-modern-release-ratings")).toBeHidden();
   await page.locator(".rym-modern-release-friends-value .num_ratings").click();
   await expect(page.locator("#rym-modern-release-ratings")).toBeVisible();
@@ -862,6 +862,11 @@ test("modernizes the release preview layout", async ({ page }) => {
   await expect(page.locator("#rym-modern-release-discussion")).toBeVisible();
   await expect(page.locator("#rym-modern-release-lists")).toBeHidden();
   await expect(
+    page.locator(
+      "#rym-modern-release-discussion .page_object_section_discussion_header",
+    ),
+  ).toBeHidden();
+  await expect(
     page
       .locator("#rym-modern-release-discussion .page_object_discussion_thread")
       .first(),
@@ -876,6 +881,24 @@ test("modernizes the release preview layout", async ({ page }) => {
       .locator("#rym-modern-release-discussion .page_object_discussion_thread")
       .first(),
   ).toHaveCSS("border-bottom-style", "solid");
+  await expect(
+    page
+      .locator("#rym-modern-release-discussion .page_object_discussion_thread")
+      .first(),
+  ).toHaveCSS("max-width", "none");
+  await expect(
+    page
+      .locator("#rym-modern-release-discussion .page_object_discussion_thread")
+      .first()
+      .locator("a"),
+  ).toHaveCSS("display", "block");
+  await expect(
+    page
+      .locator(
+        "#rym-modern-release-discussion .page_object_discussion_group_name",
+      )
+      .first(),
+  ).toHaveCSS("display", "block");
 });
 
 test("modernizes the charts preview rows", async ({ page }) => {
@@ -954,9 +977,10 @@ test("uses the release distribution as the second column without friend ratings"
   await expect(
     page.locator(".rym-modern-release-distribution-card"),
   ).toContainText("See Catalog");
-  await expect(
-    page.locator(".rym-modern-release-distribution-card"),
-  ).toHaveCSS("background-color", "rgba(0, 0, 0, 0)");
+  await expect(page.locator(".rym-modern-release-distribution-card")).toHaveCSS(
+    "background-color",
+    "rgba(0, 0, 0, 0)",
+  );
   await expect(page.locator(".rym-modern-release-rating-summary")).toHaveClass(
     /rym-modern-release-rating-summary--distribution-only/,
   );
@@ -1020,10 +1044,18 @@ test("shortens current-year dates in the release friends preview", async ({
     pathToFileURL(`${process.cwd()}/assets/release-page/preview.html`).href,
   );
 
+  await page.locator(".rym-modern-release-friends-value .num_ratings").click();
+  await expect(page.locator("#rym-modern-release-ratings")).toBeVisible();
+  await expect(
+    page.locator("#rym-modern-release-ratings .catalog_header.friend").first(),
+  ).toBeVisible();
   await expect(
     page
-      .locator(".rym-modern-release-friends-preview .catalog_date_inner")
-      .first(),
+      .locator("#rym-modern-release-ratings .catalog_header.friend")
+      .first()
+      .locator(
+        "xpath=preceding-sibling::*[1]//div[contains(@class, 'catalog_date_inner')]",
+      ),
   ).toHaveText("5 Apr");
 });
 

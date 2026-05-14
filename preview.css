@@ -3711,26 +3711,67 @@ html#page_release #content {
   gap: 0;
   list-style: none;
   margin: 0 !important;
+  max-width: none !important;
   padding: 0 !important;
+}
+
+.page_release
+  #rym-modern-release-discussion
+  .page_object_section_discussion_header {
+  display: none !important;
 }
 
 .page_release .page_object_discussion_thread {
   background: transparent !important;
   border: 0 !important;
-  border-bottom: 1px solid rgb(148 163 184 / 16%) !important;
+  border-bottom: 1px solid rgb(148 163 184 / 18%) !important;
   border-radius: 0 !important;
-  padding: 12px 0 !important;
+  line-height: 1.25 !important;
+  margin: 0 !important;
+  max-width: none !important;
+  overflow: visible !important;
+  padding: 16px 0 !important;
+  text-overflow: clip !important;
+  transition:
+    border-color 140ms ease,
+    padding-left 140ms ease;
+  white-space: normal !important;
 }
 
 .page_release .page_object_discussion_thread:last-child {
   border-bottom: 0 !important;
 }
 
+.page_release .page_object_discussion_thread:hover {
+  border-bottom-color: rgb(120 183 255 / 32%) !important;
+  padding-left: 8px !important;
+}
+
+.page_release .page_object_discussion_thread > a {
+  color: var(--rym-link-hover) !important;
+  display: block;
+  font-size: clamp(17px, 1.45vw, 21px) !important;
+  font-weight: 710 !important;
+  letter-spacing: 0;
+  line-height: 1.25 !important;
+  max-width: 58ch;
+  text-decoration: none !important;
+}
+
+.page_release .page_object_discussion_thread > a:hover {
+  color: var(--rym-text) !important;
+  text-decoration: underline !important;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
+}
+
 .page_release .page_object_discussion_group_name {
   color: var(--rym-text-muted);
   display: block;
-  font-size: 12px;
-  margin-top: 3px;
+  font-size: 12px !important;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  margin-top: 6px;
 }
 
 .page_release ul.issues {
