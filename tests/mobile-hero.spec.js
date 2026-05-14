@@ -41,9 +41,7 @@ test.describe("mobile release page", () => {
     // Album title
     await expect(page.locator(".album_title")).toBeVisible();
     // Hero meta (Album by Artist line injected by JS)
-    await expect(
-      page.locator(".rym-modern-mobile-hero-meta"),
-    ).toBeVisible();
+    await expect(page.locator(".rym-modern-mobile-hero-meta")).toBeVisible();
     await expect(
       page.locator(".rym-modern-mobile-hero-type-artist"),
     ).toBeVisible();
@@ -90,7 +88,7 @@ test.describe("mobile release page", () => {
   test("non-Info tabs are hidden by default", async ({ browser }) => {
     const { page } = await loadReleasePage(browser);
     const reviewsPanel = page.locator("#rym-modern-release-reviews");
-    if (await reviewsPanel.count() > 0) {
+    if ((await reviewsPanel.count()) > 0) {
       await expect(reviewsPanel).toBeHidden();
     }
   });
@@ -166,9 +164,13 @@ test.describe("mobile release page", () => {
     const { page } = await loadReleasePage(browser);
     const actionRow = page.locator(".rym-modern-rating-action-row");
     await expect(actionRow).toBeVisible();
-    await expect(actionRow.locator(".rym-modern-rating-play-btn")).toBeVisible();
+    await expect(
+      actionRow.locator(".rym-modern-rating-play-btn"),
+    ).toBeVisible();
     await expect(actionRow.locator(".review_btn")).toBeVisible();
-    await expect(actionRow.locator(".rym-modern-rating-more-btn")).toBeVisible();
+    await expect(
+      actionRow.locator(".rym-modern-rating-more-btn"),
+    ).toBeVisible();
   });
 
   test("rating widget: catalog is not in the action row", async ({

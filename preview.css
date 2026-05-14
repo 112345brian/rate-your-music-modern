@@ -95,6 +95,45 @@ body {
   margin: 0;
 }
 
+.rym-modern-footer-toggle {
+  background: transparent;
+  border: 0;
+  color: var(--rym-text-muted);
+  cursor: pointer;
+  display: block;
+  font-weight: 760;
+  margin: 34px auto 0;
+  padding: 10px 14px;
+  text-decoration: underline;
+  text-decoration-color: rgb(142 154 171 / 38%);
+  text-underline-offset: 0.24em;
+}
+
+.rym-modern-footer-toggle:hover {
+  color: var(--rym-link-hover);
+  text-decoration-color: currentcolor;
+}
+
+footer.rym-modern-site-footer {
+  background: transparent !important;
+  border-top: 0 !important;
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  padding: 0 !important;
+  transition:
+    max-height 180ms ease,
+    opacity 140ms ease;
+}
+
+footer.rym-modern-site-footer.rym-modern-footer-open {
+  background: var(--rym-bg-soft) !important;
+  border-top: 1px solid var(--rym-border) !important;
+  max-height: 48rem;
+  opacity: 1;
+  padding: 28px 0 40px !important;
+}
+
 a,
 a:visited,
 .artist,
@@ -1059,21 +1098,22 @@ small,
 }
 
 .page_artist .rym-modern-contributions {
-  background: var(--rym-surface) !important;
-  border: 1px solid var(--rym-border);
-  border-radius: 8px;
+  background: transparent !important;
+  border: 0;
+  border-top: 1px solid var(--rym-border);
+  border-radius: 0;
   margin: 0 !important;
-  padding: 18px !important;
+  padding: 18px 0 0 !important;
 }
 
 .page_artist .rym-modern-contributions .artist_page_header {
-  margin-bottom: 14px;
+  margin-bottom: 10px;
   padding: 0 !important;
 }
 
 .page_artist .rym-modern-contributions .artist_page_header h2 {
   color: var(--rym-text) !important;
-  font-size: 24px !important;
+  font-size: 20px !important;
   line-height: 1.1;
 }
 
@@ -1083,62 +1123,72 @@ small,
 
 .page_artist .page_object_contributions {
   display: grid;
-  gap: 14px;
+  gap: 8px;
 }
 
 .page_artist .contributor_header {
   color: var(--rym-text-muted) !important;
-  display: block;
+  display: inline;
   font-size: 12px;
   font-weight: 780;
-  letter-spacing: 0.14em;
-  line-height: 1;
-  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  line-height: 1.35;
+  text-transform: none;
+}
+
+.page_artist .contributor_header::after {
+  content: ":";
 }
 
 .page_artist .contributors {
   display: flex;
   flex-wrap: wrap;
-  gap: 7px;
+  gap: 0 10px;
 }
 
 .page_artist .contributors a {
-  background: rgb(148 163 184 / 9%);
-  border: 1px solid rgb(148 163 184 / 14%);
-  border-radius: 999px;
-  color: var(--rym-text-soft) !important;
-  font-size: 12px !important;
-  font-weight: 720;
-  line-height: 1;
-  padding: 5px 8px;
-  text-decoration: none;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  color: var(--rym-link) !important;
+  font-size: 13px !important;
+  font-weight: 760;
+  line-height: 1.35;
+  padding: 0;
+  text-decoration: underline;
+  text-decoration-color: rgb(120 183 255 / 28%);
+  text-underline-offset: 0.18em;
 }
 
 .page_artist .contributors a:hover {
-  background: rgb(120 183 255 / 12%);
-  border-color: rgb(120 183 255 / 28%);
+  background: transparent;
+  border-color: transparent;
   color: var(--rym-link-hover) !important;
+  text-decoration-color: currentcolor;
 }
 
 .page_artist .rym-modern-contribution-actions {
-  border-top: 1px solid rgb(49 58 78 / 55%);
-  padding-top: 14px;
+  border-top: 0;
+  padding-top: 2px;
 }
 
 .page_artist .rym-modern-contribution-actions summary {
   align-items: center;
-  background: rgb(120 183 255 / 11%);
-  border: 1px solid rgb(120 183 255 / 28%);
-  border-radius: 999px;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
   color: var(--rym-link-hover);
   cursor: pointer;
   display: inline-flex;
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 820;
   line-height: 1;
   list-style: none;
   min-height: 32px;
-  padding: 8px 14px;
+  padding: 6px 0;
+  text-decoration: underline;
+  text-decoration-color: rgb(164 205 253 / 34%);
+  text-underline-offset: 0.22em;
 }
 
 .page_artist .rym-modern-contribution-actions summary::-webkit-details-marker {
@@ -1160,13 +1210,13 @@ small,
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
-  margin-top: 12px !important;
+  margin-top: 8px !important;
 }
 
 .page_artist .contribution_links .contrib_btn {
-  background: rgb(120 183 255 / 10%) !important;
-  border: 1px solid rgb(120 183 255 / 22%) !important;
-  border-radius: 999px !important;
+  background: transparent !important;
+  border: 1px solid var(--rym-border) !important;
+  border-radius: 6px !important;
   color: var(--rym-link-hover) !important;
   font-size: 12px !important;
   font-weight: 760 !important;
@@ -3715,23 +3765,24 @@ html#page_release #content {
 }
 
 .page_release .rym-modern-contributions {
-  background: var(--rym-surface) !important;
-  border: 1px solid var(--rym-border);
-  border-radius: 8px;
-  margin: 38px auto 0 !important;
-  max-width: 760px;
-  padding: 18px !important;
+  background: transparent !important;
+  border: 0;
+  border-top: 1px solid var(--rym-border);
+  border-radius: 0;
+  margin: 28px 0 0 !important;
+  max-width: none;
+  padding: 18px 0 0 !important;
   width: 100%;
 }
 
 .page_release .rym-modern-contributions .release_page_header {
-  margin-bottom: 14px;
+  margin-bottom: 10px;
   padding: 0 !important;
 }
 
 .page_release .rym-modern-contributions .release_page_header h2 {
   color: var(--rym-text) !important;
-  font-size: 24px !important;
+  font-size: 20px !important;
   line-height: 1.1;
 }
 
@@ -3742,63 +3793,73 @@ html#page_release #content {
 
 .page_release .rym-modern-contributions .page_object_contributions {
   display: grid;
-  gap: 14px;
+  gap: 8px;
   padding: 0 !important;
 }
 
 .page_release .rym-modern-contributions .contributor_header {
   color: var(--rym-text-muted) !important;
-  display: block;
+  display: inline;
   font-size: 12px;
   font-weight: 780;
-  letter-spacing: 0.14em;
-  line-height: 1;
-  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  line-height: 1.35;
+  text-transform: none;
+}
+
+.page_release .rym-modern-contributions .contributor_header::after {
+  content: ":";
 }
 
 .page_release .rym-modern-contributions .contributors {
   display: flex;
   flex-wrap: wrap;
-  gap: 7px;
+  gap: 0 10px;
 }
 
 .page_release .rym-modern-contributions .contributors a {
-  background: rgb(148 163 184 / 9%);
-  border: 1px solid rgb(148 163 184 / 14%);
-  border-radius: 999px;
-  color: var(--rym-text-soft) !important;
-  font-size: 12px !important;
-  font-weight: 720;
-  line-height: 1;
-  padding: 5px 8px;
-  text-decoration: none;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  color: var(--rym-link) !important;
+  font-size: 13px !important;
+  font-weight: 760;
+  line-height: 1.35;
+  padding: 0;
+  text-decoration: underline;
+  text-decoration-color: rgb(120 183 255 / 28%);
+  text-underline-offset: 0.18em;
 }
 
 .page_release .rym-modern-contributions .contributors a:hover {
-  background: rgb(120 183 255 / 12%);
-  border-color: rgb(120 183 255 / 28%);
+  background: transparent;
+  border-color: transparent;
   color: var(--rym-link-hover) !important;
+  text-decoration-color: currentcolor;
 }
 
 .page_release .rym-modern-contribution-actions {
-  border-top: 1px solid rgb(49 58 78 / 55%);
-  padding-top: 14px;
+  border-top: 0;
+  padding-top: 2px;
 }
 
 .page_release .rym-modern-contribution-actions summary {
   align-items: center;
-  background: rgb(120 183 255 / 11%);
-  border: 1px solid rgb(120 183 255 / 28%);
-  border-radius: 999px;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
   color: var(--rym-link-hover);
   cursor: pointer;
   display: inline-flex;
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 820;
   line-height: 1;
   list-style: none;
   min-height: 32px;
-  padding: 8px 14px;
+  padding: 6px 0;
+  text-decoration: underline;
+  text-decoration-color: rgb(164 205 253 / 34%);
+  text-underline-offset: 0.22em;
 }
 
 .page_release .rym-modern-contribution-actions summary::-webkit-details-marker {
@@ -3820,14 +3881,14 @@ html#page_release #content {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
-  margin-top: 12px !important;
+  margin-top: 8px !important;
 }
 
 .page_release .rym-modern-contributions .contribution_links .contrib_btn,
 .page_release .rym-modern-contributions .contribution_links .ui_button {
-  background: rgb(120 183 255 / 10%) !important;
-  border: 1px solid rgb(120 183 255 / 22%) !important;
-  border-radius: 999px !important;
+  background: transparent !important;
+  border: 1px solid var(--rym-border) !important;
+  border-radius: 6px !important;
   color: var(--rym-link-hover) !important;
   font-size: 12px !important;
   font-weight: 760 !important;
@@ -4357,11 +4418,8 @@ html#page_release #content {
 
   /* Full-screen overlay for Discussion — stops above bottom nav */
   .rym-mobile-overlay-open {
+    inset: 0 0 calc(56px + env(safe-area-inset-bottom));
     position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: calc(56px + env(safe-area-inset-bottom));
     z-index: 200;
     background: var(--mono-f);
     overflow-y: auto;

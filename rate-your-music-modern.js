@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Rate Your Music Modern
 // @namespace    github.com/112345brian/rate-your-music-modern
-// @version      1.3.0
+// @version      1.3.1
 // @description  Behavior enhancements for the Rate Your Music Modern userstyle.
 // @author       bri
 // @homepageURL  https://github.com/112345brian/rate-your-music-modern
@@ -31,6 +31,14 @@ function removeCommaTextNodes(root) {
       node.remove();
     }
   }
+}
+
+function normalizeContributionHeader(header) {
+  if (!header) {
+    return;
+  }
+
+  header.textContent = "Contributors";
 }
 
 function wrapFollowerCount(root) {
@@ -464,13 +472,17 @@ function enhanceContributions() {
     removeCommaTextNodes(contributors);
   }
 
+  normalizeContributionHeader(
+    contributions.querySelector(".contributor_header"),
+  );
+
   if (links) {
     const details = document.createElement("details");
     const summary = document.createElement("summary");
     const actionCount = links.querySelectorAll("a").length;
 
     details.className = "rym-modern-contribution-actions";
-    summary.textContent = `Contribution options ${actionCount}`;
+    summary.textContent = `Options ${actionCount}`;
     details.append(summary, links);
     contributions.append(details);
   }
@@ -1276,7 +1288,8 @@ function enhanceReleaseContributions() {
   contributors.className = "contributors";
   actions.classList.add("contribution_links");
   details.className = "rym-modern-contribution-actions";
-  summary.textContent = `Contribution options ${actionCount}`;
+  summary.textContent = `Options ${actionCount}`;
+  normalizeContributionHeader(header);
 
   for (let node = header.nextSibling; node && node !== actions; ) {
     const next = node.nextSibling;
@@ -1295,6 +1308,32 @@ function enhanceReleaseContributions() {
   section.append(body);
   section.classList.add("rym-modern-contributions");
   section.dataset.rymModernEnhanced = "true";
+}
+
+function enhanceFooterDisclosure() {
+  const footer = document.querySelector("footer");
+
+  if (!footer || footer.dataset.rymModernEnhanced === "true") {
+    return;
+  }
+
+  const toggle = document.createElement("button");
+
+  toggle.className = "rym-modern-footer-toggle";
+  toggle.type = "button";
+  toggle.setAttribute("aria-expanded", "false");
+  toggle.textContent = "Show footer";
+
+  toggle.addEventListener("click", () => {
+    const isOpen = footer.classList.toggle("rym-modern-footer-open");
+
+    toggle.setAttribute("aria-expanded", String(isOpen));
+    toggle.textContent = isOpen ? "Hide footer" : "Show footer";
+  });
+
+  footer.classList.add("rym-modern-site-footer");
+  footer.before(toggle);
+  footer.dataset.rymModernEnhanced = "true";
 }
 
 function enhanceReleaseCommentsScrollIntent() {
@@ -1667,6 +1706,7 @@ const _enhancements = [
   enhanceReleasePage,
   enhanceMobileRelease,
   enhanceResponsiveInlineGroups,
+  enhanceFooterDisclosure,
 ];
 for (const fn of _enhancements) {
   try {
@@ -1853,15 +1893,21 @@ function buildMobileRatingMore(personalCard) {
   if (!frame || frame.querySelector(".rym-modern-rating-action-row")) return;
 
   const rateRow = frame.querySelector(".rym-modern-release-user-rating-rate");
-  const rateLabel = rateRow?.querySelector(".rym-modern-release-user-rating-rate-label");
+  const rateLabel = rateRow?.querySelector(
+    ".rym-modern-release-user-rating-rate-label",
+  );
   const bumpBtn = frame.querySelector(".bump_btn");
   const catalogBtn = frame.querySelector(".catalog_btn");
   const reviewBtn = frame.querySelector(".review_btn");
   const listeningBtn = frame.querySelector(".listening_btn");
   const tagBtn = frame.querySelector(".tag_btn");
   const trackRatingBtn = frame.querySelector(".track_rating_btn");
-  const streamingEl = personalCard.querySelector(".rym-modern-release-streaming");
-  const streamingLinks = streamingEl?.querySelector(".rym-modern-release-streaming-links");
+  const streamingEl = personalCard.querySelector(
+    ".rym-modern-release-streaming",
+  );
+  const streamingLinks = streamingEl?.querySelector(
+    ".rym-modern-release-streaming-links",
+  );
   const hasStreaming = streamingLinks && streamingLinks.children.length > 0;
 
   // Remove "Rate" label — stars speak for themselves
@@ -1967,7 +2013,10 @@ function buildMobileInfoSubTabs(infoPanel, tabBar) {
   infoPanel.append(subTabBar, ...subSections.map((s) => s.el));
 
   // Remove Credits and Issues from the main tab bar
-  for (const id of ["rym-modern-release-credits", "rym-modern-release-issues"]) {
+  for (const id of [
+    "rym-modern-release-credits",
+    "rym-modern-release-issues",
+  ]) {
     tabBar.querySelector(`[data-target="${id}"]`)?.remove();
   }
 }
@@ -1987,7 +2036,9 @@ function enhanceMobileRelease() {
   // Unified card: hero + ratings + nav + personal widget in one bordered container
   const pageSection = mainInfo.querySelector(".page_section");
   const albumInfoOuter = mainInfo.querySelector(".album_info_outer");
-  const personalCard = document.querySelector(".rym-modern-release-personal-card");
+  const personalCard = document.querySelector(
+    ".rym-modern-release-personal-card",
+  );
   if (albumInfoOuter && personalCard) {
     const navEl = document.querySelector(".section_release_navigation");
 
@@ -1996,9 +2047,15 @@ function enhanceMobileRelease() {
     const heroSection = document.createElement("div");
     heroSection.className = "rym-modern-mobile-hero-section";
     const pageSectionKids = pageSection ? [...pageSection.children] : [];
-    const coverEl = pageSectionKids.find((el) => el.classList.contains("show-for-small"));
-    const titleEl = pageSectionKids.find((el) => el.classList.contains("album_title"));
-    const metaEl = pageSectionKids.find((el) => el.classList.contains("rym-modern-mobile-hero-meta"));
+    const coverEl = pageSectionKids.find((el) =>
+      el.classList.contains("show-for-small"),
+    );
+    const titleEl = pageSectionKids.find((el) =>
+      el.classList.contains("album_title"),
+    );
+    const metaEl = pageSectionKids.find((el) =>
+      el.classList.contains("rym-modern-mobile-hero-meta"),
+    );
     if (coverEl) heroSection.append(coverEl);
     if (titleEl) heroSection.append(titleEl);
     if (metaEl) heroSection.append(metaEl);
@@ -2055,7 +2112,9 @@ function enhanceMobileRelease() {
       if (forumContent) reviewsPanel.append(forumContent);
       forumPanel.remove();
     }
-    tabBar.querySelector('[data-target="rym-modern-release-discussion"]')?.remove();
+    tabBar
+      .querySelector('[data-target="rym-modern-release-discussion"]')
+      ?.remove();
 
     // Build Info sub-tabs (Overview / Credits / Issues)
     buildMobileInfoSubTabs(infoPanel, tabBar);
@@ -2169,11 +2228,19 @@ function buildMobileInfoPanel() {
     document.querySelector(".show-for-small .section_tracklisting") ??
     getReleaseSection(".section_tracklisting");
 
-  if (!genreRow && !descriptorRow && !tracklist && !languagePairedRow && !languagePlainRow) return null;
+  if (
+    !genreRow &&
+    !descriptorRow &&
+    !tracklist &&
+    !languagePairedRow &&
+    !languagePlainRow
+  )
+    return null;
 
   const panel = document.createElement("div");
   panel.id = "rym-modern-release-info";
-  panel.className = "rym-modern-release-tab-panel rym-modern-release-info-panel";
+  panel.className =
+    "rym-modern-release-tab-panel rym-modern-release-info-panel";
 
   if (genreRow) {
     genreRow.classList.add("rym-modern-mobile-hidden");

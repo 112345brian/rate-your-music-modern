@@ -223,8 +223,19 @@ test("loads generated previews for saved RYM assets", async ({ page }) => {
     page.locator(".rym-modern-contribution-actions"),
   ).not.toHaveAttribute("open", "");
   await expect(page.locator(".contribution_links")).toBeHidden();
-  await page.getByText(/Contribution options/).click();
+  await page.getByText(/Options/).click();
   await expect(page.locator(".contribution_links")).toBeVisible();
+  await expect(page.locator(".rym-modern-footer-toggle")).toHaveText(
+    "Show footer",
+  );
+  await expect(page.locator("footer.rym-modern-site-footer")).toHaveCSS(
+    "max-height",
+    "0px",
+  );
+  await page.locator(".rym-modern-footer-toggle").click();
+  await expect(page.locator("footer.rym-modern-site-footer")).toHaveClass(
+    /rym-modern-footer-open/,
+  );
 });
 
 test("modernizes the release preview layout", async ({ page }) => {
@@ -602,11 +613,18 @@ test("modernizes the release preview layout", async ({ page }) => {
   ).toBeHidden();
   await page
     .locator(".page_release .rym-modern-contributions")
-    .getByText(/Contribution options/)
+    .getByText(/Options/)
     .click();
   await expect(
     page.locator(".page_release .rym-modern-contributions .contribution_links"),
   ).toBeVisible();
+  await expect(page.locator(".rym-modern-footer-toggle")).toHaveText(
+    "Show footer",
+  );
+  await expect(page.locator("footer.rym-modern-site-footer")).toHaveCSS(
+    "max-height",
+    "0px",
+  );
 
   const releaseOrder = await page.evaluate(() => {
     const reviews = document.querySelector("#reviews_shell");
