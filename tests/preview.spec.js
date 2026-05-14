@@ -668,6 +668,14 @@ test("modernizes the release preview layout", async ({ page }) => {
         releaseNavigation,
         "::before",
       ).backgroundColor,
+      releaseNavigationTailBackground: getComputedStyle(
+        releaseNavigation,
+        "::after",
+      ).backgroundColor,
+      releaseNavigationTailHeight: getComputedStyle(
+        releaseNavigation,
+        "::after",
+      ).height,
       leftColumnHeight: leftColumn.getBoundingClientRect().height,
       rightColumnHeight: rightColumn.getBoundingClientRect().height,
       commentsBeforeReviews:
@@ -777,6 +785,8 @@ test("modernizes the release preview layout", async ({ page }) => {
   expect(releaseOrder.releaseNavigationLeadInBackground).toBe(
     "rgb(15, 17, 23)",
   );
+  expect(releaseOrder.releaseNavigationTailBackground).toBe("rgb(15, 17, 23)");
+  expect(Number.parseFloat(releaseOrder.releaseNavigationTailHeight)).toBe(28);
   expect(releaseOrder.leftColumnHeight).toBeGreaterThanOrEqual(
     releaseOrder.rightColumnHeight - 2,
   );

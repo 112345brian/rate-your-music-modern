@@ -1051,6 +1051,16 @@ html#page_release #content {
   z-index: -1;
 }
 
+.page_release div.section_release_navigation::after {
+  background: var(--rym-bg);
+  content: "";
+  height: 28px;
+  inset: auto -8px -24px;
+  pointer-events: none;
+  position: absolute;
+  z-index: -1;
+}
+
 .page_release div.release_navigation {
   background: var(--rym-surface) !important;
   border: 1px solid var(--rym-border);
