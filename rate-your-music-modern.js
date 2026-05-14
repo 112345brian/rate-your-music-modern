@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Rate Your Music Modern
 // @namespace    github.com/112345brian/rate-your-music-modern
-// @version      1.3.1
+// @version      1.3.2
 // @description  Behavior enhancements for the Rate Your Music Modern userstyle.
 // @author       bri
 // @homepageURL  https://github.com/112345brian/rate-your-music-modern
@@ -533,6 +533,11 @@ function enhanceReleaseRatingDistribution() {
   summaryRow.className = "rym-modern-release-rating-row";
   summaryCell.colSpan = 3;
   summary.className = "rym-modern-release-rating-summary";
+  summary.classList.add(
+    friendsContent && friendsPreview
+      ? "rym-modern-release-rating-summary--with-friends"
+      : "rym-modern-release-rating-summary--distribution-only",
+  );
   ratingCard.className = "rym-modern-release-rating-card";
   ratingCard.append(
     createReleaseInfoLabel(ratingLabel.textContent),

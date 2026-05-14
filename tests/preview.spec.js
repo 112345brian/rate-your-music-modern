@@ -962,6 +962,28 @@ test("uses the release distribution as the second column without friend ratings"
   await expect(
     page.locator(".rym-modern-release-distribution-card"),
   ).toContainText("See Catalog");
+  await expect(page.locator(".rym-modern-release-rating-summary")).toHaveClass(
+    /rym-modern-release-rating-summary--distribution-only/,
+  );
+  const compactRatingMetrics = await page.evaluate(() => {
+    const albumInfo = document.querySelector(".album_info");
+    const summary = document.querySelector(
+      ".rym-modern-release-rating-summary",
+    );
+    const distribution = document.querySelector(
+      ".rym-modern-release-distribution-card",
+    );
+
+    return {
+      albumInfoHeight: albumInfo.getBoundingClientRect().height,
+      summaryHeight: summary.getBoundingClientRect().height,
+      distributionHeight: distribution.getBoundingClientRect().height,
+    };
+  });
+
+  expect(compactRatingMetrics.albumInfoHeight).toBeLessThanOrEqual(500);
+  expect(compactRatingMetrics.summaryHeight).toBeLessThanOrEqual(125);
+  expect(compactRatingMetrics.distributionHeight).toBeLessThanOrEqual(125);
   await expect(page.locator("#rym-modern-release-ratings")).toBeHidden();
   await page.locator(".rym-modern-release-catalog-link").click();
   await expect(page.locator("#rym-modern-release-ratings")).toBeVisible();
