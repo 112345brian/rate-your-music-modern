@@ -1077,6 +1077,20 @@ test("uses the release distribution as the second column without friend ratings"
   ).toHaveCount(0);
 });
 
+test("starts release pages at the top when stale modern hashes are present", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto(
+    `${pathToFileURL(`${process.cwd()}/assets/release-page/preview.html`).href}#rym-modern-release-ratings`,
+  );
+  await page.waitForTimeout(100);
+
+  await expect(page.locator("#rym-modern-release-ratings")).toBeHidden();
+  await expect(page).toHaveURL(/preview\.html$/);
+  expect(await page.evaluate(() => window.scrollY)).toBe(0);
+});
+
 test("shortens current-year dates in the release friends preview", async ({
   page,
 }) => {

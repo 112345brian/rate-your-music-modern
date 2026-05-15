@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Rate Your Music Modern
 // @namespace    github.com/112345brian/rate-your-music-modern
-// @version      1.3.9
+// @version      1.4.0
 // @description  Behavior enhancements for the Rate Your Music Modern userstyle.
 // @author       bri
 // @homepageURL  https://github.com/112345brian/rate-your-music-modern
@@ -561,9 +561,7 @@ function enhanceReleaseRatingDistribution() {
     numRatingsEl.style.cursor = "pointer";
     numRatingsEl.classList.add("rym-modern-ratings-count-link");
     numRatingsEl.addEventListener("click", () => {
-      catalogSection.classList.remove("rym-modern-release-catalog-hidden");
-      history.replaceState(null, "", `#${catalogSection.id}`);
-      catalogSection.scrollIntoView({ block: "start", behavior: "smooth" });
+      revealReleaseCatalogSection(catalogSection);
     });
   }
   if (hasFriendRatings) {
@@ -576,9 +574,7 @@ function enhanceReleaseRatingDistribution() {
       friendsRatingsEl.style.cursor = "pointer";
       friendsRatingsEl.classList.add("rym-modern-ratings-count-link");
       friendsRatingsEl.addEventListener("click", () => {
-        catalogSection.classList.remove("rym-modern-release-catalog-hidden");
-        history.replaceState(null, "", `#${catalogSection.id}`);
-        catalogSection.scrollIntoView({ block: "start", behavior: "smooth" });
+        revealReleaseCatalogSection(catalogSection);
       });
     }
   }
@@ -682,12 +678,7 @@ function prepareReleaseCatalogSection() {
   }
 
   catalogSection.id = catalogSection.id || "rym-modern-release-ratings";
-
-  if (location.hash === `#${catalogSection.id}`) {
-    catalogSection.classList.remove("rym-modern-release-catalog-hidden");
-  } else {
-    catalogSection.classList.add("rym-modern-release-catalog-hidden");
-  }
+  catalogSection.classList.add("rym-modern-release-catalog-hidden");
 
   return catalogSection;
 }
@@ -708,12 +699,15 @@ function createReleaseCatalogLink(text) {
     }
 
     event.preventDefault();
-    catalogSection.classList.remove("rym-modern-release-catalog-hidden");
-    history.replaceState(null, "", link.hash);
-    catalogSection.scrollIntoView({ block: "start", behavior: "smooth" });
+    revealReleaseCatalogSection(catalogSection);
   });
 
   return link;
+}
+
+function revealReleaseCatalogSection(catalogSection) {
+  catalogSection.classList.remove("rym-modern-release-catalog-hidden");
+  catalogSection.scrollIntoView({ block: "start", behavior: "smooth" });
 }
 
 function createReleaseInfoLabel(text) {
@@ -774,9 +768,7 @@ function createReleaseFriendsPreview() {
   moreLink.href = `#${catalogSection.id}`;
   moreLink.addEventListener("click", (event) => {
     event.preventDefault();
-    catalogSection.classList.remove("rym-modern-release-catalog-hidden");
-    history.replaceState(null, "", moreLink.hash);
-    catalogSection.scrollIntoView({ block: "start", behavior: "smooth" });
+    revealReleaseCatalogSection(catalogSection);
   });
   moreLink.textContent =
     friendLines.length > 3
@@ -1751,7 +1743,27 @@ function enhanceReleasePage() {
     releaseMainColumn.append(suggestions);
   }
 
+  resetReleaseInitialScrollPosition();
   document.documentElement.dataset.rymModernReleaseEnhanced = "true";
+}
+
+function resetReleaseInitialScrollPosition() {
+  if (document.documentElement.dataset.rymModernInitialScrollReset === "true") {
+    return;
+  }
+
+  document.documentElement.dataset.rymModernInitialScrollReset = "true";
+
+  if (location.hash.startsWith("#rym-modern-release")) {
+    history.replaceState(null, "", location.pathname + location.search);
+  }
+
+  const scrollTop = () =>
+    window.scrollTo({ left: 0, top: 0, behavior: "auto" });
+
+  scrollTop();
+  requestAnimationFrame(scrollTop);
+  window.setTimeout(scrollTop, 0);
 }
 
 function fitInlineGroup(element, variableName, minimumScale) {
