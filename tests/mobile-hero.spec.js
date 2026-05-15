@@ -242,6 +242,50 @@ test.describe("mobile release page", () => {
     expect(count).toBeGreaterThanOrEqual(2);
   });
 
+  test("Discussion overlay uses compact dark mobile layout", async ({
+    browser,
+  }) => {
+    const { page } = await loadReleasePage(browser);
+    const discussionTab = page.locator(
+      '.rym-modern-release-tab[data-target="rym-modern-release-reviews"]',
+    );
+    if ((await discussionTab.count()) === 0) {
+      test.skip();
+      return;
+    }
+
+    await discussionTab.click();
+    await page.waitForTimeout(400);
+
+    const overlay = page.locator("#rym-modern-release-reviews");
+    await expect(overlay).toBeVisible();
+    await expect(overlay).toHaveCSS("background-color", "rgb(15, 17, 23)");
+    await expect(overlay.locator(".rym-mobile-overlay-header")).toHaveCSS(
+      "background-color",
+      "rgb(15, 17, 23)",
+    );
+
+    const reviewBody = overlay.locator(".review_body").first();
+    if ((await reviewBody.count()) > 0) {
+      await expect(reviewBody).toHaveCSS("font-size", "15px");
+    }
+  });
+
+  test("secondary release navigation is compact on mobile", async ({
+    browser,
+  }) => {
+    const { page } = await loadReleasePage(browser);
+    const navLinks = page.locator(
+      ".section_release_navigation .release_navigation_links:visible",
+    );
+    await expect(navLinks).toBeVisible();
+
+    const height = await navLinks.evaluate(
+      (element) => element.getBoundingClientRect().height,
+    );
+    expect(height).toBeLessThanOrEqual(56);
+  });
+
   test("Discussion overlay close button dismisses it", async ({ browser }) => {
     const { page } = await loadReleasePage(browser);
     const discussionTab = page.locator(
