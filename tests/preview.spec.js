@@ -792,6 +792,18 @@ test("modernizes the release preview layout", async ({ page }) => {
       commentsLoadDisplay: getComputedStyle(
         comments.querySelector(".comments_load"),
       ).display,
+      addCommentBackground: getComputedStyle(
+        comments.querySelector(".comment_post_add_btn"),
+      ).backgroundColor,
+      addCommentBorderRadius: getComputedStyle(
+        comments.querySelector(".comment_post_add_btn"),
+      ).borderRadius,
+      addCommentDisplay: getComputedStyle(
+        comments.querySelector(".comment_post_add_btn"),
+      ).display,
+      addCommentWidth: getComputedStyle(
+        comments.querySelector(".comment_post_add_btn"),
+      ).width,
       reviewPaginationOnOwnLine: (() => {
         const sort = document.querySelector(".review_sort");
         const pagination = document.querySelector(
@@ -883,6 +895,10 @@ test("modernizes the release preview layout", async ({ page }) => {
   expect(releaseOrder.commentsLoadBackground).toBe("rgba(0, 0, 0, 0)");
   expect(releaseOrder.commentsLoadBorderRadius).toBe("0px");
   expect(releaseOrder.commentsLoadDisplay).toBe("inline-flex");
+  expect(releaseOrder.addCommentBackground).toBe("rgba(0, 0, 0, 0)");
+  expect(releaseOrder.addCommentBorderRadius).toBe("0px");
+  expect(releaseOrder.addCommentDisplay).toBe("inline-flex");
+  expect(releaseOrder.addCommentWidth).not.toBe("240px");
   expect(releaseOrder.reviewPaginationOnOwnLine).toBe(true);
   expect(releaseOrder.reviewColumnsAligned).toBe(true);
   expect(releaseOrder.friendStarsFit).toBe(true);

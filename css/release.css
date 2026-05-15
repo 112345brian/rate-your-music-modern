@@ -2342,12 +2342,57 @@ html#page_release #content {
   padding: 14px 0 0 !important;
 }
 
+.page_release .comment_post_add_btn {
+  align-items: center;
+  background: transparent !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  color: var(--rym-link-hover) !important;
+  display: inline-flex !important;
+  float: none !important;
+  font-size: 13px !important;
+  font-weight: 820 !important;
+  gap: 8px;
+  height: auto !important;
+  line-height: 1 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  text-align: left !important;
+  text-decoration: none !important;
+  width: auto !important;
+}
+
+.page_release .comment_post_add_btn::before {
+  align-items: center;
+  border: 1px solid rgb(164 205 253 / 45%);
+  border-radius: 5px;
+  color: var(--rym-link-hover);
+  content: "+";
+  display: inline-flex;
+  font-size: 15px;
+  font-weight: 900;
+  height: 20px;
+  justify-content: center;
+  line-height: 1;
+  width: 20px;
+}
+
+.page_release .comment_post_add_btn:hover {
+  color: #d7ebff !important;
+  text-decoration: underline !important;
+  text-decoration-thickness: 1px !important;
+  text-underline-offset: 3px;
+}
+
+.page_release .comment_post_add_btn:hover::before {
+  border-color: rgb(164 205 253 / 72%);
+}
+
 .page_release textarea.comment_new {
   min-height: 84px;
   width: 100%;
 }
 
-.page_release .comment_post_add_btn,
 .page_release .comment_cancel_btn,
 .page_release .comment_post_btn,
 .page_release .btn.blue_btn,
