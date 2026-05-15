@@ -3044,10 +3044,12 @@ html#page_release #content {
     width: auto !important;
   }
 
-  .page_release .page_release_art_frame {
-    margin-bottom: 18px;
-    max-width: 360px;
-    position: static;
+  /* Desktop album-art container is redundant on mobile (the cover lives
+     in the hero). Hide it so its border / shadow / bottom gradient
+     don't leave a stray dark rectangle behind the stacked content. */
+  .page_release .page_release_art_frame,
+  .page_release .page_release_art_frame::after {
+    display: none !important;
   }
 
   .page_release .album_title {
