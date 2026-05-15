@@ -1,7 +1,7 @@
 /* ==UserStyle==
 @name           Rate Your Music Modern
 @namespace      github.com/112345brian/rate-your-music-modern
-@version        1.7.1
+@version        1.7.2
 @description    Modern visual treatment for Rate Your Music.
 @author         bri
 @homepageURL    https://github.com/112345brian/rate-your-music-modern
@@ -3013,6 +3013,10 @@
     column-gap: 28px;
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  }
+
+  .page_release #rym-modern-release-credits > .release_page_header {
+    display: none !important;
   }
 
   .page_release .section_credits ul.credits li {

@@ -890,6 +890,9 @@ test("modernizes the release preview layout", async ({ page }) => {
   await expect(page.locator("#rym-modern-release-credits")).toBeVisible();
   await expect(page.locator("#rym-modern-release-issues")).toBeHidden();
   await expect(
+    page.locator("#rym-modern-release-credits > .release_page_header"),
+  ).toBeHidden();
+  await expect(
     page.locator("#rym-modern-release-credits ul.credits").first(),
   ).toHaveCSS("display", "grid");
   await expect(

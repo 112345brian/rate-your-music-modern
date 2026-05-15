@@ -1632,6 +1632,10 @@ html#page_release #content {
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
 }
 
+.page_release #rym-modern-release-credits > .release_page_header {
+  display: none !important;
+}
+
 .page_release .section_credits ul.credits li {
   background: transparent !important;
   border: 0;
