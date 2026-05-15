@@ -2234,6 +2234,13 @@ function enhanceMobileRelease() {
 
     // Build Info sub-tabs (Overview / Credits / Issues)
     buildMobileInfoSubTabs(infoPanel, tabBar);
+    moveMobileTaxonomyRowsToInfo(infoPanel);
+    const albumInfoTable = document.querySelector(".album_info");
+    if (albumInfoTable) {
+      new MutationObserver(() =>
+        moveMobileTaxonomyRowsToInfo(infoPanel),
+      ).observe(albumInfoTable, { childList: true, subtree: true });
+    }
 
     infoTab.addEventListener("click", (event) => {
       event.preventDefault();
@@ -2319,12 +2326,79 @@ function buildMobileHeroMeta(mainInfo) {
   summaryRow.classList.add("rym-modern-mobile-hidden");
 }
 
+function moveMobileTaxonomyRowsToInfo(infoPanel) {
+  if (!infoPanel) return;
+  const targetPanel =
+    document.getElementById("rym-modern-info-overview") ?? infoPanel;
+  let insertionPoint = [
+    ...targetPanel.querySelectorAll(".rym-modern-info-section"),
+  ].find(
+    (section) =>
+      section
+        .querySelector(".rym-modern-info-label")
+        ?.textContent.trim()
+        .toLowerCase() === "genres",
+  );
+
+  const taxonomyRows = [...document.querySelectorAll(".album_info tr")].filter(
+    (row) => {
+      if (row.classList.contains("rym-modern-mobile-taxonomy-moved")) {
+        return false;
+      }
+      const label = row
+        .querySelector(".info_hdr")
+        ?.textContent.trim()
+        .toLowerCase();
+      return ["scenes", "scene", "movements", "movement"].includes(label);
+    },
+  );
+
+  for (const taxonomyRow of taxonomyRows) {
+    taxonomyRow.classList.add(
+      "rym-modern-mobile-hidden",
+      "rym-modern-mobile-taxonomy-moved",
+    );
+    const labelText = taxonomyRow
+      .querySelector(".info_hdr")
+      ?.textContent.trim();
+    const td = taxonomyRow.querySelector("td");
+    if (!labelText || !td) continue;
+
+    const section = document.createElement("div");
+    section.className =
+      "rym-modern-info-section rym-modern-info-section--taxonomy";
+    const label = document.createElement("div");
+    label.className = "rym-modern-info-label";
+    label.textContent = labelText;
+    const content = document.createElement("div");
+    content.className = "rym-modern-info-values";
+    content.append(...[...td.childNodes].map((node) => node.cloneNode(true)));
+    section.append(label, content);
+
+    if (insertionPoint) {
+      insertionPoint.after(section);
+    } else {
+      targetPanel.prepend(section);
+    }
+    insertionPoint = section;
+  }
+}
+
 function buildMobileInfoPanel() {
   // Use class-based selector — more reliable than matching .info_hdr text
   const genreRow = document.querySelector(".album_info tr.release_genres");
   const descriptorRow = document
     .querySelector(".album_info .release_pri_descriptors")
     ?.closest("tr");
+  const hasTaxonomyRows = [...document.querySelectorAll(".album_info tr")].some(
+    (row) => {
+      const label = row
+        .querySelector(".info_hdr")
+        ?.textContent.trim()
+        .toLowerCase();
+      return ["scenes", "scene", "movements", "movement"].includes(label);
+    },
+  );
 
   // Language: either already paired with Recorded, or still a plain TR
   const languagePairedRow = document.querySelector(
@@ -2346,6 +2420,7 @@ function buildMobileInfoPanel() {
 
   if (
     !genreRow &&
+    !hasTaxonomyRows &&
     !descriptorRow &&
     !tracklist &&
     !languagePairedRow &&
@@ -2374,6 +2449,8 @@ function buildMobileInfoPanel() {
     sec.append(lbl, content);
     panel.append(sec);
   }
+
+  moveMobileTaxonomyRowsToInfo(panel);
 
   if (descriptorRow) {
     descriptorRow.classList.add("rym-modern-mobile-hidden");

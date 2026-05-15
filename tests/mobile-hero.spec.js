@@ -4,9 +4,10 @@ import { fileURLToPath } from "url";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
-async function loadReleasePage(browser) {
+async function loadReleasePage(browser, setupPage) {
   const context = await browser.newContext({ ...devices["Pixel 5"] });
   const page = await context.newPage();
+  if (setupPage) await setupPage(page);
   const filePath = path.resolve(
     __dirname,
     "../assets/release-page/preview.html",
@@ -68,6 +69,52 @@ test.describe("mobile release page", () => {
     await expect(infoPanel.locator(".release_pri_genres")).toBeVisible();
     // Tracklist
     await expect(infoPanel.locator(".section_tracklisting")).toBeVisible();
+  });
+
+  test("Info overview moves scene taxonomy below genres", async ({
+    browser,
+  }) => {
+    const { page } = await loadReleasePage(browser, async (page) => {
+      await page.addInitScript(() => {
+        let inserted = false;
+        const insertScenesRow = () => {
+          if (inserted) return;
+          const genreRow = document.querySelector(
+            ".album_info tr.release_genres",
+          );
+          if (!genreRow) return;
+          inserted = true;
+          const scenesRow = document.createElement("tr");
+          scenesRow.innerHTML =
+            '<th class="info_hdr">Scenes</th><td colspan="2"><a>southern hip hop</a></td>';
+          genreRow.after(scenesRow);
+        };
+        document.addEventListener("DOMContentLoaded", insertScenesRow, {
+          capture: true,
+          once: true,
+        });
+        new MutationObserver(insertScenesRow).observe(
+          document.documentElement,
+          {
+            childList: true,
+            subtree: true,
+          },
+        );
+      });
+    });
+
+    const infoPanel = page.locator("#rym-modern-release-info");
+    const labels = await infoPanel
+      .locator(".rym-modern-info-label")
+      .evaluateAll((elements) => elements.map((el) => el.textContent.trim()));
+
+    expect(labels.indexOf("Scenes")).toBeGreaterThan(labels.indexOf("Genres"));
+    await expect(
+      infoPanel.locator(".rym-modern-info-section--taxonomy"),
+    ).toContainText("southern hip hop");
+    await expect(
+      page.locator(".album_info tr", { hasText: "Scenes" }),
+    ).toBeHidden();
   });
 
   test("tracklist appears exactly once on page", async ({ browser }) => {
