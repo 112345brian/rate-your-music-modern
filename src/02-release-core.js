@@ -57,14 +57,13 @@ function enhanceReleaseRatingDistribution() {
   if (
     !ratingRow ||
     !ratingContent ||
-    !chart ||
     document.querySelector(".rym-modern-release-rating-summary")
   ) {
     return;
   }
 
   if (
-    chart.previousElementSibling?.textContent.trim().toLowerCase() ===
+    chart?.previousElementSibling?.textContent.trim().toLowerCase() ===
     "rating distribution"
   ) {
     chart.previousElementSibling.remove();
@@ -77,7 +76,6 @@ function enhanceReleaseRatingDistribution() {
     trendChart.previousElementSibling.remove();
   }
 
-  const distribution = document.createElement("div");
   const summaryRow = document.createElement("tr");
   const summaryCell = document.createElement("td");
   const summary = document.createElement("div");
@@ -85,17 +83,9 @@ function enhanceReleaseRatingDistribution() {
   const friendsPreview = createReleaseFriendsPreview();
   const hasFriendRatings = Boolean(friendsContent && friendsPreview);
 
-  distribution.className = "rym-modern-rating-distribution";
-  distribution.append(chart);
-
   summaryRow.className = "rym-modern-release-rating-row";
   summaryCell.colSpan = 3;
   summary.className = "rym-modern-release-rating-summary";
-  summary.classList.add(
-    hasFriendRatings
-      ? "rym-modern-release-rating-summary--with-friends"
-      : "rym-modern-release-rating-summary--distribution-only",
-  );
   ratingCard.className = "rym-modern-release-rating-card";
   ratingCard.append(
     createReleaseInfoLabel(ratingLabel.textContent),
@@ -126,24 +116,49 @@ function enhanceReleaseRatingDistribution() {
     }
   }
 
-  const distributionCard = document.createElement("div");
-  const catalogLink = createReleaseCatalogLink("See Catalog");
-  const chartTabs = createReleaseChartTabs([
-    { label: "Distribution", panel: distribution },
-    trendChart
-      ? {
-          label: "Trend",
-          panel: createReleaseTrendPanel(trendChart),
-        }
-      : null,
-  ]);
+  // The distribution chart relies on Google Charts, which often fails to
+  // load (especially on mobile). When it's absent, still render the
+  // rating summary so RYM rating and Friends rating share one row.
+  let distributionCard = null;
 
-  distributionCard.className = "rym-modern-release-distribution-card";
-  distributionCard.append(chartTabs);
-  if (!hasFriendRatings && catalogSection) {
-    distributionCard.append(catalogLink);
+  if (chart) {
+    const distribution = document.createElement("div");
+    distribution.className = "rym-modern-rating-distribution";
+    distribution.append(chart);
+
+    const chartTabs = createReleaseChartTabs([
+      { label: "Distribution", panel: distribution },
+      trendChart
+        ? {
+            label: "Trend",
+            panel: createReleaseTrendPanel(trendChart),
+          }
+        : null,
+    ]);
+
+    distributionCard = document.createElement("div");
+    distributionCard.className = "rym-modern-release-distribution-card";
+    distributionCard.append(chartTabs);
+    if (!hasFriendRatings && catalogSection) {
+      distributionCard.append(createReleaseCatalogLink("See Catalog"));
+    }
   }
-  summary.append(ratingCard, distributionCard);
+
+  summary.classList.add(
+    !distributionCard
+      ? "rym-modern-release-rating-summary--no-chart"
+      : hasFriendRatings
+        ? "rym-modern-release-rating-summary--with-friends"
+        : "rym-modern-release-rating-summary--distribution-only",
+  );
+  if (hasFriendRatings) {
+    summary.classList.add("rym-modern-release-rating-summary--has-friends");
+  }
+
+  summary.append(ratingCard);
+  if (distributionCard) {
+    summary.append(distributionCard);
+  }
 
   friendsRow?.remove();
   summaryCell.append(summary);

@@ -1521,6 +1521,12 @@ html#page_release #content {
   grid-template-columns: minmax(230px, 0.68fr) minmax(340px, 1fr);
 }
 
+/* No distribution chart available: rating card spans the full width
+ instead of leaving an empty second column. */
+.page_release .rym-modern-release-rating-summary--no-chart {
+  grid-template-columns: minmax(0, 1fr);
+}
+
 .page_release .rym-modern-release-rating-summary--with-friends {
   align-items: center;
   grid-template-columns: minmax(250px, 0.72fr) minmax(300px, 1fr);
@@ -4645,10 +4651,10 @@ html#page_release #content {
     font-family: var(--rym-font);
     font-size: 13px;
     font-weight: 760;
-    gap: 5px;
+    gap: 4px;
     justify-content: center;
-    min-height: 46px;
-    padding: 6px 10px;
+    min-height: 44px;
+    padding: 5px 10px;
   }
 
   .rym-modern-rating-play-btn--disabled {
@@ -4673,10 +4679,23 @@ html#page_release #content {
     display: block !important;
   }
 
-  /* Review button in action row */
-  .rym-modern-rating-action-row .review_btn {
+  /* Review button in action row — beat the base 38px-padding rule so
+   the icon-over-label stack stays compact. */
+  .page_release
+    .rym-modern-release-user-rating
+    .rym-modern-rating-action-row
+    .review_btn {
     flex: 1;
-    min-height: 46px;
+    min-height: 44px;
+    padding: 23px 8px 6px !important;
+  }
+
+  .page_release
+    .rym-modern-release-user-rating
+    .rym-modern-rating-action-row
+    .review_btn::before {
+    font-size: 16px;
+    top: 6px;
   }
 
   /* ··· button */
@@ -4690,8 +4709,8 @@ html#page_release #content {
     font-size: 20px;
     font-weight: 700;
     letter-spacing: 0.1em;
-    min-height: 46px;
-    padding: 6px 16px;
+    min-height: 44px;
+    padding: 5px 16px;
   }
 
   /* Expanded section (··· panel): Set listening, Tags, Catalog, Track ratings */
@@ -5191,6 +5210,10 @@ html#page_release #content {
   }
 
   .rym-modern-mobile-unified-card table.album_info {
+    background: none !important;
+    border: 0 !important;
+    border-bottom: 1px solid var(--rym-border) !important;
+    border-radius: 0 !important;
     padding: 0 !important;
   }
 
@@ -5212,7 +5235,7 @@ html#page_release #content {
   /* RYM rating and Friends rating share one row: two equal columns,
    each with its label stacked over its value. */
   .rym-modern-mobile-unified-card
-    .rym-modern-release-rating-summary--with-friends
+    .rym-modern-release-rating-summary--has-friends
     .rym-modern-release-rating-card {
     align-content: center;
     display: grid;
@@ -5221,7 +5244,7 @@ html#page_release #content {
   }
 
   .rym-modern-mobile-unified-card
-    .rym-modern-release-rating-summary--with-friends
+    .rym-modern-release-rating-summary--has-friends
     .rym-modern-release-rating-card
     > :nth-child(1) {
     grid-column: 1;
@@ -5229,7 +5252,7 @@ html#page_release #content {
   }
 
   .rym-modern-mobile-unified-card
-    .rym-modern-release-rating-summary--with-friends
+    .rym-modern-release-rating-summary--has-friends
     .rym-modern-release-rating-card
     > :nth-child(2) {
     grid-column: 1;
@@ -5237,7 +5260,7 @@ html#page_release #content {
   }
 
   .rym-modern-mobile-unified-card
-    .rym-modern-release-rating-summary--with-friends
+    .rym-modern-release-rating-summary--has-friends
     .rym-modern-release-rating-card
     > :nth-child(3) {
     grid-column: 2;
@@ -5245,7 +5268,7 @@ html#page_release #content {
   }
 
   .rym-modern-mobile-unified-card
-    .rym-modern-release-rating-summary--with-friends
+    .rym-modern-release-rating-summary--has-friends
     .rym-modern-release-rating-card
     > :nth-child(4) {
     grid-column: 2;
@@ -5338,9 +5361,32 @@ html#page_release #content {
     margin: 0 !important;
   }
 
-  /* Rate row is already separated by the card's border-top — remove double border */
+  /* Consistent single dividers: nav | rate (top) and rate | action
+   (bottom), same color/weight as every other section line. */
   .rym-modern-mobile-unified-card .rym-modern-release-user-rating-rate {
-    border-top: none !important;
+    background: none !important;
+    border-bottom: 1px solid var(--rym-border) !important;
+    border-top: 1px solid var(--rym-border) !important;
+  }
+
+  /* Rate row already provides the divider above the action row —
+   drop the action row's own border so it isn't a double line. */
+  .rym-modern-mobile-unified-card .rym-modern-rating-action-row {
+    border-top: 0 !important;
+  }
+
+  /* Nav strip sits between two section borders; it needs none of its
+   own (any extra would double up against album_info's bottom line). */
+  .rym-modern-mobile-unified-card div.section_release_navigation {
+    border: 0 !important;
+  }
+
+  /* The action row's internal column separators used a different color
+   than every section divider — unify them. */
+  .rym-modern-mobile-unified-card .rym-modern-rating-action-row .review_btn,
+  .rym-modern-mobile-unified-card .rym-modern-rating-more-btn,
+  .rym-modern-mobile-unified-card .rym-modern-rating-expanded-section {
+    border-color: var(--rym-border) !important;
   }
 }
 
