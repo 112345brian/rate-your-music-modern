@@ -2297,7 +2297,7 @@ function enhanceMobileRelease() {
       const panel = document.getElementById(targetId);
       if (panel && !panel.hidden) {
         requestAnimationFrame(() =>
-          panel.scrollIntoView({ behavior: "smooth", block: "start" }),
+          tabBar.scrollIntoView({ behavior: "smooth", block: "start" }),
         );
       }
     });
