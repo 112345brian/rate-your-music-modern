@@ -8,6 +8,11 @@ export default [
       "assets/**",
       "playwright-report/**",
       "test-results/**",
+      // src/* are concatenated into one script by scripts/build-js.mjs;
+      // they share a scope and cross-reference, so per-file module
+      // analysis is meaningless. The built rate-your-music-modern.js
+      // at the repo root is what gets linted.
+      "src/**",
     ],
   },
   js.configs.recommended,
