@@ -5677,6 +5677,251 @@ html#page_release #content {
   }
 }
 
+@media only screen and (max-width: 42rem) {
+  #page_charts #content,
+  #page_charts .content,
+  #page_charts .page_charts_section {
+    max-width: 100% !important;
+    overflow-x: hidden;
+  }
+
+  #page_charts .page_charts_section_charts_items {
+    counter-reset: rym-modern-chart-rank;
+    gap: 0;
+  }
+
+  #page_charts .page_section_charts_item_wrapper {
+    border-top: 1px solid rgb(148 163 184 / 18%);
+    counter-increment: rym-modern-chart-rank;
+  }
+
+  #page_charts .page_section_charts_item_wrapper:first-child {
+    border-top: 0;
+  }
+
+  #page_charts .page_charts_section_charts_item.object_release {
+    align-items: start;
+    background: transparent !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    column-gap: 0;
+    display: grid !important;
+    gap: 8px 9px;
+    grid-template-areas:
+      "rank cover meta"
+      "genres genres genres";
+    grid-template-columns: 26px 78px minmax(0, 1fr);
+    min-height: 0;
+    padding: 12px 8px !important;
+  }
+
+  #page_charts .page_charts_section_charts_item.object_release:hover {
+    background: rgb(120 183 255 / 5%) !important;
+  }
+
+  #page_charts .page_charts_section_charts_item_number.number_main {
+    color: var(--rym-text-muted) !important;
+    display: block;
+    font-size: 18px;
+    font-weight: 820;
+    line-height: 1;
+    padding-top: 1px;
+    text-align: right;
+  }
+
+  #page_charts .page_charts_section_charts_item_number.number_main::before {
+    content: counter(rym-modern-chart-rank);
+    display: block;
+  }
+
+  #page_charts
+    .page_charts_section_charts_item_number.number_main
+    > div:not(.page_charts_section_charts_item_esoteric_indicator) {
+    display: none;
+  }
+
+  #page_charts .page_charts_section_charts_item_esoteric_indicator {
+    display: none !important;
+  }
+
+  #page_charts .page_charts_section_charts_item_image_link {
+    align-self: start;
+    border-radius: 6px;
+    grid-area: cover;
+    height: 78px;
+    overflow: hidden;
+    width: 78px;
+  }
+
+  #page_charts .page_charts_section_charts_item_image,
+  #page_charts .page_charts_section_charts_item_image img {
+    border-radius: 6px;
+  }
+
+  #page_charts .page_charts_section_charts_item_info {
+    display: contents;
+    min-width: 0;
+  }
+
+  #page_charts .page_charts_section_charts_item_info_main,
+  #page_charts
+    .page_charts_section_charts_item_genres_descriptors_rating_frame {
+    display: contents;
+  }
+
+  #page_charts .page_charts_section_charts_item_info_main_left {
+    display: contents;
+  }
+
+  #page_charts .page_charts_section_charts_top_line {
+    grid-area: meta;
+    min-width: 0;
+    padding-bottom: 30px;
+    position: relative;
+  }
+
+  #page_charts .page_charts_section_charts_top_line_title_artist {
+    gap: 2px;
+  }
+
+  #page_charts .page_charts_section_charts_item_title {
+    font-size: 16px !important;
+    line-height: 1.12 !important;
+  }
+
+  #page_charts .page_charts_section_charts_item_credited_text a.artist {
+    color: var(--rym-text-soft) !important;
+    font-size: 12.5px !important;
+    font-weight: 760 !important;
+  }
+
+  #page_charts .page_charts_section_charts_item_title_date_compact {
+    color: var(--rym-text-muted) !important;
+    font-size: 11.5px !important;
+    font-weight: 650;
+    margin-top: 2px;
+  }
+
+  #page_charts .page_charts_section_charts_item_genres_descriptors_frame {
+    grid-area: genres;
+    display: grid;
+    gap: 4px;
+    min-width: 0;
+    padding-left: 35px;
+  }
+
+  #page_charts .page_charts_section_charts_item_genres_primary,
+  #page_charts .page_charts_section_charts_item_genres_secondary {
+    display: block;
+    line-height: 1.25;
+    overflow: visible;
+  }
+
+  #page_charts .page_charts_section_charts_item_genres_primary a.genre {
+    font-size: 12.5px !important;
+    font-weight: 780 !important;
+  }
+
+  #page_charts .page_charts_section_charts_item_genres_secondary a.genre {
+    font-size: 11.5px !important;
+    font-weight: 650 !important;
+  }
+
+  #page_charts .page_charts_section_charts_item_genre_descriptors {
+    display: none !important;
+  }
+
+  #page_charts .page_charts_section_charts_item_stats.compact {
+    background: transparent !important;
+    border: 0 !important;
+    box-shadow: none !important;
+    display: flex;
+    gap: 12px;
+    justify-content: flex-start;
+    line-height: 1;
+    margin: 2px 0 0;
+    max-width: 100%;
+    padding: 0;
+  }
+
+  #page_charts .page_charts_section_charts_item_credited_links_rating_compact {
+    align-self: end;
+    grid-area: meta;
+    justify-self: start;
+    margin-bottom: 2px;
+  }
+
+  #page_charts .page_charts_section_charts_item_stats_ratings,
+  #page_charts .page_charts_section_charts_item_details_reviews {
+    align-items: center;
+    color: var(--rym-text-muted) !important;
+    display: inline-flex;
+    gap: 4px;
+    min-width: 0;
+  }
+
+  #page_charts .page_charts_section_charts_item_stats_ratings img,
+  #page_charts .page_charts_section_charts_item_details_reviews img {
+    display: none !important;
+  }
+
+  #page_charts .page_charts_section_charts_item_stats_ratings::before {
+    color: var(--rym-text) !important;
+    content: "★";
+    font-size: 12px;
+    line-height: 1;
+  }
+
+  #page_charts .page_charts_section_charts_item_details_reviews::before {
+    color: var(--rym-text-muted) !important;
+    content: "▤";
+    font-size: 11px;
+    line-height: 1;
+  }
+
+  #page_charts .page_charts_section_charts_item_details_average_num {
+    color: var(--rym-link-hover) !important;
+    font-size: 14px;
+    font-weight: 850;
+  }
+
+  #page_charts .page_charts_section_charts_item_details_ratings,
+  #page_charts .page_charts_section_charts_item_details_reviews {
+    font-size: 11.5px;
+    font-weight: 680;
+  }
+
+  #page_charts .page_charts_section_charts_item_stats_media {
+    display: none !important;
+  }
+
+  #page_charts
+    .page_charts_section_charts_item_stats_media
+    > .page_charts_section_charts_item_stats {
+    display: none !important;
+  }
+
+  #page_charts .page_charts_section_charts_item_media_links,
+  #page_charts .ui_media_links {
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    min-width: 0;
+  }
+
+  #page_charts .ui_media_link_btn {
+    border-radius: 6px !important;
+    height: 26px !important;
+    width: 26px !important;
+  }
+
+  #page_charts .page_charts_section_charts_item_info_main_right {
+    display: none !important;
+  }
+}
+
 .rym-modern-card-grid {
   display: grid;
   gap: 1rem;

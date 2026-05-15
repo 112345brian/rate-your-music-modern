@@ -1058,6 +1058,62 @@ test("modernizes the charts preview rows", async ({ page }) => {
   );
 });
 
+test("formats chart rows compactly on mobile", async ({ page }) => {
+  await page.setViewportSize({ width: 393, height: 852 });
+  await page.goto(
+    pathToFileURL(`${process.cwd()}/assets/charts-page/preview.html`).href,
+  );
+
+  const firstChartItem = page
+    .locator(".page_charts_section_charts_item.object_release")
+    .first();
+
+  await expect(firstChartItem).toBeVisible();
+
+  const chartRowLayout = await firstChartItem.evaluate((item) => {
+    const cover = item
+      .querySelector(".page_charts_section_charts_item_image_link")
+      .getBoundingClientRect();
+    const title = item
+      .querySelector(".page_charts_section_charts_item_title")
+      .getBoundingClientRect();
+    const itemRect = item.getBoundingClientRect();
+    const stats = [
+      ...item.querySelectorAll(".page_charts_section_charts_item_stats"),
+    ].filter((el) => getComputedStyle(el).display !== "none");
+    const secondaryGenres = item.querySelector(
+      ".page_charts_section_charts_item_genres_secondary",
+    );
+    const statsMedia = item.querySelector(
+      ".page_charts_section_charts_item_stats_media",
+    );
+    const rank = item.querySelector(
+      ".page_charts_section_charts_item_number.number_main",
+    );
+
+    return {
+      height: itemRect.height,
+      overflowsViewport:
+        itemRect.right > document.documentElement.clientWidth,
+      rankContent: getComputedStyle(rank, "::before").content,
+      secondaryGenresHeight: secondaryGenres.getBoundingClientRect().height,
+      secondaryGenresText: secondaryGenres.textContent.trim(),
+      statsMediaDisplay: getComputedStyle(statsMedia).display,
+      titleStartsAboveCover: title.bottom <= cover.top,
+      visibleStatsCount: stats.length,
+    };
+  });
+
+  expect(chartRowLayout.height).toBeLessThan(230);
+  expect(chartRowLayout.overflowsViewport).toBe(false);
+  expect(chartRowLayout.rankContent).not.toBe('""');
+  expect(chartRowLayout.secondaryGenresHeight).toBeGreaterThan(0);
+  expect(chartRowLayout.secondaryGenresText).toContain("Post-Minimalism");
+  expect(chartRowLayout.statsMediaDisplay).toBe("none");
+  expect(chartRowLayout.titleStartsAboveCover).toBe(true);
+  expect(chartRowLayout.visibleStatsCount).toBe(1);
+});
+
 test("uses the release distribution as the second column without friend ratings", async ({
   page,
 }) => {
