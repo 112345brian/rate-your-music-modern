@@ -1,7 +1,7 @@
 /* ==UserStyle==
 @name           Rate Your Music Modern
 @namespace      github.com/112345brian/rate-your-music-modern
-@version        1.8.4
+@version        1.8.5
 @description    Modern visual treatment for Rate Your Music.
 @author         bri
 @homepageURL    https://github.com/112345brian/rate-your-music-modern
@@ -4804,13 +4804,13 @@
       background: var(--rym-bg);
       border-bottom: 1px solid rgb(148 163 184 / 16%);
       display: flex;
-      gap: 0;
+      flex-wrap: wrap;
+      gap: 2px;
       margin: 0 0 10px;
       min-height: 34px;
-      overflow-x: auto;
+      overflow: visible;
       padding: 0;
       position: sticky;
-      scrollbar-width: none;
       top: 40px;
       z-index: 49;
     }
@@ -4823,14 +4823,14 @@
       background: none;
       border: none;
       border-bottom: 2px solid transparent;
+      border-radius: 0 !important;
       color: var(--rym-text-muted);
       cursor: pointer;
       font-family: var(--rym-font);
       font-size: 13px !important;
       font-weight: 700;
-      margin-bottom: -1px;
       min-height: 34px !important;
-      padding: 6px 8px !important;
+      padding: 6px 10px !important;
       white-space: nowrap;
     }
 
@@ -5122,10 +5122,16 @@
       overflow: hidden;
     }
 
-    /* Rating summary: flush, no individual card borders */
+    /* Rating summary: single full-width column. The distribution chart is
+     hidden on mobile — it relies on Google Charts, which is unreliable on
+     phones and collapses into an empty "DISTRIBUTION / TREND" placeholder. */
+    .rym-modern-mobile-unified-card .rym-modern-release-distribution-card {
+      display: none !important;
+    }
+
     .rym-modern-mobile-unified-card .rym-modern-release-rating-summary {
       gap: 0;
-      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      grid-template-columns: minmax(0, 1fr) !important;
     }
 
     /* Condense the rating figures so they read on a single line */
@@ -5155,35 +5161,70 @@
       padding: 0 !important;
     }
 
-    /* No forced empty height — let content size the cards */
-    .rym-modern-mobile-unified-card .rym-modern-release-rating-card,
-    .rym-modern-mobile-unified-card .rym-modern-release-distribution-card,
-    .rym-modern-mobile-unified-card .rym-modern-release-friends-card {
-      min-height: 0 !important;
-    }
-
+    /* No forced empty height — let content size the card */
     .rym-modern-mobile-unified-card .rym-modern-release-rating-card,
     .rym-modern-mobile-unified-card .rym-modern-release-friends-card {
       background: none !important;
       border: none !important;
       border-radius: 0 !important;
       box-shadow: none !important;
-      gap: 2px 12px !important;
-      padding: 10px !important;
+      min-height: 0 !important;
+      padding: 10px 12px !important;
     }
 
-    .rym-modern-mobile-unified-card .rym-modern-release-distribution-card {
-      gap: 6px !important;
-      padding: 10px 10px 10px 12px !important;
+    /* RYM rating and Friends rating share one row: two equal columns,
+     each with its label stacked over its value. */
+    .rym-modern-mobile-unified-card
+      .rym-modern-release-rating-summary--with-friends
+      .rym-modern-release-rating-card {
+      align-content: center;
+      display: grid;
+      gap: 2px 16px;
+      grid-template-columns: 1fr 1fr;
     }
 
-    .rym-modern-mobile-unified-card .rym-modern-release-friends-card,
-    .rym-modern-mobile-unified-card .rym-modern-release-distribution-card {
-      border-left: 1px solid var(--rym-border) !important;
+    .rym-modern-mobile-unified-card
+      .rym-modern-release-rating-summary--with-friends
+      .rym-modern-release-rating-card
+      > :nth-child(1) {
+      grid-column: 1;
+      grid-row: 1;
     }
 
-    /* Nav strip */
+    .rym-modern-mobile-unified-card
+      .rym-modern-release-rating-summary--with-friends
+      .rym-modern-release-rating-card
+      > :nth-child(2) {
+      grid-column: 1;
+      grid-row: 2;
+    }
+
+    .rym-modern-mobile-unified-card
+      .rym-modern-release-rating-summary--with-friends
+      .rym-modern-release-rating-card
+      > :nth-child(3) {
+      grid-column: 2;
+      grid-row: 1;
+    }
+
+    .rym-modern-mobile-unified-card
+      .rym-modern-release-rating-summary--with-friends
+      .rym-modern-release-rating-card
+      > :nth-child(4) {
+      grid-column: 2;
+      grid-row: 2;
+    }
+
+    /* No friends rating: RYM occupies the full width on its own line */
+    .rym-modern-mobile-unified-card
+      .rym-modern-release-rating-summary--distribution-only
+      .rym-modern-release-rating-card {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    /* Nav strip — blend into the card instead of a black gash */
     .page_release div.section_release_navigation {
+      background: transparent !important;
       border-top: 1px solid var(--rym-border);
       margin: 0 !important;
       padding: 0 !important;
