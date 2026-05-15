@@ -1,7 +1,7 @@
 /* ==UserStyle==
 @name           Rate Your Music Modern
 @namespace      github.com/112345brian/rate-your-music-modern
-@version        1.8.5
+@version        1.8.6
 @description    Modern visual treatment for Rate Your Music.
 @author         bri
 @homepageURL    https://github.com/112345brian/rate-your-music-modern
@@ -4968,13 +4968,25 @@
       padding: 16px 0 !important;
     }
 
-    .rym-mobile-overlay-open h2,
-    .rym-mobile-overlay-open .release_page_header h2,
-    .rym-mobile-overlay-open .page_object_section_discussion_header h2 {
-      color: var(--rym-text) !important;
-      font-size: 22px !important;
-      line-height: 1.15 !important;
-      margin: 0 0 14px !important;
+    /* The sub-tab bar already labels the active section, so the duplicate
+     "Comments" / "Reviews" section title is redundant on mobile. */
+    .rym-mobile-overlay-open .release_page_header,
+    .rym-mobile-overlay-open .page_object_section_discussion_header {
+      display: none !important;
+    }
+
+    /* Single scroll only: the overlay itself scrolls. Strip the inner
+     comments list's own scroll box (max-height + overflow + border). */
+    .rym-mobile-overlay-open .comments,
+    .rym-mobile-overlay-open .comments_list,
+    .rym-mobile-overlay-open .comments_post,
+    .rym-mobile-overlay-open #rym-modern-release-comments .comments_list {
+      background: transparent !important;
+      border: 0 !important;
+      border-radius: 0 !important;
+      box-shadow: none !important;
+      max-height: none !important;
+      overflow: visible !important;
     }
 
     .rym-mobile-overlay-open .review_sort {
