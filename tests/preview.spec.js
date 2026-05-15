@@ -420,6 +420,15 @@ test("modernizes the release preview layout", async ({ page }) => {
     "6 April 2018",
   );
   await expect(
+    page.locator(".rym-modern-release-summary-field").first(),
+  ).toHaveCSS("background-color", "rgba(0, 0, 0, 0)");
+  await expect(
+    page.locator(".rym-modern-release-summary-field").first(),
+  ).toHaveCSS("border-top-style", "none");
+  await expect(
+    page.locator(".rym-modern-release-summary-field").first(),
+  ).toHaveCSS("border-radius", "0px");
+  await expect(
     page.getByRole("rowheader", { name: "Ranked", exact: true }),
   ).toHaveCount(0);
   await expect(

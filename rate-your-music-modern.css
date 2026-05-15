@@ -1,7 +1,7 @@
 /* ==UserStyle==
 @name           Rate Your Music Modern
 @namespace      github.com/112345brian/rate-your-music-modern
-@version        1.6.7
+@version        1.6.9
 @description    Modern visual treatment for Rate Your Music.
 @author         bri
 @homepageURL    https://github.com/112345brian/rate-your-music-modern
@@ -1731,17 +1731,27 @@
   }
 
   .page_release .rym-modern-release-summary-grid {
+    border-bottom: 1px solid rgb(49 58 78 / 72%);
+    border-top: 1px solid rgb(49 58 78 / 72%);
     display: grid;
-    gap: 8px;
+    gap: 0;
     grid-template-columns: repeat(3, minmax(0, 1fr));
+    padding: 10px 0;
   }
 
   .page_release .rym-modern-release-summary-field {
-    background: rgb(120 183 255 / 5%);
-    border: 1px solid rgb(120 183 255 / 12%);
-    border-radius: 8px;
+    border-right: 1px solid rgb(148 163 184 / 14%);
     min-width: 0;
-    padding: 8px 10px;
+    padding: 0 18px;
+  }
+
+  .page_release .rym-modern-release-summary-field:first-child {
+    padding-left: 0;
+  }
+
+  .page_release .rym-modern-release-summary-field:last-child {
+    border-right: 0;
+    padding-right: 0;
   }
 
   .page_release .rym-modern-release-summary-label {
@@ -1767,6 +1777,17 @@
   @media only screen and (width < 66rem) {
     .page_release .rym-modern-release-summary-grid {
       grid-template-columns: minmax(0, 1fr);
+      padding: 4px 0;
+    }
+
+    .page_release .rym-modern-release-summary-field {
+      border-right: 0;
+      border-bottom: 1px solid rgb(148 163 184 / 14%);
+      padding: 10px 0;
+    }
+
+    .page_release .rym-modern-release-summary-field:last-child {
+      border-bottom: 0;
     }
 
     .page_release .rym-modern-release-rating-summary {
@@ -4722,7 +4743,7 @@
     .rym-modern-mobile-unified-card {
       background: var(--rym-surface);
       border: 1px solid var(--rym-border);
-      border-radius: var(--rym-radius);
+      border-radius: 0;
       grid-column: 1 / -1;
       margin-top: 10px;
       overflow: hidden;

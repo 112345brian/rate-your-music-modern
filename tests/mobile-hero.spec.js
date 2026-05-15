@@ -158,6 +158,24 @@ test.describe("mobile release page", () => {
     await expect(rateRow.locator(".bump_btn")).toBeVisible();
   });
 
+  test("rating widget: mobile shell is flush and contained", async ({
+    browser,
+  }) => {
+    const { page } = await loadReleasePage(browser);
+    const shell = page.locator(".rym-modern-mobile-unified-card");
+
+    await expect(shell).toBeVisible();
+    await expect(shell).toHaveCSS("border-radius", "0px");
+
+    expect(
+      await shell.evaluate((element) => {
+        const box = element.getBoundingClientRect();
+
+        return box.left >= 0 && box.right <= window.innerWidth;
+      }),
+    ).toBe(true);
+  });
+
   test("rating widget: action row has play, review, and more buttons", async ({
     browser,
   }) => {
