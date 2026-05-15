@@ -3340,38 +3340,59 @@ html#page_release #content {
   }
 
   /* Info tab panel sections */
-  .rym-modern-info-section {
+  .page_release .rym-modern-info-section {
     border-bottom: 1px solid var(--rym-border);
-    padding: 8px 0 10px;
+    margin: 0;
+    padding: 10px 0 12px;
   }
 
-  .rym-modern-info-section:last-child {
+  .page_release .rym-modern-info-section:last-child {
     border-bottom: none;
   }
 
-  .rym-modern-info-label {
+  .page_release .rym-modern-info-label {
     color: var(--rym-text-muted);
     font-size: 11px;
     font-weight: 800;
     letter-spacing: 0.08em;
-    margin-bottom: 4px;
+    margin: 0 0 7px;
     text-transform: uppercase;
   }
 
-  .rym-modern-info-genres {
+  .page_release .rym-modern-info-genres {
     display: flex;
     flex-wrap: wrap;
-    gap: 6px 14px;
+    gap: 5px 13px;
+    margin: 0;
+    padding: 0;
   }
 
-  .rym-modern-info-values {
+  .page_release
+    .rym-modern-info-genres
+    :where(.release_pri_genres, .release_sec_genres) {
+    display: contents !important;
+  }
+
+  .page_release .rym-modern-info-genres :where(br) {
+    display: none !important;
+  }
+
+  .page_release .rym-modern-info-genres a.genre {
+    display: inline !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .page_release .rym-modern-info-values {
     color: var(--rym-text-soft);
-    font-size: 15px;
+    font-size: 16px;
     font-weight: 650;
-    line-height: 1.35;
+    line-height: 1.32;
+    margin: 0;
+    padding: 0;
   }
 
-  .rym-modern-info-values a {
+  .page_release .rym-modern-info-values a {
     color: var(--rym-link-hover) !important;
     font-weight: 760;
     text-decoration: none !important;
@@ -3380,10 +3401,10 @@ html#page_release #content {
   /* Info sub-tab bar (Overview / Credits / Issues) */
   .page_release .rym-modern-info-sub-tabs {
     background: var(--rym-bg);
-    border-bottom: 1px solid var(--mono-e);
+    border-bottom: 1px solid rgb(148 163 184 / 16%);
     display: flex;
     gap: 0;
-    margin: 0 0 8px;
+    margin: 0 0 10px;
     min-height: 34px;
     overflow-x: auto;
     padding: 0;
@@ -3408,7 +3429,7 @@ html#page_release #content {
     font-weight: 700;
     margin-bottom: -1px;
     min-height: 34px !important;
-    padding: 6px 9px !important;
+    padding: 6px 8px !important;
     white-space: nowrap;
   }
 
@@ -3427,18 +3448,23 @@ html#page_release #content {
     top: 0;
     z-index: 50;
     background: var(--rym-bg);
-    border-bottom: 1px solid var(--rym-border);
+    border-bottom: 1px solid rgb(148 163 184 / 16%);
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     margin: 10px 0 6px;
     min-height: 40px;
-    overflow-x: auto;
+    overflow: hidden;
     scrollbar-width: none;
   }
 
   .page_release .rym-modern-release-tab {
+    align-items: center;
     font-size: 16px !important;
     gap: 5px;
+    justify-content: center;
     min-height: 38px !important;
     padding: 0 8px 8px !important;
+    text-align: center;
   }
 
   .page_release .rym-modern-release-tabs::-webkit-scrollbar {

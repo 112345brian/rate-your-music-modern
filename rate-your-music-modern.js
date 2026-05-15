@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Rate Your Music Modern
 // @namespace    github.com/112345brian/rate-your-music-modern
-// @version      1.4.1
+// @version      1.4.2
 // @description  Behavior enhancements for the Rate Your Music Modern userstyle.
 // @author       bri
 // @homepageURL  https://github.com/112345brian/rate-your-music-modern
@@ -585,9 +585,9 @@ function enhanceReleaseRatingDistribution() {
     { label: "Distribution", panel: distribution },
     trendChart
       ? {
-          label: "Trend",
-          panel: createReleaseTrendPanel(trendChart),
-        }
+        label: "Trend",
+        panel: createReleaseTrendPanel(trendChart),
+      }
       : null,
   ]);
 
@@ -1387,7 +1387,7 @@ function enhanceReleaseContributions() {
   summary.textContent = `Options ${actionCount}`;
   normalizeContributionHeader(header);
 
-  for (let node = header.nextSibling; node && node !== actions; ) {
+  for (let node = header.nextSibling; node && node !== actions;) {
     const next = node.nextSibling;
 
     if (node.nodeType === Node.ELEMENT_NODE && node.matches("a.user")) {
@@ -1864,16 +1864,16 @@ function buildBottomNav() {
   const exploreItems =
     mobileMenuAnchors.length > 0
       ? mobileMenuAnchors.map((a) => ({
-          href: a.href,
-          label: a.textContent.trim(),
-        }))
+        href: a.href,
+        label: a.textContent.trim(),
+      }))
       : [
-          { href: "/newreleases/", label: "New Music" },
-          { href: "/genres/", label: "Genres" },
-          { href: "/charts/", label: "Charts" },
-          { href: "/lists/", label: "Lists" },
-          { href: "/forums/", label: "Forums" },
-        ];
+        { href: "/newreleases/", label: "New Music" },
+        { href: "/genres/", label: "Genres" },
+        { href: "/charts/", label: "Charts" },
+        { href: "/lists/", label: "Lists" },
+        { href: "/forums/", label: "Forums" },
+      ];
 
   const homeSvg = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>`;
   const gridSvg = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>`;
@@ -2345,10 +2345,7 @@ function moveMobileTaxonomyRowsToInfo(infoPanel) {
       if (row.classList.contains("rym-modern-mobile-taxonomy-moved")) {
         return false;
       }
-      const label = row
-        .querySelector(".info_hdr")
-        ?.textContent.trim()
-        .toLowerCase();
+      const label = getAlbumInfoRowLabel(row);
       return ["scenes", "scene", "movements", "movement"].includes(label);
     },
   );
@@ -2358,9 +2355,9 @@ function moveMobileTaxonomyRowsToInfo(infoPanel) {
       "rym-modern-mobile-hidden",
       "rym-modern-mobile-taxonomy-moved",
     );
-    const labelText = taxonomyRow
-      .querySelector(".info_hdr")
-      ?.textContent.trim();
+    const labelText =
+      taxonomyRow.querySelector(".info_hdr")?.textContent.trim() ??
+      taxonomyRow.querySelector("th")?.textContent.trim();
     const td = taxonomyRow.querySelector("td");
     if (!labelText || !td) continue;
 
@@ -2373,6 +2370,7 @@ function moveMobileTaxonomyRowsToInfo(infoPanel) {
     const content = document.createElement("div");
     content.className = "rym-modern-info-values";
     content.append(...[...td.childNodes].map((node) => node.cloneNode(true)));
+    cleanMobileInlineList(content);
     section.append(label, content);
 
     if (insertionPoint) {
@@ -2384,6 +2382,26 @@ function moveMobileTaxonomyRowsToInfo(infoPanel) {
   }
 }
 
+function getAlbumInfoRowLabel(row) {
+  const labelNode =
+    row.querySelector(".info_hdr") ??
+    row.querySelector("th") ??
+    row.firstElementChild;
+  return labelNode?.textContent.trim().toLowerCase() ?? "";
+}
+
+function cleanMobileInlineList(root) {
+  for (const br of root.querySelectorAll("br")) br.remove();
+  const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+  const textNodes = [];
+  while (walker.nextNode()) textNodes.push(walker.currentNode);
+  for (const node of textNodes) {
+    if (/^[\s,;/|•·]+$/.test(node.textContent)) {
+      node.remove();
+    }
+  }
+}
+
 function buildMobileInfoPanel() {
   // Use class-based selector — more reliable than matching .info_hdr text
   const genreRow = document.querySelector(".album_info tr.release_genres");
@@ -2392,10 +2410,7 @@ function buildMobileInfoPanel() {
     ?.closest("tr");
   const hasTaxonomyRows = [...document.querySelectorAll(".album_info tr")].some(
     (row) => {
-      const label = row
-        .querySelector(".info_hdr")
-        ?.textContent.trim()
-        .toLowerCase();
+      const label = getAlbumInfoRowLabel(row);
       return ["scenes", "scene", "movements", "movement"].includes(label);
     },
   );
@@ -2406,10 +2421,10 @@ function buildMobileInfoPanel() {
   );
   const languagePlainRow = !languagePairedRow
     ? [...document.querySelectorAll(".album_info tr")].find(
-        (row) =>
-          row.querySelector(".info_hdr")?.textContent.trim().toLowerCase() ===
-          "language",
-      )
+      (row) =>
+        row.querySelector(".info_hdr")?.textContent.trim().toLowerCase() ===
+        "language",
+    )
     : null;
 
   // Use the show-for-small tracklist (already mobile-visible, avoids duplicate
@@ -2446,6 +2461,7 @@ function buildMobileInfoPanel() {
     const sec2 = genreRow.querySelector(".release_sec_genres");
     if (pri) content.append(pri.cloneNode(true));
     if (sec2) content.append(sec2.cloneNode(true));
+    cleanMobileInlineList(content);
     sec.append(lbl, content);
     panel.append(sec);
   }

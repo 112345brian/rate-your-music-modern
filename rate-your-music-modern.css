@@ -1,7 +1,7 @@
 /* ==UserStyle==
 @name           Rate Your Music Modern
 @namespace      github.com/112345brian/rate-your-music-modern
-@version        1.8.2
+@version        1.8.3
 @description    Modern visual treatment for Rate Your Music.
 @author         bri
 @homepageURL    https://github.com/112345brian/rate-your-music-modern
@@ -43,27 +43,24 @@
   }
 
   body,
-  body
-    :where(
-      a,
-      p,
-      span,
-      div,
-      li,
-      td,
-      th,
-      label,
-      button,
-      input,
-      select,
-      textarea,
-      h1,
-      h2,
-      h3,
-      h4,
-      h5,
-      h6
-    ) {
+  body :where(a,
+    p,
+    span,
+    div,
+    li,
+    td,
+    th,
+    label,
+    button,
+    input,
+    select,
+    textarea,
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6) {
     font-family: var(--rym-font) !important;
     font-feature-settings: normal !important;
     font-variant: normal !important;
@@ -332,7 +329,8 @@
     padding: 18px !important;
   }
 
-  @media only screen and (width >= 56rem) {
+  @media only screen and (width >=56rem) {
+
     html#page_artist,
     html#page_artist body,
     html#page_artist #content,
@@ -347,7 +345,7 @@
       width: min(1340px, calc(100vw - 56px)) !important;
     }
 
-    .page_artist .artist_page > .row {
+    .page_artist .artist_page>.row {
       align-items: start;
       background: transparent !important;
       display: grid !important;
@@ -355,7 +353,7 @@
       grid-template-columns: minmax(240px, 300px) minmax(0, 1fr);
     }
 
-    .page_artist .artist_page > .row.rym-modern-contributions-row {
+    .page_artist .artist_page>.row.rym-modern-contributions-row {
       display: block !important;
       margin-top: 28px;
     }
@@ -443,7 +441,7 @@
       width: 100% !important;
     }
 
-    .page_artist .artist_right_col .section_artist_image > a + a > div,
+    .page_artist .artist_right_col .section_artist_image>a+a>div,
     .page_artist .artist_right_col .section_artist_image div[style*="bottom"] {
       font-size: 15px !important;
       padding: 22px 10px 9px !important;
@@ -563,12 +561,9 @@
       grid-column: 1 / -1;
     }
 
-    .page_artist
-      .rym-modern-info-row:is(
-        .rym-modern-info-row--born,
-        .rym-modern-info-row--currently,
-        .rym-modern-info-row--died
-      ) {
+    .page_artist .rym-modern-info-row:is(.rym-modern-info-row--born,
+      .rym-modern-info-row--currently,
+      .rym-modern-info-row--died) {
       align-content: start;
       background: transparent;
       border: 0;
@@ -581,38 +576,25 @@
       padding: 2px 0 4px 12px !important;
     }
 
-    .page_artist
-      .rym-modern-info-row:is(
-        .rym-modern-info-row--born,
-        .rym-modern-info-row--currently,
-        .rym-modern-info-row--died
-      )
-      .info_hdr {
+    .page_artist .rym-modern-info-row:is(.rym-modern-info-row--born,
+      .rym-modern-info-row--currently,
+      .rym-modern-info-row--died) .info_hdr {
       font-size: 12px !important;
     }
 
-    .page_artist
-      .rym-modern-info-row:is(
-        .rym-modern-info-row--born,
-        .rym-modern-info-row--currently,
-        .rym-modern-info-row--died
-      )
-      .info_content {
+    .page_artist .rym-modern-info-row:is(.rym-modern-info-row--born,
+      .rym-modern-info-row--currently,
+      .rym-modern-info-row--died) .info_content {
       line-height: 1.25;
     }
 
-    .page_artist
-      .rym-modern-info-row:is(
-        .rym-modern-info-row--born,
-        .rym-modern-info-row--currently,
-        .rym-modern-info-row--died
-      )
-      .info_content
-      a {
+    .page_artist .rym-modern-info-row:is(.rym-modern-info-row--born,
+      .rym-modern-info-row--currently,
+      .rym-modern-info-row--died) .info_content a {
       font-size: 16px;
     }
 
-    .page_artist .artist_info_main > .info_content,
+    .page_artist .artist_info_main>.info_content,
     .page_artist .rym-modern-info-row--also-known-as,
     .page_artist .rym-modern-info-row--genres {
       grid-column: 1 / -1;
@@ -635,7 +617,7 @@
       display: contents;
     }
 
-    .page_artist .artist_info .label_num_followers > div {
+    .page_artist .artist_info .label_num_followers>div {
       gap: 6px;
       grid-column: 1 / -1;
     }
@@ -676,11 +658,9 @@
       color: var(--rym-text-soft) !important;
       display: inline-flex !important;
       flex: 0 0 auto;
-      font-size: clamp(
-        15px,
-        calc(18px * var(--rym-tab-scale, 1)),
-        18px
-      ) !important;
+      font-size: clamp(15px,
+          calc(18px * var(--rym-tab-scale, 1)),
+          18px) !important;
       font-weight: 760 !important;
       gap: calc(4px * var(--rym-tab-scale, 1));
       line-height: 1;
@@ -725,9 +705,7 @@
     }
 
     .page_artist .artist_page_section [data-target][aria-current="true"],
-    .page_artist
-      .artist_page_section
-      .rym-modern-section-tab[aria-current="true"] {
+    .page_artist .artist_page_section .rym-modern-section-tab[aria-current="true"] {
       color: var(--rym-accent) !important;
       border-bottom: 2px solid var(--rym-accent);
       margin-bottom: -1px;
@@ -845,7 +823,7 @@
       margin: 18px 0 6px;
     }
 
-    .page_artist #discography > [hidden] {
+    .page_artist #discography>[hidden] {
       display: none !important;
     }
 
@@ -1010,7 +988,7 @@
     display: none;
   }
 
-  .artist_info_main > .clear {
+  .artist_info_main>.clear {
     display: none !important;
   }
 
@@ -1060,7 +1038,7 @@
     line-height: 1.1;
   }
 
-  .artist_info .label_num_followers > div {
+  .artist_info .label_num_followers>div {
     display: flex;
     flex-wrap: wrap;
     gap: 6px;
@@ -1203,9 +1181,7 @@
     text-underline-offset: 0.22em;
   }
 
-  .page_artist
-    .rym-modern-contribution-actions
-    summary::-webkit-details-marker {
+  .page_artist .rym-modern-contribution-actions summary::-webkit-details-marker {
     display: none;
   }
 
@@ -1251,7 +1227,7 @@
       overflow-x: visible;
     }
 
-    .page_artist .artist_page_section > * + * {
+    .page_artist .artist_page_section>*+* {
       margin-left: 20px !important;
     }
 
@@ -1357,9 +1333,7 @@
   }
 
   .page_artist .page_artist_tracks_track_stats_score_star img.metadata-star,
-  .page_artist
-    .page_artist_tracks_track_stats_score_star
-    img.metadata-star-bold {
+  .page_artist .page_artist_tracks_track_stats_score_star img.metadata-star-bold {
     display: none !important;
   }
 
@@ -1396,12 +1370,12 @@
     width: min(1320px, calc(100vw - 48px)) !important;
   }
 
-  .page_release .release_page > div[style*="max-width"] {
+  .page_release .release_page>div[style*="max-width"] {
     max-width: none !important;
   }
 
-  @media only screen and (width >= 43rem) {
-    .page_release .release_page > div > .row {
+  @media only screen and (width >=43rem) {
+    .page_release .release_page>div>.row {
       align-items: stretch;
       display: grid !important;
       gap: 30px;
@@ -1487,9 +1461,9 @@
   }
 
   .page_release .album_info_outer,
-  .page_release .album_info_outer > tbody,
-  .page_release .album_info_outer > tbody > tr,
-  .page_release .album_info_outer > tbody > tr > td,
+  .page_release .album_info_outer>tbody,
+  .page_release .album_info_outer>tbody>tr,
+  .page_release .album_info_outer>tbody>tr>td,
   .page_release table.album_info,
   .page_release table.album_info tbody {
     display: block !important;
@@ -1521,7 +1495,7 @@
     padding: 10px 0 12px;
   }
 
-  .page_release table.album_info tr.rym-modern-release-rating-row > td {
+  .page_release table.album_info tr.rym-modern-release-rating-row>td {
     display: block !important;
   }
 
@@ -1559,8 +1533,8 @@
     grid-template-columns: 116px minmax(0, 1fr);
   }
 
-  .page_release .rym-modern-release-rating-card > .info_hdr,
-  .page_release .rym-modern-release-friends-card > .info_hdr {
+  .page_release .rym-modern-release-rating-card>.info_hdr,
+  .page_release .rym-modern-release-friends-card>.info_hdr {
     color: var(--rym-text-muted) !important;
     font-size: 12px !important;
     font-weight: 780 !important;
@@ -1570,7 +1544,7 @@
     text-transform: uppercase;
   }
 
-  .page_release .rym-modern-release-rating-card > td {
+  .page_release .rym-modern-release-rating-card>td {
     align-self: center;
     min-width: 0;
   }
@@ -1591,7 +1565,7 @@
     grid-template-columns: 88px minmax(0, 1fr);
   }
 
-  .page_release .rym-modern-release-friends-card > td {
+  .page_release .rym-modern-release-friends-card>td {
     align-self: center;
     min-width: 0;
   }
@@ -1607,40 +1581,26 @@
     padding-left: 18px;
   }
 
-  .page_release
-    .rym-modern-release-rating-summary--distribution-only
-    .rym-modern-release-rating-card {
+  .page_release .rym-modern-release-rating-summary--distribution-only .rym-modern-release-rating-card {
     min-height: 86px;
   }
 
-  .page_release
-    .rym-modern-release-rating-summary--distribution-only
-    .rym-modern-release-distribution-card {
+  .page_release .rym-modern-release-rating-summary--distribution-only .rym-modern-release-distribution-card {
     grid-template-columns: minmax(0, 1fr) auto;
     min-height: 86px;
   }
 
-  .page_release
-    .rym-modern-release-rating-summary--with-friends
-    .rym-modern-release-rating-card,
-  .page_release
-    .rym-modern-release-rating-summary--with-friends
-    .rym-modern-release-distribution-card {
+  .page_release .rym-modern-release-rating-summary--with-friends .rym-modern-release-rating-card,
+  .page_release .rym-modern-release-rating-summary--with-friends .rym-modern-release-distribution-card {
     min-height: 104px;
   }
 
-  .page_release
-    .rym-modern-release-rating-summary--with-friends
-    .rym-modern-release-distribution-card {
+  .page_release .rym-modern-release-rating-summary--with-friends .rym-modern-release-distribution-card {
     grid-template-columns: minmax(0, 1fr);
   }
 
-  .page_release
-    :is(
-      .rym-modern-release-rating-summary--distribution-only,
-      .rym-modern-release-rating-summary--with-friends
-    )
-    .rym-modern-rating-distribution {
+  .page_release :is(.rym-modern-release-rating-summary--distribution-only,
+    .rym-modern-release-rating-summary--with-friends) .rym-modern-rating-distribution {
     grid-column: auto;
   }
 
@@ -1713,10 +1673,7 @@
     padding: 12px 0;
   }
 
-  .page_release
-    table.album_info
-    tr.rym-modern-release-language-recorded-row
-    td {
+  .page_release table.album_info tr.rym-modern-release-language-recorded-row td {
     display: block !important;
   }
 
@@ -1873,7 +1830,7 @@
     overflow: hidden;
   }
 
-  @media only screen and (width >= 43rem) {
+  @media only screen and (width >=43rem) {
     .page_release .rym-modern-release-sticky-stack {
       background: var(--rym-bg);
       isolation: isolate;
@@ -2147,8 +2104,8 @@
     width: 21px;
   }
 
-  .page_release .rym-modern-release-user-rating-primary > :first-child > div,
-  .page_release .rym-modern-release-user-rating-secondary > :first-child > div {
+  .page_release .rym-modern-release-user-rating-primary> :first-child>div,
+  .page_release .rym-modern-release-user-rating-secondary> :first-child>div {
     border-left: 0;
   }
 
@@ -2203,9 +2160,7 @@
     line-height: 1;
   }
 
-  .page_release
-    .rym-modern-release-streaming[open]
-    .rym-modern-release-streaming-summary {
+  .page_release .rym-modern-release-streaming[open] .rym-modern-release-streaming-summary {
     background: rgb(120 183 255 / 8%);
     color: var(--rym-link-hover);
   }
@@ -2224,9 +2179,7 @@
     z-index: 7;
   }
 
-  .page_release
-    .rym-modern-release-streaming[open]
-    .rym-modern-release-streaming-panel {
+  .page_release .rym-modern-release-streaming[open] .rym-modern-release-streaming-panel {
     display: block;
   }
 
@@ -2237,7 +2190,7 @@
     min-height: 0 !important;
   }
 
-  .page_release .rym-modern-release-streaming-links > div {
+  .page_release .rym-modern-release-streaming-links>div {
     margin: 0 !important;
   }
 
@@ -2310,31 +2263,22 @@
     width: 230px !important;
   }
 
-  .page_release .rym-modern-rating-distribution #chart_div > div,
-  .page_release .rym-modern-rating-trend #chart_div2 > div {
+  .page_release .rym-modern-rating-distribution #chart_div>div,
+  .page_release .rym-modern-rating-trend #chart_div2>div {
     height: 92px !important;
     transform: none;
     width: 230px !important;
   }
 
-  .page_release
-    :is(
-      .rym-modern-rating-distribution #chart_div,
-      .rym-modern-rating-trend #chart_div2
-    )
-    > div
-    > div {
+  .page_release :is(.rym-modern-rating-distribution #chart_div,
+    .rym-modern-rating-trend #chart_div2)>div>div {
     height: 92px !important;
     overflow: hidden !important;
     width: 230px !important;
   }
 
-  .page_release
-    :is(
-      .rym-modern-rating-distribution #chart_div,
-      .rym-modern-rating-trend #chart_div2
-    )
-    svg {
+  .page_release :is(.rym-modern-rating-distribution #chart_div,
+    .rym-modern-rating-trend #chart_div2) svg {
     height: 92px !important;
     width: 230px !important;
   }
@@ -2369,10 +2313,7 @@
     margin: 0;
   }
 
-  .page_release
-    .rym-modern-release-friends-preview
-    .rym-modern-release-friend-preview-line
-    > div[style*="clear"] {
+  .page_release .rym-modern-release-friends-preview .rym-modern-release-friend-preview-line>div[style*="clear"] {
     display: none !important;
   }
 
@@ -2390,10 +2331,7 @@
     padding: 6px 8px;
   }
 
-  .page_release
-    .rym-modern-release-friends-preview
-    .catalog_header
-    > div[style*="background"] {
+  .page_release .rym-modern-release-friends-preview .catalog_header>div[style*="background"] {
     height: 24px !important;
     width: 24px !important;
   }
@@ -2420,9 +2358,7 @@
     display: none !important;
   }
 
-  .page_release
-    .rym-modern-release-friends-preview
-    .catalog_rating_system_comment {
+  .page_release .rym-modern-release-friends-preview .catalog_rating_system_comment {
     font-size: 12px !important;
     grid-column: 2 / 4;
     grid-row: 2;
@@ -2457,9 +2393,7 @@
     text-decoration: none !important;
   }
 
-  .page_release
-    .rym-modern-release-distribution-card
-    .rym-modern-release-catalog-link {
+  .page_release .rym-modern-release-distribution-card .rym-modern-release-catalog-link {
     align-self: center;
     grid-column: auto;
     white-space: nowrap;
@@ -2487,7 +2421,7 @@
     padding-top: 8px !important;
   }
 
-  .page_release table.album_info tr.release_genres td:first-of-type > div {
+  .page_release table.album_info tr.release_genres td:first-of-type>div {
     display: flex;
     float: none !important;
     flex-wrap: wrap;
@@ -2554,12 +2488,10 @@
   }
 
   .page_release .page_release_art_frame::after {
-    background: linear-gradient(
-      to bottom,
-      rgb(15 17 23 / 0%),
-      rgb(15 17 23 / 24%) 54%,
-      rgb(15 17 23 / 64%) 100%
-    );
+    background: linear-gradient(to bottom,
+        rgb(15 17 23 / 0%),
+        rgb(15 17 23 / 24%) 54%,
+        rgb(15 17 23 / 64%) 100%);
     content: "";
     inset: auto 0 0;
     height: 30%;
@@ -2761,9 +2693,7 @@
     width: min(100%, 560px);
   }
 
-  .page_release
-    .section_videos
-    :where(.video_title, .video_caption, .video_name, .media_title) {
+  .page_release .section_videos :where(.video_title, .video_caption, .video_name, .media_title) {
     background: rgb(15 17 23 / 84%) !important;
     border-bottom: 1px solid rgb(120 183 255 / 16%);
     color: var(--rym-text) !important;
@@ -2813,18 +2743,11 @@
     grid-template-columns: minmax(0, 1fr) auto auto;
   }
 
-  .page_release
-    #column_container_left
-    .section_tracklisting
-    .release_page_header {
+  .page_release #column_container_left .section_tracklisting .release_page_header {
     grid-template-columns: minmax(0, 1fr) auto;
   }
 
-  .page_release
-    #column_container_left
-    .section_tracklisting
-    .release_page_header
-    h2 {
+  .page_release #column_container_left .section_tracklisting .release_page_header h2 {
     display: none !important;
   }
 
@@ -2931,7 +2854,7 @@
     padding: 0 !important;
   }
 
-  .page_release .tracklist_title > span {
+  .page_release .tracklist_title>span {
     min-width: 0;
   }
 
@@ -3009,7 +2932,7 @@
     grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   }
 
-  .page_release #rym-modern-release-credits > .release_page_header {
+  .page_release #rym-modern-release-credits>.release_page_header {
     display: none !important;
   }
 
@@ -3034,8 +2957,8 @@
     display: block;
   }
 
-  .page_release .section_credits ul.credits li > a.artist,
-  .page_release .section_credits ul.credits li > span:first-child,
+  .page_release .section_credits ul.credits li>a.artist,
+  .page_release .section_credits ul.credits li>span:first-child,
   .page_release .credits_artist a,
   .page_release .credits_artist span {
     color: var(--rym-link-hover) !important;
@@ -3094,9 +3017,7 @@
     border-color: rgb(148 163 184 / 18%) !important;
   }
 
-  .page_release
-    #rym-modern-release-comments
-    .comments_list:not(.rym-modern-scroll-armed) {
+  .page_release #rym-modern-release-comments .comments_list:not(.rym-modern-scroll-armed) {
     cursor: default;
   }
 
@@ -3172,11 +3093,9 @@
     display: none !important;
   }
 
-  .page_release .rym-modern-release-tab-panel > .section_issues,
-  .page_release .rym-modern-release-tab-panel > .section_credits,
-  .page_release
-    .rym-modern-release-tab-panel
-    > .page_object_section_discussion {
+  .page_release .rym-modern-release-tab-panel>.section_issues,
+  .page_release .rym-modern-release-tab-panel>.section_credits,
+  .page_release .rym-modern-release-tab-panel>.page_object_section_discussion {
     background: transparent !important;
     border: 0 !important;
     margin: 0 !important;
@@ -3203,11 +3122,9 @@
     margin-top: 28px !important;
   }
 
-  .page_release .rym-modern-release-tab-panel > .section_issues .page_section,
-  .page_release .rym-modern-release-tab-panel > .section_credits,
-  .page_release
-    .rym-modern-release-tab-panel
-    > .page_object_section_discussion {
+  .page_release .rym-modern-release-tab-panel>.section_issues .page_section,
+  .page_release .rym-modern-release-tab-panel>.section_credits,
+  .page_release .rym-modern-release-tab-panel>.page_object_section_discussion {
     margin-top: 0 !important;
   }
 
@@ -3299,8 +3216,8 @@
     text-align: left !important;
   }
 
-  .page_release .review_sort > .navspan,
-  .page_release .review_sort > .ui_pagination {
+  .page_release .review_sort>.navspan,
+  .page_release .review_sort>.ui_pagination {
     flex-basis: 100%;
     margin-top: 10px;
   }
@@ -3364,11 +3281,10 @@
     display: grid;
     gap: 4px 10px;
     grid-template-columns:
-      34px minmax(170px, 280px) 132px minmax(24px, 1fr)
-      104px 112px;
+      34px minmax(170px, 280px) 132px minmax(24px, 1fr) 104px 112px;
   }
 
-  .page_release .review_header > a:first-child {
+  .page_release .review_header>a:first-child {
     grid-column: 1;
   }
 
@@ -3393,13 +3309,13 @@
     display: none !important;
   }
 
-  .page_release .review_header > span[itemprop="reviewRating"] {
+  .page_release .review_header>span[itemprop="reviewRating"] {
     grid-column: 5;
     min-width: 96px;
     place-self: center start;
   }
 
-  .page_release .review_header > div[id^="review_voting"] {
+  .page_release .review_header>div[id^="review_voting"] {
     align-items: center;
     display: grid !important;
     float: none !important;
@@ -3457,7 +3373,7 @@
     margin-bottom: 8px;
   }
 
-  .page_release .catalog_line > div[style*="clear"] {
+  .page_release .catalog_line>div[style*="clear"] {
     display: none !important;
   }
 
@@ -3502,7 +3418,7 @@
     border-color: rgb(74 222 128 / 24%);
   }
 
-  .page_release .catalog_header > div[style*="background"] {
+  .page_release .catalog_header>div[style*="background"] {
     float: none !important;
     grid-column: 1;
     margin: 0 !important;
@@ -3730,7 +3646,7 @@
     border-color: rgb(164 205 253 / 72%);
   }
 
-  .page_release .comments_post > div:not(.comments_post_loading) {
+  .page_release .comments_post>div:not(.comments_post_loading) {
     background: transparent !important;
     display: grid;
     gap: 10px 12px;
@@ -3739,14 +3655,12 @@
     position: relative;
   }
 
-  .page_release .comments_post > div:not(.comments_post_loading)::before {
+  .page_release .comments_post>div:not(.comments_post_loading)::before {
     align-self: start;
     background:
-      radial-gradient(
-        circle at 35% 32%,
+      radial-gradient(circle at 35% 32%,
         rgb(164 205 253 / 95%) 0 18%,
-        transparent 19%
-      ),
+        transparent 19%),
       linear-gradient(145deg, rgb(42 92 139), rgb(25 35 52));
     border: 1px solid rgb(164 205 253 / 35%);
     border-radius: 50%;
@@ -3907,9 +3821,7 @@
     content: "-";
   }
 
-  .page_release
-    .rym-modern-release-lists-disclosure
-    summary::-webkit-details-marker {
+  .page_release .rym-modern-release-lists-disclosure summary::-webkit-details-marker {
     display: none;
   }
 
@@ -3996,9 +3908,7 @@
     padding: 0 !important;
   }
 
-  .page_release
-    #rym-modern-release-discussion
-    .page_object_section_discussion_header {
+  .page_release #rym-modern-release-discussion .page_object_section_discussion_header {
     display: none !important;
   }
 
@@ -4028,7 +3938,7 @@
     padding-left: 8px !important;
   }
 
-  .page_release .page_object_discussion_thread > a {
+  .page_release .page_object_discussion_thread>a {
     color: var(--rym-link-hover) !important;
     display: block;
     font-size: clamp(17px, 1.45vw, 21px) !important;
@@ -4039,7 +3949,7 @@
     text-decoration: none !important;
   }
 
-  .page_release .page_object_discussion_thread > a:hover {
+  .page_release .page_object_discussion_thread>a:hover {
     color: var(--rym-text) !important;
     text-decoration: underline !important;
     text-decoration-thickness: 1px;
@@ -4182,7 +4092,7 @@
   }
 
   .page_release .rym-modern-contributions .color_bar,
-  .page_release .rym-modern-contributions > table {
+  .page_release .rym-modern-contributions>table {
     display: none !important;
   }
 
@@ -4257,9 +4167,7 @@
     text-underline-offset: 0.22em;
   }
 
-  .page_release
-    .rym-modern-contribution-actions
-    summary::-webkit-details-marker {
+  .page_release .rym-modern-contribution-actions summary::-webkit-details-marker {
     display: none;
   }
 
@@ -4295,10 +4203,7 @@
     padding: 8px 12px !important;
   }
 
-  .page_release
-    .rym-modern-contributions
-    .contribution_links
-    .contrib_btn:hover,
+  .page_release .rym-modern-contributions .contribution_links .contrib_btn:hover,
   .page_release .rym-modern-contributions .contribution_links .ui_button:hover {
     background: rgb(120 183 255 / 18%) !important;
     border-color: rgb(120 183 255 / 38%) !important;
@@ -4315,10 +4220,7 @@
     padding: 12px 0 !important;
   }
 
-  .page_release
-    .rym-modern-release-bottom-section
-    ul.suggestions
-    li:last-child {
+  .page_release .rym-modern-release-bottom-section ul.suggestions li:last-child {
     border-bottom: 0 !important;
   }
 
@@ -4330,10 +4232,8 @@
     grid-template-areas:
       "image title average ratings"
       "image meta average ratings";
-    grid-template-columns: 64px minmax(0, 1fr) minmax(48px, auto) minmax(
-        44px,
-        auto
-      );
+    grid-template-columns: 64px minmax(0, 1fr) minmax(48px, auto) minmax(44px,
+        auto);
     margin: 0 !important;
     min-height: 76px;
   }
@@ -4412,7 +4312,7 @@
       width: min(100%, calc(100vw - 28px)) !important;
     }
 
-    .page_release .release_page > div > .row {
+    .page_release .release_page>div>.row {
       display: block !important;
     }
 
@@ -4496,12 +4396,12 @@
       grid-row: 2;
     }
 
-    .page_release .review_header > span[itemprop="reviewRating"] {
+    .page_release .review_header>span[itemprop="reviewRating"] {
       grid-column: 3;
       grid-row: 1;
     }
 
-    .page_release .review_header > div[id^="review_voting"] {
+    .page_release .review_header>div[id^="review_voting"] {
       grid-column: 3;
       grid-row: 2;
     }
@@ -4537,7 +4437,7 @@
       text-align: left !important;
     }
 
-    .rym-modern-mobile-hero-section .show-for-small > div {
+    .rym-modern-mobile-hero-section .show-for-small>div {
       padding-top: 0 !important;
     }
 
@@ -4845,11 +4745,7 @@
       padding-top: 10px !important;
     }
 
-    .page_release
-      #rym-modern-release-info
-      .section_tracklisting
-      .release_page_header
-      h2 {
+    .page_release #rym-modern-release-info .section_tracklisting .release_page_header h2 {
       display: none !important;
     }
 
@@ -5022,13 +4918,13 @@
       opacity: 1 !important;
     }
 
-    .rym-mobile-overlay-open .review_header > span[itemprop="reviewRating"] {
+    .rym-mobile-overlay-open .review_header>span[itemprop="reviewRating"] {
       grid-column: 3;
       grid-row: 1 / 3;
       place-self: start end;
     }
 
-    .rym-mobile-overlay-open .review_header > div[id^="review_voting"],
+    .rym-mobile-overlay-open .review_header>div[id^="review_voting"],
     .rym-mobile-overlay-open .review_header .review_actions {
       display: none !important;
     }
@@ -5076,7 +4972,7 @@
       margin: 12px 0 18px !important;
     }
 
-    .rym-mobile-overlay-open .comments_post > div:not(.comments_post_loading) {
+    .rym-mobile-overlay-open .comments_post>div:not(.comments_post_loading) {
       padding: 12px 0 0 !important;
     }
 
@@ -5250,7 +5146,7 @@
     overflow-x: clip;
   }
 
-  @media only screen and (width >= 48.125em) {
+  @media only screen and (width >=48.125em) {
     .page_charts_section_charts_item {
       align-items: center;
       display: grid;
@@ -5362,8 +5258,7 @@
     display: none !important;
   }
 
-  #page_charts
-    .page_charts_section_charts_item_genres_descriptors_rating_frame {
+  #page_charts .page_charts_section_charts_item_genres_descriptors_rating_frame {
     align-items: end;
     display: grid;
     gap: 12px;
@@ -5471,8 +5366,7 @@
     }
 
     #page_charts .page_charts_section_charts_item_info_main,
-    #page_charts
-      .page_charts_section_charts_item_genres_descriptors_rating_frame {
+    #page_charts .page_charts_section_charts_item_genres_descriptors_rating_frame {
       grid-template-columns: minmax(0, 1fr);
     }
 
@@ -5492,6 +5386,7 @@
   }
 
   @media (max-width: 42rem) {
+
     header,
     #header,
     #site_header,
