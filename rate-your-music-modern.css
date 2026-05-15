@@ -1,7 +1,7 @@
 /* ==UserStyle==
 @name           Rate Your Music Modern
 @namespace      github.com/112345brian/rate-your-music-modern
-@version        1.7.4
+@version        1.7.5
 @description    Modern visual treatment for Rate Your Music.
 @author         bri
 @homepageURL    https://github.com/112345brian/rate-your-music-modern
@@ -3684,14 +3684,45 @@
   }
 
   .page_release .comments_load {
-    background: rgb(120 183 255 / 9%) !important;
-    border: 1px solid rgb(120 183 255 / 20%);
-    border-radius: 999px !important;
+    align-items: center;
+    background: transparent !important;
+    border: 0 !important;
+    border-radius: 0 !important;
     color: var(--rym-link-hover) !important;
+    display: inline-flex;
     font-size: 13px !important;
+    font-weight: 820;
+    gap: 8px;
     line-height: 1 !important;
-    margin: 0 0 10px !important;
-    padding: 9px 12px !important;
+    margin: 0 0 8px !important;
+    padding: 0 !important;
+    text-decoration: none !important;
+  }
+
+  .page_release .comments_load::before {
+    align-items: center;
+    border: 1px solid rgb(164 205 253 / 45%);
+    border-radius: 5px;
+    color: var(--rym-link-hover);
+    content: "+";
+    display: inline-flex;
+    font-size: 15px;
+    font-weight: 900;
+    height: 20px;
+    justify-content: center;
+    line-height: 1;
+    width: 20px;
+  }
+
+  .page_release .comments_load:hover {
+    color: #d7ebff !important;
+    text-decoration: underline !important;
+    text-decoration-thickness: 1px !important;
+    text-underline-offset: 3px;
+  }
+
+  .page_release .comments_load:hover::before {
+    border-color: rgb(164 205 253 / 72%);
   }
 
   .page_release .comments_post > div {

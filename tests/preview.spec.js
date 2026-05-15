@@ -783,6 +783,15 @@ test("modernizes the release preview layout", async ({ page }) => {
       ).overflowY,
       commentsScrollIntent:
         comments.querySelector(".comments_list").dataset.rymModernScrollIntent,
+      commentsLoadBackground: getComputedStyle(
+        comments.querySelector(".comments_load"),
+      ).backgroundColor,
+      commentsLoadBorderRadius: getComputedStyle(
+        comments.querySelector(".comments_load"),
+      ).borderRadius,
+      commentsLoadDisplay: getComputedStyle(
+        comments.querySelector(".comments_load"),
+      ).display,
       reviewPaginationOnOwnLine: (() => {
         const sort = document.querySelector(".review_sort");
         const pagination = document.querySelector(
@@ -871,6 +880,9 @@ test("modernizes the release preview layout", async ({ page }) => {
   expect(releaseOrder.commentsListMaxHeight).not.toBe("none");
   expect(releaseOrder.commentsListOverflowY).toBe("auto");
   expect(releaseOrder.commentsScrollIntent).toBe("true");
+  expect(releaseOrder.commentsLoadBackground).toBe("rgba(0, 0, 0, 0)");
+  expect(releaseOrder.commentsLoadBorderRadius).toBe("0px");
+  expect(releaseOrder.commentsLoadDisplay).toBe("inline-flex");
   expect(releaseOrder.reviewPaginationOnOwnLine).toBe(true);
   expect(releaseOrder.reviewColumnsAligned).toBe(true);
   expect(releaseOrder.friendStarsFit).toBe(true);
