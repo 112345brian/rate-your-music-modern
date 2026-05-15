@@ -447,6 +447,38 @@ test("modernizes the release preview layout", async ({ page }) => {
   await expect(
     page.locator(".rym-modern-release-distribution-card #chart_div"),
   ).toBeVisible();
+  await expect(
+    page.locator(".rym-modern-release-distribution-card #chart_div2"),
+  ).toBeHidden();
+  await expect(
+    page
+      .locator(".rym-modern-release-distribution-card")
+      .getByRole("tab", { name: "Distribution" }),
+  ).toHaveAttribute("aria-selected", "true");
+  await page
+    .locator(".rym-modern-release-distribution-card")
+    .getByRole("tab", { name: "Trend" })
+    .click();
+  await expect(
+    page.locator(".rym-modern-release-distribution-card #chart_div"),
+  ).toBeHidden();
+  await expect(
+    page.locator(".rym-modern-release-distribution-card #chart_div2"),
+  ).toBeVisible();
+  await page
+    .locator(".rym-modern-release-distribution-card")
+    .getByRole("tab", { name: "Distribution" })
+    .click();
+  await expect(
+    page.locator(".rym-modern-release-distribution-card #chart_div"),
+  ).toBeVisible();
+  expect(
+    await page.locator("#chart_div").evaluate((chart) => {
+      const box = chart.getBoundingClientRect();
+
+      return box.width >= 225 && box.height >= 90;
+    }),
+  ).toBe(true);
   await expect(page.locator(".rym-modern-release-friends-card")).toHaveCount(0);
   await expect(page.locator(".rym-modern-release-rating-card")).toContainText(
     "3.00",
@@ -1001,8 +1033,8 @@ test("uses the release distribution as the second column without friend ratings"
   });
 
   expect(compactRatingMetrics.albumInfoHeight).toBeLessThanOrEqual(500);
-  expect(compactRatingMetrics.summaryHeight).toBeLessThanOrEqual(125);
-  expect(compactRatingMetrics.distributionHeight).toBeLessThanOrEqual(125);
+  expect(compactRatingMetrics.summaryHeight).toBeLessThanOrEqual(150);
+  expect(compactRatingMetrics.distributionHeight).toBeLessThanOrEqual(145);
   await expect(page.locator("#rym-modern-release-ratings")).toBeHidden();
   await page.locator(".rym-modern-release-catalog-link").click();
   await expect(page.locator("#rym-modern-release-ratings")).toBeVisible();

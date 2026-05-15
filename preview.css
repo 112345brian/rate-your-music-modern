@@ -1582,13 +1582,13 @@ html#page_release #content {
 
 .page_release .rym-modern-release-distribution-card {
   align-content: center;
-  align-items: center;
+  align-items: stretch;
   border-left: 1px solid rgb(148 163 184 / 14%);
   display: grid;
-  gap: 10px;
+  gap: 8px;
   grid-template-columns: minmax(0, 1fr) auto;
   min-height: 0;
-  padding-left: 14px;
+  padding-left: 18px;
 }
 
 .page_release
@@ -1626,6 +1626,51 @@ html#page_release #content {
   )
   .rym-modern-rating-distribution {
   grid-column: auto;
+}
+
+.page_release .rym-modern-release-chart-tabs {
+  align-self: center;
+  display: grid;
+  gap: 8px;
+  min-width: 0;
+  width: 100%;
+}
+
+.page_release .rym-modern-release-chart-tablist {
+  display: inline-flex;
+  gap: 4px;
+  justify-self: center;
+}
+
+.page_release .rym-modern-release-chart-tab {
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid transparent;
+  color: var(--rym-text-muted);
+  cursor: pointer;
+  font: inherit;
+  font-size: 11px;
+  font-weight: 760;
+  letter-spacing: 0.04em;
+  line-height: 1;
+  padding: 0 2px 4px;
+  text-transform: uppercase;
+}
+
+.page_release .rym-modern-release-chart-tab:hover,
+.page_release .rym-modern-release-chart-tab[aria-selected="true"] {
+  border-bottom-color: rgb(120 183 255 / 75%);
+  color: var(--rym-link-hover);
+}
+
+.page_release .rym-modern-release-chart-body {
+  align-items: center;
+  display: grid;
+  min-height: 92px;
+}
+
+.page_release .rym-modern-release-chart-pane[hidden] {
+  display: none !important;
 }
 
 .page_release table.album_info tr.rym-modern-release-summary-row {
@@ -2204,24 +2249,38 @@ html#page_release #content {
   grid-column: 1 / -1;
   justify-content: center;
   max-width: none;
-  min-height: 70px;
-  opacity: 0.82;
+  min-height: 90px;
+  opacity: 0.9;
   padding: 0;
   place-self: stretch;
   width: 100%;
 }
 
-.page_release .rym-modern-rating-distribution #chart_div {
+.page_release .rym-modern-rating-distribution #chart_div,
+.page_release .rym-modern-rating-trend #chart_div2 {
   background: transparent !important;
-  flex: 0 0 180px;
-  height: 76px !important;
+  flex: 0 0 230px;
+  height: 92px !important;
   overflow: visible;
-  width: 180px !important;
+  width: 230px !important;
 }
 
-.page_release .rym-modern-rating-distribution #chart_div > div {
-  transform: scale(0.72);
+.page_release .rym-modern-rating-distribution #chart_div > div,
+.page_release .rym-modern-rating-trend #chart_div2 > div {
+  transform: scale(1.04);
   transform-origin: center center;
+}
+
+.page_release .rym-modern-rating-trend {
+  align-items: center;
+  background: transparent;
+  border: 0;
+  display: flex;
+  justify-content: center;
+  min-height: 90px;
+  opacity: 0.9;
+  overflow: visible;
+  width: 100%;
 }
 
 .page_release .rym-modern-release-catalog-hidden {

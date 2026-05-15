@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Rate Your Music Modern
 // @namespace    github.com/112345brian/rate-your-music-modern
-// @version      1.3.4
+// @version      1.3.5
 // @description  Behavior enhancements for the Rate Your Music Modern userstyle.
 // @author       bri
 // @homepageURL  https://github.com/112345brian/rate-your-music-modern
@@ -502,6 +502,7 @@ function enhanceReleaseRatingDistribution() {
   const ratingContent = ratingRow?.querySelector("td");
   const friendsContent = friendsRow?.querySelector("td");
   const chart = document.querySelector("#chart_div");
+  const trendChart = document.querySelector("#chart_div2");
   const catalogSection = prepareReleaseCatalogSection();
 
   truncateReleaseCatalogCurrentYearDates(catalogSection);
@@ -520,6 +521,13 @@ function enhanceReleaseRatingDistribution() {
     "rating distribution"
   ) {
     chart.previousElementSibling.remove();
+  }
+
+  if (
+    trendChart?.previousElementSibling?.textContent.trim().toLowerCase() ===
+    "rating trend"
+  ) {
+    trendChart.previousElementSibling.remove();
   }
 
   const distribution = document.createElement("div");
@@ -577,9 +585,18 @@ function enhanceReleaseRatingDistribution() {
 
   const distributionCard = document.createElement("div");
   const catalogLink = createReleaseCatalogLink("See Catalog");
+  const chartTabs = createReleaseChartTabs([
+    { label: "Distribution", panel: distribution },
+    trendChart
+      ? {
+          label: "Trend",
+          panel: createReleaseTrendPanel(trendChart),
+        }
+      : null,
+  ]);
 
   distributionCard.className = "rym-modern-release-distribution-card";
-  distributionCard.append(distribution);
+  distributionCard.append(chartTabs);
   if (!hasFriendRatings && catalogSection) {
     distributionCard.append(catalogLink);
   }
@@ -590,6 +607,71 @@ function enhanceReleaseRatingDistribution() {
   summaryRow.append(summaryCell);
   ratingRow.before(summaryRow);
   ratingRow.remove();
+}
+
+function createReleaseTrendPanel(chart) {
+  const panel = document.createElement("div");
+
+  panel.className = "rym-modern-rating-trend";
+  panel.append(chart);
+
+  return panel;
+}
+
+function createReleaseChartTabs(items) {
+  const validItems = items.filter(Boolean);
+  const shell = document.createElement("div");
+  const controls = document.createElement("div");
+  const body = document.createElement("div");
+
+  shell.className = "rym-modern-release-chart-tabs";
+  controls.className = "rym-modern-release-chart-tablist";
+  controls.setAttribute("role", "tablist");
+  body.className = "rym-modern-release-chart-body";
+
+  validItems.forEach((item, index) => {
+    const id = `rym-modern-release-chart-${slugifyLabel(item.label)}`;
+    const button = document.createElement("button");
+
+    item.panel.classList.add("rym-modern-release-chart-pane");
+    item.panel.id = id;
+    item.panel.hidden = index !== 0;
+
+    button.type = "button";
+    button.className = "rym-modern-release-chart-tab";
+    button.textContent = item.label;
+    button.setAttribute("role", "tab");
+    button.setAttribute("aria-controls", id);
+    button.setAttribute("aria-selected", index === 0 ? "true" : "false");
+
+    button.addEventListener("click", () => {
+      for (const sibling of controls.querySelectorAll(
+        ".rym-modern-release-chart-tab",
+      )) {
+        sibling.setAttribute("aria-selected", "false");
+      }
+
+      for (const pane of body.querySelectorAll(
+        ".rym-modern-release-chart-pane",
+      )) {
+        pane.hidden = true;
+      }
+
+      button.setAttribute("aria-selected", "true");
+      item.panel.hidden = false;
+    });
+
+    controls.append(button);
+    body.append(item.panel);
+  });
+
+  if (validItems.length > 1) {
+    shell.append(controls);
+  }
+
+  shell.append(body);
+
+  return shell;
 }
 
 function prepareReleaseCatalogSection() {
