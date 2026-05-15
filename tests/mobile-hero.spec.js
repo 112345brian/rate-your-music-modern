@@ -268,6 +268,12 @@ test.describe("mobile release page", () => {
     const reviewBody = overlay.locator(".review_body").first();
     if ((await reviewBody.count()) > 0) {
       await expect(reviewBody).toHaveCSS("font-size", "15px");
+      await expect(reviewBody).toHaveCSS("color", "rgb(215, 222, 232)");
+    }
+
+    const reviewerLink = overlay.locator(".review_user .user").first();
+    if ((await reviewerLink.count()) > 0) {
+      await expect(reviewerLink).toHaveCSS("color", "rgb(164, 205, 253)");
     }
   });
 

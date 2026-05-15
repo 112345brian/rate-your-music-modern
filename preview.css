@@ -4907,9 +4907,27 @@ html#page_release #content {
     background: transparent !important;
     border: 0 !important;
     border-radius: 0 !important;
-    grid-template-columns: 34px minmax(0, 1fr) auto;
-    min-height: 36px;
+    column-gap: 10px;
+    display: grid !important;
+    grid-template-columns: 40px minmax(0, 1fr) auto;
+    min-height: 40px;
     padding: 0 !important;
+  }
+
+  .rym-mobile-overlay-open .review_header img,
+  .rym-mobile-overlay-open .comment_header img {
+    border-radius: 50%;
+    grid-column: 1;
+    grid-row: 1 / 3;
+    height: 36px !important;
+    width: 36px !important;
+  }
+
+  .rym-mobile-overlay-open .review_user,
+  .rym-mobile-overlay-open .comment_user {
+    grid-column: 2;
+    grid-row: 1;
+    min-width: 0;
   }
 
   .rym-mobile-overlay-open .review_header .user,
@@ -4919,25 +4937,43 @@ html#page_release #content {
   .rym-mobile-overlay-open .review_header .reviewer_name,
   .rym-mobile-overlay-open .comment_header .comment_username {
     color: var(--rym-link-hover) !important;
-    font-size: 15px !important;
+    font-size: 16px !important;
+    font-weight: 800 !important;
     line-height: 1.2 !important;
+    opacity: 1 !important;
   }
 
   .rym-mobile-overlay-open .review_header .review_date,
   .rym-mobile-overlay-open .comment_header .comment_date {
-    color: var(--rym-text-muted) !important;
-    font-size: 12px !important;
+    color: var(--rym-text-soft) !important;
+    font-size: 13px !important;
+    grid-column: 2;
+    grid-row: 2;
+    opacity: 1 !important;
+  }
+
+  .rym-mobile-overlay-open .review_header > span[itemprop="reviewRating"] {
+    grid-column: 3;
+    grid-row: 1 / 3;
+    place-self: start end;
+  }
+
+  .rym-mobile-overlay-open .review_header > div[id^="review_voting"],
+  .rym-mobile-overlay-open .review_header .review_actions {
+    display: none !important;
   }
 
   .rym-mobile-overlay-open .review_body,
   .rym-mobile-overlay-open .comment_body,
   .rym-mobile-overlay-open .review_body p,
   .rym-mobile-overlay-open .comment_body p {
-    color: var(--rym-text-soft) !important;
+    color: #d7dee8 !important;
     font-size: 15px !important;
-    line-height: 1.55 !important;
-    margin-top: 8px !important;
+    line-height: 1.52 !important;
+    margin-top: 12px !important;
+    opacity: 1 !important;
     padding: 0 !important;
+    text-shadow: none !important;
   }
 
   .rym-mobile-overlay-open .review_body *,
@@ -4945,6 +4981,13 @@ html#page_release #content {
     color: inherit !important;
     font-size: inherit !important;
     line-height: inherit !important;
+    opacity: 1 !important;
+    text-shadow: none !important;
+  }
+
+  .rym-mobile-overlay-open .review_body a,
+  .rym-mobile-overlay-open .comment_body a {
+    color: var(--rym-link-hover) !important;
   }
 
   .rym-mobile-overlay-open .review_title {
