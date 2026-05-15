@@ -465,6 +465,23 @@ test("modernizes the release preview layout", async ({ page }) => {
   await expect(
     page.locator(".rym-modern-release-distribution-card #chart_div2"),
   ).toBeVisible();
+  expect(
+    await page
+      .locator(".rym-modern-release-distribution-card #chart_div2 svg")
+      .evaluate((svg) => {
+        const svgBox = svg.getBoundingClientRect();
+        const bodyBox = document
+          .querySelector(".rym-modern-release-chart-body")
+          .getBoundingClientRect();
+
+        return (
+          svgBox.left >= bodyBox.left - 1 &&
+          svgBox.right <= bodyBox.right + 1 &&
+          svgBox.top >= bodyBox.top - 1 &&
+          svgBox.bottom <= bodyBox.bottom + 1
+        );
+      }),
+  ).toBe(true);
   await page
     .locator(".rym-modern-release-distribution-card")
     .getByRole("tab", { name: "Distribution" })

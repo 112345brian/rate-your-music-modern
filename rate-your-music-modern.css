@@ -1,7 +1,7 @@
 /* ==UserStyle==
 @name           Rate Your Music Modern
 @namespace      github.com/112345brian/rate-your-music-modern
-@version        1.6.6
+@version        1.6.7
 @description    Modern visual treatment for Rate Your Music.
 @author         bri
 @homepageURL    https://github.com/112345brian/rate-your-music-modern
@@ -1683,10 +1683,17 @@
     align-items: center;
     display: grid;
     min-height: 92px;
+    overflow: hidden;
+    position: relative;
   }
 
   .page_release .rym-modern-release-chart-pane[hidden] {
     display: none !important;
+  }
+
+  .page_release .rym-modern-release-chart-pane {
+    max-width: 100%;
+    overflow: hidden;
   }
 
   .page_release table.album_info tr.rym-modern-release-summary-row {
@@ -2280,14 +2287,37 @@
     background: transparent !important;
     flex: 0 0 230px;
     height: 92px !important;
-    overflow: visible;
+    overflow: hidden;
     width: 230px !important;
   }
 
   .page_release .rym-modern-rating-distribution #chart_div > div,
   .page_release .rym-modern-rating-trend #chart_div2 > div {
-    transform: scale(1.04);
-    transform-origin: center center;
+    height: 92px !important;
+    transform: none;
+    width: 230px !important;
+  }
+
+  .page_release
+    :is(
+      .rym-modern-rating-distribution #chart_div,
+      .rym-modern-rating-trend #chart_div2
+    )
+    > div
+    > div {
+    height: 92px !important;
+    overflow: hidden !important;
+    width: 230px !important;
+  }
+
+  .page_release
+    :is(
+      .rym-modern-rating-distribution #chart_div,
+      .rym-modern-rating-trend #chart_div2
+    )
+    svg {
+    height: 92px !important;
+    width: 230px !important;
   }
 
   .page_release .rym-modern-rating-trend {
@@ -2298,7 +2328,7 @@
     justify-content: center;
     min-height: 90px;
     opacity: 0.9;
-    overflow: visible;
+    overflow: hidden;
     width: 100%;
   }
 
