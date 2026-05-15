@@ -5068,20 +5068,20 @@ html#page_release #content {
   .page_release .section_release_navigation .release_navigation_links {
     align-items: center;
     display: grid !important;
-    gap: 7px;
-    grid-template-columns: 30px minmax(0, 1fr) minmax(0, 1fr) 30px;
-    height: 44px !important;
-    max-height: 44px !important;
-    min-height: 44px !important;
+    gap: 6px;
+    grid-template-columns: 24px minmax(0, 1fr) minmax(0, 1fr) 24px;
+    height: 34px !important;
+    max-height: 34px !important;
+    min-height: 34px !important;
     overflow: hidden;
-    padding: 6px 10px !important;
+    padding: 4px 8px !important;
   }
 
   .page_release .section_release_navigation .prev_image,
   .page_release .section_release_navigation .next_image {
     border-radius: 4px;
-    height: 30px !important;
-    width: 30px !important;
+    height: 24px !important;
+    width: 24px !important;
   }
 
   .page_release .section_release_navigation .prev_link {
@@ -5099,7 +5099,7 @@ html#page_release #content {
   .page_release .section_release_navigation .prev_link a,
   .page_release .section_release_navigation .next_link a {
     display: block;
-    font-size: 12px !important;
+    font-size: 11px !important;
     font-weight: 760;
     line-height: 1.15 !important;
     overflow: hidden;
