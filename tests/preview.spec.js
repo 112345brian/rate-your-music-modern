@@ -654,6 +654,14 @@ test("modernizes the release preview layout", async ({ page }) => {
     "border-radius",
     "0px",
   );
+  await expect(page.locator(".release_pri_genres").first()).toHaveCSS(
+    "display",
+    "contents",
+  );
+  await expect(page.locator(".release_sec_genres").first()).toHaveCSS(
+    "display",
+    "contents",
+  );
   await expect(
     page.locator(".rym-modern-release-lists-disclosure"),
   ).toHaveCount(0);

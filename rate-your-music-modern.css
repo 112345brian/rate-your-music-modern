@@ -1,7 +1,7 @@
 /* ==UserStyle==
 @name           Rate Your Music Modern
 @namespace      github.com/112345brian/rate-your-music-modern
-@version        1.7.2
+@version        1.7.3
 @description    Modern visual treatment for Rate Your Music.
 @author         bri
 @homepageURL    https://github.com/112345brian/rate-your-music-modern
@@ -2473,9 +2473,7 @@
 
   .page_release .release_pri_genres,
   .page_release .release_sec_genres {
-    display: inline-flex;
-    flex-wrap: wrap;
-    gap: 5px 13px;
+    display: contents;
   }
 
   .page_release table.album_info tr.release_genres {
@@ -2500,10 +2498,6 @@
   .page_release table.album_info tr.release_genres td:last-child {
     align-self: start;
     padding-top: 6px !important;
-  }
-
-  .page_release .release_pri_genres {
-    margin-right: 2px;
   }
 
   .page_release .release_sec_genres {
