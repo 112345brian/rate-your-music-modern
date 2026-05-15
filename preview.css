@@ -4421,6 +4421,7 @@ html#page_release #content {
   }
 
   .page_release table.album_info tr.rym-modern-release-rating-row {
+    border-bottom: 0 !important;
     grid-template-columns: 1fr;
   }
 
