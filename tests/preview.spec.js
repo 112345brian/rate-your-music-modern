@@ -669,6 +669,9 @@ test("modernizes the release preview layout", async ({ page }) => {
     page.locator(".page_release .rym-modern-contributions"),
   ).toBeVisible();
   await expect(
+    page.locator(".page_release .rym-modern-contributions"),
+  ).toHaveCSS("border-top-width", "0px");
+  await expect(
     page.locator(".page_release .rym-modern-contributions .contributors a"),
   ).toHaveCount(5);
   await expect(

@@ -3988,11 +3988,10 @@ html#page_release #content {
 .page_release .rym-modern-contributions {
   background: transparent !important;
   border: 0;
-  border-top: 1px solid var(--rym-border);
   border-radius: 0;
   margin: 28px 0 0 !important;
   max-width: none;
-  padding: 18px 0 0 !important;
+  padding: 0 !important;
   width: 100%;
 }
 
