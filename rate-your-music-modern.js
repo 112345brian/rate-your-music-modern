@@ -1572,6 +1572,13 @@ function openMobileDiscussionOverlay(panel) {
       for (const { el } of subSections) {
         el.hidden = false;
       }
+      // Opening the overlay hid the inline Info/Lists panels, so without
+      // restoring a tab the page would be blank after closing.
+      document
+        .querySelector(
+          '.rym-modern-release-tab[data-target="rym-modern-release-info"]',
+        )
+        ?.click();
     };
 
     const closeBtn = document.createElement("button");
@@ -2274,6 +2281,9 @@ function enhanceMobileRelease() {
         tab.setAttribute("aria-current", String(tab === infoTab));
       }
       history.replaceState(null, "", "#rym-modern-release-info");
+      requestAnimationFrame(() =>
+        tabBar.scrollIntoView({ behavior: "smooth", block: "start" }),
+      );
     });
 
     tabBar.addEventListener(
