@@ -1565,21 +1565,42 @@ function openMobileDiscussionOverlay(panel) {
       }
     }
 
-    const closeBtn = document.createElement("button");
-    closeBtn.className = "rym-mobile-overlay-close";
-    closeBtn.setAttribute("aria-label", "Close");
-    closeBtn.textContent = "✕";
-    closeBtn.addEventListener("click", () => {
+    const closeOverlay = () => {
       panel.classList.remove("rym-mobile-overlay-open");
       panel.hidden = true;
       document.documentElement.classList.remove("rym-mobile-overlay-active");
       for (const { el } of subSections) {
         el.hidden = false;
       }
-    });
+    };
+
+    const closeBtn = document.createElement("button");
+    closeBtn.className = "rym-mobile-overlay-close";
+    closeBtn.setAttribute("aria-label", "Close");
+    closeBtn.textContent = "✕";
+    closeBtn.addEventListener("click", closeOverlay);
 
     overlayHeader.append(tabRow, closeBtn);
     panel.prepend(overlayHeader);
+
+    // The review composer lives in the rating widget, not in the reviews
+    // section. Give the Reviews tab a sticky CTA that closes the overlay
+    // and opens the native review editor.
+    if (reviewsEl && !reviewsEl.querySelector(".rym-mobile-review-cta")) {
+      const reviewCta = document.createElement("button");
+      reviewCta.className = "rym-mobile-review-cta";
+      reviewCta.textContent = "Write a review";
+      reviewCta.addEventListener("click", () => {
+        closeOverlay();
+        const reviewBtn = document.querySelector(".review_btn");
+        reviewBtn?.click();
+        const editor = document.querySelector(
+          "#review_edit, .my_review, .review_btn",
+        );
+        editor?.scrollIntoView({ block: "center", behavior: "smooth" });
+      });
+      reviewsEl.append(reviewCta);
+    }
   }
 
   panel.scrollTop = 0;

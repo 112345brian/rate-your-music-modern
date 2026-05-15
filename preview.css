@@ -4866,7 +4866,7 @@ html#page_release #content {
     z-index: 200;
     background: var(--rym-bg) !important;
     color: var(--rym-text) !important;
-    padding: 0 12px 24px;
+    padding: 0 12px;
     overflow-y: auto;
     overscroll-behavior: contain;
     display: block !important;
@@ -4948,7 +4948,6 @@ html#page_release #content {
    comments list's own scroll box (max-height + overflow + border). */
   .rym-mobile-overlay-open .comments,
   .rym-mobile-overlay-open .comments_list,
-  .rym-mobile-overlay-open .comments_post,
   .rym-mobile-overlay-open #rym-modern-release-comments .comments_list {
     background: transparent !important;
     border: 0 !important;
@@ -4956,6 +4955,48 @@ html#page_release #content {
     box-shadow: none !important;
     max-height: none !important;
     overflow: visible !important;
+  }
+
+  /* The add-comment composer and the Write-a-review CTA stick to the
+   bottom of the overlay so they're always reachable without scrolling
+   to the end of the list. */
+  .rym-mobile-overlay-open .comments_post,
+  .rym-mobile-overlay-open .rym-mobile-review-cta {
+    background: var(--rym-bg) !important;
+    border: 0 !important;
+    border-top: 1px solid var(--rym-border) !important;
+    border-radius: 0 !important;
+    bottom: 0;
+    box-shadow: 0 -8px 18px rgb(15 17 23 / 55%);
+    margin: 14px -12px 0 !important;
+    max-height: none !important;
+    overflow: visible !important;
+    padding: 10px 12px calc(10px + env(safe-area-inset-bottom)) !important;
+    position: sticky;
+    z-index: 3;
+  }
+
+  /* Beat the base #id rule that forces transparent bg / zero padding */
+  .page_release
+    .rym-mobile-overlay-open
+    #rym-modern-release-comments
+    .comments_post {
+    background: var(--rym-bg) !important;
+    padding: 10px 12px calc(10px + env(safe-area-inset-bottom)) !important;
+  }
+
+  .rym-mobile-overlay-open .comments_post > div {
+    padding: 0 !important;
+  }
+
+  .rym-mobile-overlay-open .rym-mobile-review-cta {
+    color: var(--rym-link-hover);
+    cursor: pointer;
+    font-family: var(--rym-font);
+    font-size: 15px;
+    font-weight: 760;
+    text-align: left;
+    width: 100%;
   }
 
   .rym-mobile-overlay-open .review_sort {
