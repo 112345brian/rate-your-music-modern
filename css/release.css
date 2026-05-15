@@ -348,8 +348,6 @@ html#page_release #content {
 }
 
 .page_release .rym-modern-release-summary-grid {
-  border-bottom: 1px solid rgb(49 58 78 / 72%);
-  border-top: 1px solid rgb(49 58 78 / 72%);
   display: grid;
   gap: 0;
   grid-template-columns: repeat(3, minmax(0, 1fr));

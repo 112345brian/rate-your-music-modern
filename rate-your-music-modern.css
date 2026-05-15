@@ -1,7 +1,7 @@
 /* ==UserStyle==
 @name           Rate Your Music Modern
 @namespace      github.com/112345brian/rate-your-music-modern
-@version        1.6.9
+@version        1.7.0
 @description    Modern visual treatment for Rate Your Music.
 @author         bri
 @homepageURL    https://github.com/112345brian/rate-your-music-modern
@@ -1731,8 +1731,6 @@
   }
 
   .page_release .rym-modern-release-summary-grid {
-    border-bottom: 1px solid rgb(49 58 78 / 72%);
-    border-top: 1px solid rgb(49 58 78 / 72%);
     display: grid;
     gap: 0;
     grid-template-columns: repeat(3, minmax(0, 1fr));

@@ -428,6 +428,14 @@ test("modernizes the release preview layout", async ({ page }) => {
   await expect(
     page.locator(".rym-modern-release-summary-field").first(),
   ).toHaveCSS("border-radius", "0px");
+  await expect(page.locator(".rym-modern-release-summary-grid")).toHaveCSS(
+    "border-top-style",
+    "none",
+  );
+  await expect(page.locator(".rym-modern-release-summary-grid")).toHaveCSS(
+    "border-bottom-style",
+    "none",
+  );
   await expect(
     page.getByRole("rowheader", { name: "Ranked", exact: true }),
   ).toHaveCount(0);
