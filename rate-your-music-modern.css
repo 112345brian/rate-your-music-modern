@@ -1,7 +1,7 @@
 /* ==UserStyle==
 @name           Rate Your Music Modern
 @namespace      github.com/112345brian/rate-your-music-modern
-@version        1.8.16
+@version        1.8.17
 @description    Modern visual treatment for Rate Your Music.
 @author         bri
 @homepageURL    https://github.com/112345brian/rate-your-music-modern
@@ -5471,26 +5471,30 @@
 
   .rym-modern-chart-row {
     align-items: start;
-    column-gap: 18px;
     display: grid;
-    grid-template-columns: 34px 84px minmax(0, 1fr) auto;
-    padding: 14px 6px;
+    gap: 10px 20px;
+    grid-template-areas:
+      "rank  rank  rank"
+      "cover main  meta";
+    grid-template-columns: 96px minmax(0, 1fr) 156px;
+    padding: 16px 12px 16px 4px;
   }
 
   .rym-modern-chart-rank {
     color: var(--rym-text-muted);
-    font-size: 20px;
-    font-weight: 720;
+    font-size: 13px;
+    font-weight: 780;
+    grid-area: rank;
+    letter-spacing: 0.06em;
     line-height: 1;
-    padding-top: 4px;
-    text-align: right;
   }
 
   .rym-modern-chart-cover {
     display: block;
-    height: 84px;
+    grid-area: cover;
+    height: 96px;
     overflow: hidden;
-    width: 84px;
+    width: 96px;
   }
 
   .rym-modern-chart-cover picture,
@@ -5514,6 +5518,7 @@
     display: flex;
     flex-direction: column;
     gap: 4px;
+    grid-area: main;
     min-width: 0;
     padding-top: 1px;
   }
@@ -5572,10 +5577,15 @@
     text-decoration: none;
   }
 
+  .rym-modern-chart-genres--secondary {
+    margin-top: 1px;
+  }
+
   .rym-modern-chart-genres--secondary .rym-modern-chart-link {
-    color: var(--rym-text-muted) !important;
-    font-size: 12px;
-    font-weight: 440;
+    color: var(--rym-link) !important;
+    font-size: 12.5px;
+    font-weight: 430;
+    opacity: 0.92;
     text-decoration: none;
   }
 
@@ -5586,24 +5596,27 @@
   .rym-modern-chart-descriptors {
     color: var(--rym-text-muted);
     font-size: 11.5px;
+    font-style: italic;
     font-weight: 420;
-    line-height: 1.3;
-    opacity: 0.85;
+    line-height: 1.35;
+    margin-top: 2px;
+    opacity: 0.8;
   }
 
   .rym-modern-chart-meta {
-    align-items: flex-end;
     display: flex;
     flex-direction: column;
-    gap: 7px;
+    gap: 10px;
+    grid-area: meta;
     padding-top: 2px;
-    white-space: nowrap;
   }
 
   .rym-modern-chart-rating {
     align-items: baseline;
     display: flex;
     gap: 5px;
+    justify-content: flex-end;
+    white-space: nowrap;
   }
 
   .rym-modern-chart-rating-star {
@@ -5627,10 +5640,16 @@
     color: var(--rym-text-muted);
     font-size: 12px;
     font-weight: 500;
+    text-align: right;
   }
 
+  /* Streaming links — distinct widget */
   .rym-modern-chart-media {
+    background: rgb(255 255 255 / 3%);
+    border: 1px solid var(--rym-border-soft);
+    border-radius: 8px;
     margin-top: 2px;
+    padding: 8px;
   }
 
   .rym-modern-chart-media .ui_media_links,
@@ -5638,7 +5657,7 @@
     display: flex;
     flex-wrap: wrap;
     gap: 6px;
-    justify-content: flex-end;
+    justify-content: flex-start;
   }
 
   .rym-modern-chart-media .ui_media_link_btn {
@@ -5649,44 +5668,35 @@
 
   @media only screen and (max-width: 52rem) {
     .rym-modern-chart-row {
-      gap: 8px 12px;
-      grid-template-columns: 26px 64px minmax(0, 1fr);
+      gap: 8px 14px;
       grid-template-areas:
-        "rank cover main"
-        "meta meta meta";
-    }
-
-    .rym-modern-chart-rank {
-      font-size: 16px;
-      grid-area: rank;
+        "rank  rank"
+        "cover main"
+        "meta  meta";
+      grid-template-columns: 76px minmax(0, 1fr);
     }
 
     .rym-modern-chart-cover {
-      grid-area: cover;
-      height: 64px;
-      width: 64px;
-    }
-
-    .rym-modern-chart-main {
-      grid-area: main;
+      height: 76px;
+      width: 76px;
     }
 
     .rym-modern-chart-meta {
-      align-items: flex-start;
+      align-items: center;
       flex-flow: row wrap;
-      gap: 6px 16px;
-      grid-area: meta;
-      padding-left: 76px;
+      gap: 8px 18px;
+    }
+
+    .rym-modern-chart-rating {
+      justify-content: flex-start;
+    }
+
+    .rym-modern-chart-reviews {
+      text-align: left;
     }
 
     .rym-modern-chart-media {
-      flex-basis: 100%;
       margin-top: 0;
-    }
-
-    .rym-modern-chart-media .ui_media_links,
-    .rym-modern-chart-media .ui_media_links_container {
-      justify-content: flex-start;
     }
   }
 
@@ -5699,22 +5709,18 @@
     }
 
     .rym-modern-chart-row {
-      column-gap: 10px;
-      grid-template-columns: 22px 56px minmax(0, 1fr);
+      column-gap: 12px;
+      grid-template-columns: 60px minmax(0, 1fr);
       padding: 12px 4px;
     }
 
     .rym-modern-chart-cover {
-      height: 56px;
-      width: 56px;
+      height: 60px;
+      width: 60px;
     }
 
     .rym-modern-chart-title {
       font-size: 14px;
-    }
-
-    .rym-modern-chart-meta {
-      padding-left: 66px;
     }
 
     .rym-modern-chart-descriptors {
