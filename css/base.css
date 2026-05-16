@@ -245,7 +245,6 @@ hr {
 .release_info,
 .review,
 .comment,
-.page_charts_section_charts_item,
 .page_charts_section_charts_item_details {
   background: var(--rym-surface) !important;
   border: 1px solid var(--rym-border) !important;

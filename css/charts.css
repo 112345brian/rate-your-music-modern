@@ -41,18 +41,77 @@
 
 #page_charts .page_charts_section_charts_items {
   display: grid;
-  gap: 14px;
+  gap: 0;
   min-width: 0;
 }
 
 #page_charts .page_section_charts_item_wrapper {
+  border-top: 1px solid var(--rym-border);
   display: block;
   min-width: 0;
+}
+
+#page_charts .page_section_charts_item_wrapper:first-child {
+  border-top: 0;
 }
 
 .page_charts_section_charts_item {
   min-width: 0;
   overflow-x: clip;
+}
+
+/* Chart items are rows, not cards */
+#page_charts .page_charts_section_charts_item {
+  background: transparent !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none;
+}
+
+#page_charts .page_charts_section_charts_item:hover,
+#page_charts .page_charts_section_charts_item.object_release:hover {
+  background: rgb(120 183 255 / 5%) !important;
+  border: 0 !important;
+}
+
+/* Hide the duplicate stats that appear in the stats_media strip —
+   rating is already shown inline in the genres/descriptors row */
+#page_charts
+  .page_charts_section_charts_item_stats_media
+  > .page_charts_section_charts_item_stats {
+  display: none !important;
+}
+
+/* Star/review icons: replace img tags with CSS symbols for robustness */
+#page_charts .page_charts_section_charts_item_stats_ratings img,
+#page_charts .page_charts_section_charts_item_details_reviews img {
+  display: none !important;
+}
+
+#page_charts .page_charts_section_charts_item_stats_ratings {
+  align-items: center;
+  display: inline-flex;
+  gap: 4px;
+}
+
+#page_charts .page_charts_section_charts_item_stats_ratings::before {
+  color: var(--rym-warning);
+  content: "★";
+  font-size: 14px;
+  line-height: 1;
+}
+
+#page_charts .page_charts_section_charts_item_details_reviews {
+  align-items: center;
+  display: inline-flex;
+  gap: 4px;
+}
+
+#page_charts .page_charts_section_charts_item_details_reviews::before {
+  color: var(--rym-text-muted);
+  content: "▤";
+  font-size: 13px;
+  line-height: 1;
 }
 
 @media only screen and (width >= 48.125em) {
@@ -71,8 +130,8 @@
   display: grid !important;
   grid-template-columns: 52px 132px minmax(0, 1fr);
   grid-template-areas: "rank cover info";
-  min-height: 164px;
-  padding: 18px 22px !important;
+  min-height: 0;
+  padding: 14px 0 !important;
 }
 
 #page_charts .page_charts_section_charts_item_number.number_main {
@@ -223,13 +282,6 @@
   display: none !important;
 }
 
-.page_charts_section_charts_item:hover,
-.review:hover,
-.comment:hover {
-  background: var(--rym-surface-raised) !important;
-  border-color: #41506a !important;
-}
-
 .page_charts_section_charts_item_rank {
   align-items: center;
   background: rgb(125 211 252 / 10%);
@@ -261,7 +313,7 @@
 @media only screen and (max-width: 52rem) {
   #page_charts .page_charts_section_charts_item.object_release {
     grid-template-columns: 38px 92px minmax(0, 1fr);
-    min-height: 124px;
+    min-height: 0;
     padding: 14px !important;
   }
 
@@ -295,7 +347,6 @@
 
   #page_charts .page_charts_section_charts_items {
     counter-reset: rym-modern-chart-rank;
-    gap: 0;
   }
 
   #page_charts .page_section_charts_item_wrapper {
@@ -309,18 +360,12 @@
 
   #page_charts .page_charts_section_charts_item.object_release {
     align-items: start;
-    background: transparent !important;
-    border: 0 !important;
-    border-radius: 0 !important;
-    box-shadow: none !important;
-    column-gap: 0;
     display: grid !important;
     gap: 8px 9px;
     grid-template-areas:
       "rank cover meta"
       "genres genres genres";
     grid-template-columns: 26px 78px minmax(0, 1fr);
-    min-height: 0;
     padding: 12px 8px !important;
   }
 
@@ -454,38 +499,24 @@
   }
 
   #page_charts .page_charts_section_charts_item_credited_links_rating_compact {
-    align-self: end;
     grid-area: meta;
-    justify-self: start;
     margin-bottom: 2px;
+    place-self: end start;
   }
 
   #page_charts .page_charts_section_charts_item_stats_ratings,
   #page_charts .page_charts_section_charts_item_details_reviews {
-    align-items: center;
     color: var(--rym-text-muted) !important;
-    display: inline-flex;
-    gap: 4px;
     min-width: 0;
-  }
-
-  #page_charts .page_charts_section_charts_item_stats_ratings img,
-  #page_charts .page_charts_section_charts_item_details_reviews img {
-    display: none !important;
   }
 
   #page_charts .page_charts_section_charts_item_stats_ratings::before {
     color: var(--rym-text) !important;
-    content: "★";
     font-size: 12px;
-    line-height: 1;
   }
 
   #page_charts .page_charts_section_charts_item_details_reviews::before {
-    color: var(--rym-text-muted) !important;
-    content: "▤";
     font-size: 11px;
-    line-height: 1;
   }
 
   #page_charts .page_charts_section_charts_item_details_average_num {
@@ -501,12 +532,6 @@
   }
 
   #page_charts .page_charts_section_charts_item_stats_media {
-    display: none !important;
-  }
-
-  #page_charts
-    .page_charts_section_charts_item_stats_media
-    > .page_charts_section_charts_item_stats {
     display: none !important;
   }
 

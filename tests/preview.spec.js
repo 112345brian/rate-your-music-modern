@@ -1093,13 +1093,12 @@ test("formats chart rows compactly on mobile", async ({ page }) => {
 
     return {
       height: itemRect.height,
-      overflowsViewport:
-        itemRect.right > document.documentElement.clientWidth,
+      overflowsViewport: itemRect.right > document.documentElement.clientWidth,
       rankContent: getComputedStyle(rank, "::before").content,
       secondaryGenresHeight: secondaryGenres.getBoundingClientRect().height,
       secondaryGenresText: secondaryGenres.textContent.trim(),
       statsMediaDisplay: getComputedStyle(statsMedia).display,
-      titleStartsAboveCover: title.bottom <= cover.top,
+      titleRightOfCover: title.left > cover.right - 5,
       visibleStatsCount: stats.length,
     };
   });
@@ -1110,7 +1109,7 @@ test("formats chart rows compactly on mobile", async ({ page }) => {
   expect(chartRowLayout.secondaryGenresHeight).toBeGreaterThan(0);
   expect(chartRowLayout.secondaryGenresText).toContain("Post-Minimalism");
   expect(chartRowLayout.statsMediaDisplay).toBe("none");
-  expect(chartRowLayout.titleStartsAboveCover).toBe(true);
+  expect(chartRowLayout.titleRightOfCover).toBe(true);
   expect(chartRowLayout.visibleStatsCount).toBe(1);
 });
 
