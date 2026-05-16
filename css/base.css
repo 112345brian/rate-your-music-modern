@@ -58,12 +58,6 @@ body
   text-transform: none;
 }
 
-html {
-  /* RYM sets 62.5% on charts pages — normalize to browser default so rem
-     units are consistent across all pages */
-  font-size: 100% !important;
-}
-
 html,
 body {
   background: var(--rym-bg) !important;
