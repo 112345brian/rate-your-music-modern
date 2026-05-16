@@ -59,6 +59,12 @@ body
   text-transform: none;
 }
 
+html {
+  /* RYM sets 62.5% on charts pages — normalize to browser default so rem
+   units are consistent across all pages */
+  font-size: 100% !important;
+}
+
 html,
 body {
   background: var(--rym-bg) !important;
@@ -5505,30 +5511,30 @@ html#page_release #content {
 
 #page_charts .page_charts_section_charts_item.object_release {
   align-items: center;
-  column-gap: 22px;
+  column-gap: 20px;
   display: grid !important;
-  grid-template-columns: 52px 132px minmax(0, 1fr);
+  grid-template-columns: 40px 88px minmax(0, 1fr);
   grid-template-areas: "rank cover info";
   min-height: 0;
-  padding: 14px 0 !important;
+  padding: 12px 0 !important;
 }
 
 #page_charts .page_charts_section_charts_item_number.number_main {
   align-self: start;
-  color: var(--rym-text) !important;
-  font-size: 32px;
-  font-weight: 820;
+  color: var(--rym-text-muted) !important;
+  font-size: 22px;
+  font-weight: 720;
   grid-area: rank;
   line-height: 1;
-  padding-top: 8px;
+  padding-top: 4px;
   text-align: right;
 }
 
 #page_charts .page_charts_section_charts_item_image_link {
   display: block;
   grid-area: cover;
-  height: 132px;
-  width: 132px;
+  height: 88px;
+  width: 88px;
 }
 
 #page_charts .page_charts_section_charts_item_image,
@@ -5556,7 +5562,7 @@ html#page_release #content {
 
 #page_charts .page_charts_section_charts_item_info_main_left {
   display: grid;
-  gap: 9px;
+  gap: 6px;
   min-width: 0;
 }
 
@@ -5568,9 +5574,9 @@ html#page_release #content {
 }
 
 #page_charts .page_charts_section_charts_item_title {
-  font-size: clamp(1.35rem, 2vw, 1.7rem) !important;
-  font-weight: 820 !important;
-  line-height: 1.08 !important;
+  font-size: 15px !important;
+  font-weight: 630 !important;
+  line-height: 1.25 !important;
   min-width: 0;
   order: 1;
 }
@@ -5586,18 +5592,18 @@ html#page_release #content {
 }
 
 #page_charts .page_charts_section_charts_item_credited_text a.artist {
-  color: var(--rym-text-soft) !important;
-  font-size: 1rem !important;
-  font-weight: 720 !important;
-  line-height: 1.15;
+  color: var(--rym-text-muted) !important;
+  font-size: 13px !important;
+  font-weight: 520 !important;
+  line-height: 1.2;
 }
 
 #page_charts .page_charts_section_charts_item_title_date_compact {
   color: var(--rym-text-muted) !important;
-  font-size: 0.94rem !important;
-  font-weight: 680;
+  font-size: 12px !important;
+  font-weight: 500;
   line-height: 1.2;
-  margin-top: 7px;
+  margin-top: 4px;
 }
 
 #page_charts .page_charts_section_charts_item_date {
@@ -5624,16 +5630,16 @@ html#page_release #content {
 }
 
 #page_charts .page_charts_section_charts_item_genres_primary a.genre {
-  color: var(--rym-link-hover) !important;
-  font-size: 1.05rem !important;
-  font-weight: 790 !important;
+  color: var(--rym-link) !important;
+  font-size: 13px !important;
+  font-weight: 660 !important;
 }
 
 #page_charts .page_charts_section_charts_item_genres_secondary a.genre,
 #page_charts .page_charts_section_charts_item_genre_descriptors span {
   color: var(--rym-text-muted) !important;
-  font-size: 0.95rem !important;
-  font-weight: 620;
+  font-size: 12px !important;
+  font-weight: 440;
 }
 
 #page_charts .page_charts_section_charts_item_stats.compact {
@@ -5645,16 +5651,16 @@ html#page_release #content {
 }
 
 #page_charts .page_charts_section_charts_item_details_average_num {
-  color: var(--rym-link-hover) !important;
-  font-size: 1.35rem;
-  font-weight: 850;
+  color: var(--rym-warning) !important;
+  font-size: 15px;
+  font-weight: 780;
 }
 
 #page_charts .page_charts_section_charts_item_details_ratings,
 #page_charts .page_charts_section_charts_item_details_reviews {
   color: var(--rym-text-muted) !important;
-  font-size: 1rem;
-  font-weight: 650;
+  font-size: 12px;
+  font-weight: 510;
 }
 
 #page_charts .page_charts_section_charts_item_info_main_right {
@@ -5691,18 +5697,18 @@ html#page_release #content {
 
 @media only screen and (max-width: 52rem) {
   #page_charts .page_charts_section_charts_item.object_release {
-    grid-template-columns: 38px 92px minmax(0, 1fr);
-    min-height: 0;
-    padding: 14px !important;
+    column-gap: 14px;
+    grid-template-columns: 32px 72px minmax(0, 1fr);
+    padding: 10px !important;
   }
 
   #page_charts .page_charts_section_charts_item_image_link {
-    height: 92px;
-    width: 92px;
+    height: 72px;
+    width: 72px;
   }
 
   #page_charts .page_charts_section_charts_item_number.number_main {
-    font-size: 24px;
+    font-size: 18px;
   }
 
   #page_charts .page_charts_section_charts_item_info_main,
