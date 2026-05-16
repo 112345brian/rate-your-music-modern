@@ -60,6 +60,30 @@
   overflow-x: clip;
 }
 
+/* Button in charts items */
+.page_charts_section_charts_item_button {
+  background: var(--rym-surface-raised);
+  border: 1px solid var(--rym-border);
+  border-radius: 6px;
+  color: var(--rym-text);
+  cursor: pointer;
+  font-weight: 650;
+  min-height: 2.25rem;
+  padding: 0.45rem 0.8rem;
+}
+
+/* Artist/descriptor text color */
+.page_charts_section_charts_item_artist,
+.page_charts_section_charts_item_descriptors {
+  color: var(--rym-text-muted) !important;
+}
+
+/* Genre/descriptor link color */
+.page_charts_section_charts_item_genre,
+.page_charts_section_charts_item_descriptor {
+  color: var(--rym-link) !important;
+}
+
 /* Chart items are rows, not cards */
 #page_charts .page_charts_section_charts_item {
   background: transparent !important;

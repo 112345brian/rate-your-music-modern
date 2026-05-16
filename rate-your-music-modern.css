@@ -1,7 +1,7 @@
 /* ==UserStyle==
 @name           Rate Your Music Modern
 @namespace      github.com/112345brian/rate-your-music-modern
-@version        1.8.13
+@version        1.8.14
 @description    Modern visual treatment for Rate Your Music.
 @author         bri
 @homepageURL    https://github.com/112345brian/rate-your-music-modern
@@ -42,6 +42,7 @@
     box-sizing: border-box;
   }
 
+  /* RYM sets ProximaNova on body and form elements — override globally */
   body,
   body
     :where(
@@ -68,31 +69,6 @@
     font-feature-settings: normal !important;
     font-variant: normal !important;
     text-transform: none;
-  }
-
-  html body *::first-letter {
-    background: transparent !important;
-    border: 0 !important;
-    border-color: transparent !important;
-    border-radius: 0 !important;
-    border-style: none !important;
-    border-width: 0 !important;
-    box-shadow: none !important;
-    color: inherit !important;
-    display: inline !important;
-    float: none !important;
-    font-family: var(--rym-font) !important;
-    font-feature-settings: normal !important;
-    font-kerning: auto !important;
-    font-optical-sizing: auto !important;
-    font-style: normal !important;
-    font-variant: normal !important;
-    font-weight: inherit !important;
-    margin: 0 !important;
-    outline: 0 !important;
-    padding: 0 !important;
-    text-decoration: inherit !important;
-    text-transform: inherit !important;
   }
 
   html,
@@ -170,6 +146,7 @@
     border-radius: var(--rym-radius);
   }
 
+  /* Hide RYM's full-page overlay/cover elements */
   #content_total_cover,
   #content_cover,
   .overlay_invisible {
@@ -198,8 +175,7 @@
   input[type="button"],
   input[type="submit"],
   .btn,
-  .button,
-  .page_charts_section_charts_item_button {
+  .button {
     background: var(--rym-surface-raised);
     border: 1px solid var(--rym-border);
     border-radius: 6px;
@@ -220,13 +196,7 @@
   }
 
   table {
-    border-collapse: separate;
     border-spacing: 0;
-  }
-
-  td,
-  th {
-    border-color: var(--rym-border-soft) !important;
   }
 
   hr {
@@ -252,7 +222,6 @@
   .page_section,
   .section,
   .box,
-  .mbgen,
   .album_info,
   .artist_info,
   .release_info,
@@ -268,7 +237,6 @@
   .page_section,
   .section,
   .box,
-  .mbgen,
   .album_info,
   .artist_info,
   .release_info,
@@ -310,8 +278,6 @@
   .subtext,
   .metadata,
   .page_section_subtitle,
-  .page_charts_section_charts_item_artist,
-  .page_charts_section_charts_item_descriptors,
   .artist_shortcut,
   .profile_stats,
   .notes {
@@ -319,9 +285,7 @@
   }
 
   .genre,
-  .descriptor,
-  .page_charts_section_charts_item_genre,
-  .page_charts_section_charts_item_descriptor {
+  .descriptor {
     color: var(--rym-link) !important;
   }
 
@@ -5480,6 +5444,30 @@
   .page_charts_section_charts_item {
     min-width: 0;
     overflow-x: clip;
+  }
+
+  /* Button in charts items */
+  .page_charts_section_charts_item_button {
+    background: var(--rym-surface-raised);
+    border: 1px solid var(--rym-border);
+    border-radius: 6px;
+    color: var(--rym-text);
+    cursor: pointer;
+    font-weight: 650;
+    min-height: 2.25rem;
+    padding: 0.45rem 0.8rem;
+  }
+
+  /* Artist/descriptor text color */
+  .page_charts_section_charts_item_artist,
+  .page_charts_section_charts_item_descriptors {
+    color: var(--rym-text-muted) !important;
+  }
+
+  /* Genre/descriptor link color */
+  .page_charts_section_charts_item_genre,
+  .page_charts_section_charts_item_descriptor {
+    color: var(--rym-link) !important;
   }
 
   /* Chart items are rows, not cards */

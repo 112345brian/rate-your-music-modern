@@ -29,6 +29,7 @@
   box-sizing: border-box;
 }
 
+/* RYM sets ProximaNova on body and form elements — override globally */
 body,
 body
   :where(
@@ -55,31 +56,6 @@ body
   font-feature-settings: normal !important;
   font-variant: normal !important;
   text-transform: none;
-}
-
-html body *::first-letter {
-  background: transparent !important;
-  border: 0 !important;
-  border-color: transparent !important;
-  border-radius: 0 !important;
-  border-style: none !important;
-  border-width: 0 !important;
-  box-shadow: none !important;
-  color: inherit !important;
-  display: inline !important;
-  float: none !important;
-  font-family: var(--rym-font) !important;
-  font-feature-settings: normal !important;
-  font-kerning: auto !important;
-  font-optical-sizing: auto !important;
-  font-style: normal !important;
-  font-variant: normal !important;
-  font-weight: inherit !important;
-  margin: 0 !important;
-  outline: 0 !important;
-  padding: 0 !important;
-  text-decoration: inherit !important;
-  text-transform: inherit !important;
 }
 
 html,
@@ -157,6 +133,7 @@ iframe {
   border-radius: var(--rym-radius);
 }
 
+/* Hide RYM's full-page overlay/cover elements */
 #content_total_cover,
 #content_cover,
 .overlay_invisible {
@@ -185,8 +162,7 @@ button,
 input[type="button"],
 input[type="submit"],
 .btn,
-.button,
-.page_charts_section_charts_item_button {
+.button {
   background: var(--rym-surface-raised);
   border: 1px solid var(--rym-border);
   border-radius: 6px;
@@ -207,13 +183,7 @@ input[type="submit"]:hover,
 }
 
 table {
-  border-collapse: separate;
   border-spacing: 0;
-}
-
-td,
-th {
-  border-color: var(--rym-border-soft) !important;
 }
 
 hr {
@@ -239,7 +209,6 @@ hr {
 .page_section,
 .section,
 .box,
-.mbgen,
 .album_info,
 .artist_info,
 .release_info,
@@ -255,7 +224,6 @@ hr {
 .page_section,
 .section,
 .box,
-.mbgen,
 .album_info,
 .artist_info,
 .release_info,
@@ -297,8 +265,6 @@ small,
 .subtext,
 .metadata,
 .page_section_subtitle,
-.page_charts_section_charts_item_artist,
-.page_charts_section_charts_item_descriptors,
 .artist_shortcut,
 .profile_stats,
 .notes {
@@ -306,8 +272,6 @@ small,
 }
 
 .genre,
-.descriptor,
-.page_charts_section_charts_item_genre,
-.page_charts_section_charts_item_descriptor {
+.descriptor {
   color: var(--rym-link) !important;
 }
