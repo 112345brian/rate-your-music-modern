@@ -5398,19 +5398,21 @@ html#page_release #content {
   padding: 0.45rem 0.8rem;
 }
 
-/* Only the "Add filters" card follows the scroll — Saved charts and
- the mini-charts below it scroll away normally. The right group is
- already stretched tall by the grid, so the section can stay stuck
- for the whole chart list. Same opaque-background + isolation + z-index
- pattern as the release page's .rym-modern-release-sticky-stack, so
- chart rows are cleanly obscured as they scroll behind it. */
-@media only screen and (width >= 64rem) {
-  #page_charts #page_charts_section_settings {
-    isolation: isolate;
-    position: sticky;
-    top: 52px;
-    z-index: 2;
-  }
+/* The "Add filters" card follows the scroll, but sits BEHIND the
+ sections after it. As you scroll, Saved charts / mini-charts slide
+ up and over the pinned card (it disappears behind their opaque
+ backgrounds); scrolling back up, it reemerges. Same intent as the
+ release page's sticky stack — the sticky element is the lowest in
+ the stack and later content paints over it. */
+#page_charts #page_charts_section_settings {
+  position: sticky;
+  top: 52px;
+  z-index: 0;
+}
+
+#page_charts #page_charts_section_settings ~ * {
+  position: relative;
+  z-index: 1;
 }
 
 /* ----------------------------------------------------------------------
