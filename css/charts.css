@@ -39,16 +39,37 @@
   padding: 0;
 }
 
-.page_charts_section_charts_item {
-  align-items: center;
-  background: var(--rym-surface) !important;
-  border: 1px solid var(--rym-border) !important;
-  border-radius: var(--rym-radius) !important;
-  box-shadow: none;
-  display: grid;
-  gap: 1rem;
-  grid-template-columns: auto minmax(0, 1fr) auto;
-  padding: 0.9rem 1rem;
+#page_charts .page_charts_section_charts_items {
+  max-width: 100%;
+  min-width: 0;
+  width: 100%;
+}
+
+#page_charts .page_section_charts_item_wrapper {
+  border-top: 1px solid rgb(148 163 184 / 18%);
+}
+
+#page_charts .page_section_charts_item_wrapper:first-child {
+  border-top: 0;
+}
+
+#page_charts .page_charts_section_charts_item {
+  background: transparent !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  box-sizing: border-box;
+  max-width: 100% !important;
+  min-width: 0;
+  overflow: clip;
+  width: 100% !important;
+}
+
+#page_charts .page_charts_section_charts_item_info,
+#page_charts .page_charts_section_charts_item_info_main,
+#page_charts .page_charts_section_charts_item_info_main_left,
+#page_charts .page_charts_section_charts_item_genres_descriptors_frame {
+  min-width: 0;
 }
 
 .page_charts_section_charts_item:hover,

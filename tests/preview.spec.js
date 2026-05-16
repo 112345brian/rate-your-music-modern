@@ -1037,7 +1037,7 @@ test("keeps charts on native RYM markup", async ({ page }) => {
   await expect(
     firstChartItem.locator(".page_charts_section_charts_item_genres_secondary"),
   ).toContainText("Post-Minimalism");
-  await expect(firstChartItem).toHaveCSS("border-top-style", "solid");
+  await expect(firstChartItem).not.toHaveClass(/rym-modern-chart-enhanced/);
 });
 
 test("uses the release distribution as the second column without friend ratings", async ({
