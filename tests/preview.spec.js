@@ -1038,6 +1038,10 @@ test("keeps charts on native RYM markup", async ({ page }) => {
     firstChartItem.locator(".page_charts_section_charts_item_genres_secondary"),
   ).toContainText("Post-Minimalism");
   await expect(firstChartItem).not.toHaveClass(/rym-modern-chart-enhanced/);
+
+  const filters = page.locator("#page_charts_section_settings");
+  await expect(filters).toHaveCSS("position", "sticky");
+  await expect(filters).toHaveCSS("top", "52px");
 });
 
 test("uses the release distribution as the second column without friend ratings", async ({
