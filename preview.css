@@ -5398,14 +5398,18 @@ html#page_release #content {
   padding: 0.45rem 0.8rem;
 }
 
-/* Sticky filters/saved sidebar on desktop — the right column follows
- the long chart list, the same pattern as the artist/release page.
- align-self:start stops the grid item stretching so sticky engages. */
+/* Only the "Add filters" card follows the scroll — Saved charts and
+ the mini-charts below it scroll away normally. The right group is
+ already stretched tall by the grid, so the section can stay stuck
+ for the whole chart list. Same opaque-background + isolation + z-index
+ pattern as the release page's .rym-modern-release-sticky-stack, so
+ chart rows are cleanly obscured as they scroll behind it. */
 @media only screen and (width >= 64rem) {
-  #page_charts #page_charts_group_main_right {
-    align-self: start;
+  #page_charts #page_charts_section_settings {
+    isolation: isolate;
     position: sticky;
     top: 52px;
+    z-index: 2;
   }
 }
 
@@ -5456,19 +5460,19 @@ html#page_release #content {
 
 .rym-modern-chart-rank {
   color: var(--rym-text-muted);
-  font-size: 13px;
+  font-size: 17px;
   font-weight: 780;
   grid-area: rank;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.04em;
   line-height: 1;
 }
 
 .rym-modern-chart-cover {
   display: block;
   grid-area: cover;
-  height: 96px;
+  height: 104px;
   overflow: hidden;
-  width: 96px;
+  width: 104px;
 }
 
 .rym-modern-chart-cover picture,
@@ -5499,9 +5503,9 @@ html#page_release #content {
 
 .rym-modern-chart-title {
   color: var(--rym-link-hover) !important;
-  font-size: 15px;
-  font-weight: 640;
-  line-height: 1.25;
+  font-size: 21px;
+  font-weight: 660;
+  line-height: 1.22;
   text-decoration: none;
 }
 
@@ -5511,8 +5515,8 @@ html#page_release #content {
 
 .rym-modern-chart-artist {
   color: var(--rym-text-muted);
-  font-size: 13px;
-  font-weight: 520;
+  font-size: 16px;
+  font-weight: 540;
   line-height: 1.2;
 }
 
@@ -5528,7 +5532,7 @@ html#page_release #content {
 
 .rym-modern-chart-subline {
   color: var(--rym-text-muted);
-  font-size: 11.5px;
+  font-size: 13px;
   font-weight: 500;
   line-height: 1.2;
 }
@@ -5546,7 +5550,7 @@ html#page_release #content {
 
 .rym-modern-chart-genres--primary .rym-modern-chart-link {
   color: var(--rym-link) !important;
-  font-size: 13px;
+  font-size: 15px;
   font-weight: 650;
   text-decoration: none;
 }
@@ -5557,8 +5561,8 @@ html#page_release #content {
 
 .rym-modern-chart-genres--secondary .rym-modern-chart-link {
   color: var(--rym-link) !important;
-  font-size: 12.5px;
-  font-weight: 430;
+  font-size: 14px;
+  font-weight: 440;
   opacity: 0.92;
   text-decoration: none;
 }
@@ -5569,12 +5573,12 @@ html#page_release #content {
 
 .rym-modern-chart-descriptors {
   color: var(--rym-text-muted);
-  font-size: 11.5px;
+  font-size: 13px;
   font-style: italic;
-  font-weight: 420;
+  font-weight: 430;
   line-height: 1.35;
   margin-top: 2px;
-  opacity: 0.8;
+  opacity: 0.82;
 }
 
 .rym-modern-chart-meta {
@@ -5595,24 +5599,24 @@ html#page_release #content {
 
 .rym-modern-chart-rating-star {
   color: var(--rym-warning);
-  font-size: 13px;
+  font-size: 16px;
 }
 
 .rym-modern-chart-rating-value {
   color: var(--rym-warning);
-  font-size: 16px;
+  font-size: 20px;
   font-weight: 780;
 }
 
 .rym-modern-chart-rating-count {
   color: var(--rym-text-muted);
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 520;
 }
 
 .rym-modern-chart-reviews {
   color: var(--rym-text-muted);
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 500;
   text-align: right;
 }
