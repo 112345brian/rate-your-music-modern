@@ -5392,13 +5392,22 @@ html#page_release #content {
   color: var(--rym-accent);
 }
 
-.page_charts_section_charts_item_list {
-  display: grid;
-  gap: 0.75rem;
-  list-style: none;
-  margin: 0;
-  padding: 0;
+/* Button in charts items */
+.page_charts_section_charts_item_button {
+  background: var(--rym-surface-raised);
+  border: 1px solid var(--rym-border);
+  border-radius: 6px;
+  color: var(--rym-text);
+  cursor: pointer;
+  font-weight: 650;
+  min-height: 2.25rem;
+  padding: 0.45rem 0.8rem;
 }
+
+/* ----------------------------------------------------------------------
+ Chart list — rebuilt DOM (see src/05-charts.js).
+ RYM's nested item markup is replaced with .rym-modern-chart-row.
+ ---------------------------------------------------------------------- */
 
 #page_charts .page_charts_section_charts_items {
   display: grid;
@@ -5416,308 +5425,236 @@ html#page_release #content {
   border-top: 0;
 }
 
-.page_charts_section_charts_item {
-  min-width: 0;
-  overflow-x: clip;
-}
-
-/* Button in charts items */
-.page_charts_section_charts_item_button {
-  background: var(--rym-surface-raised);
-  border: 1px solid var(--rym-border);
-  border-radius: 6px;
-  color: var(--rym-text);
-  cursor: pointer;
-  font-weight: 650;
-  min-height: 2.25rem;
-  padding: 0.45rem 0.8rem;
-}
-
-/* Artist/descriptor text color */
-.page_charts_section_charts_item_artist,
-.page_charts_section_charts_item_descriptors {
-  color: var(--rym-text-muted) !important;
-}
-
-/* Genre/descriptor link color */
-.page_charts_section_charts_item_genre,
-.page_charts_section_charts_item_descriptor {
-  color: var(--rym-link) !important;
-}
-
-/* Chart items are rows, not cards */
 #page_charts .page_charts_section_charts_item {
   background: transparent !important;
   border: 0 !important;
   border-radius: 0 !important;
   box-shadow: none;
+  min-width: 0;
+  overflow-x: clip;
 }
 
-#page_charts .page_charts_section_charts_item:hover,
-#page_charts .page_charts_section_charts_item.object_release:hover {
+#page_charts .page_charts_section_charts_item:hover {
   background: rgb(120 183 255 / 5%) !important;
-  border: 0 !important;
 }
 
-/* Hide the duplicate stats that appear in the stats_media strip —
- rating is already shown inline in the genres/descriptors row */
-#page_charts
-  .page_charts_section_charts_item_stats_media
-  > .page_charts_section_charts_item_stats {
-  display: none !important;
+.rym-modern-chart-row {
+  align-items: start;
+  column-gap: 18px;
+  display: grid;
+  grid-template-columns: 34px 84px minmax(0, 1fr) auto;
+  padding: 14px 6px;
 }
 
-/* Star/review icons: replace img tags with CSS symbols for robustness */
-#page_charts .page_charts_section_charts_item_stats_ratings img,
-#page_charts .page_charts_section_charts_item_details_reviews img {
-  display: none !important;
-}
-
-#page_charts .page_charts_section_charts_item_stats_ratings {
-  align-items: center;
-  display: inline-flex;
-  gap: 4px;
-}
-
-#page_charts .page_charts_section_charts_item_stats_ratings::before {
-  color: var(--rym-warning);
-  content: "★";
-  font-size: 14px;
-  line-height: 1;
-}
-
-#page_charts .page_charts_section_charts_item_details_reviews {
-  align-items: center;
-  display: inline-flex;
-  gap: 4px;
-}
-
-#page_charts .page_charts_section_charts_item_details_reviews::before {
+.rym-modern-chart-rank {
   color: var(--rym-text-muted);
-  content: "▤";
-  font-size: 13px;
-  line-height: 1;
-}
-
-@media only screen and (width >= 48.125em) {
-  .page_charts_section_charts_item {
-    align-items: center;
-    display: grid;
-    gap: 1rem;
-    grid-template-columns: auto minmax(0, 1fr) auto;
-    padding: 0.9rem 1rem;
-  }
-}
-
-#page_charts .page_charts_section_charts_item.object_release {
-  align-items: center;
-  column-gap: 20px;
-  display: grid !important;
-  grid-template-columns: 40px 88px minmax(0, 1fr);
-  grid-template-areas: "rank cover info";
-  min-height: 0;
-  padding: 12px 0 !important;
-}
-
-#page_charts .page_charts_section_charts_item_number.number_main {
-  align-self: start;
-  color: var(--rym-text-muted) !important;
-  font-size: 22px;
+  font-size: 20px;
   font-weight: 720;
-  grid-area: rank;
   line-height: 1;
   padding-top: 4px;
   text-align: right;
 }
 
-#page_charts .page_charts_section_charts_item_image_link {
+.rym-modern-chart-cover {
   display: block;
-  grid-area: cover;
-  height: 88px;
-  width: 88px;
+  height: 84px;
+  overflow: hidden;
+  width: 84px;
 }
 
-#page_charts .page_charts_section_charts_item_image,
-#page_charts .page_charts_section_charts_item_image img {
-  border-radius: 7px;
+.rym-modern-chart-cover picture,
+.rym-modern-chart-cover img {
+  border-radius: 6px;
   display: block;
   height: 100% !important;
   object-fit: cover;
   width: 100% !important;
 }
 
-#page_charts .page_charts_section_charts_item_info {
-  grid-area: info;
-  min-width: 0;
+.rym-modern-chart-cover-empty {
+  background: var(--rym-surface-raised);
+  border-radius: 6px;
+  display: block;
+  height: 100%;
   width: 100%;
 }
 
-#page_charts .page_charts_section_charts_item_info_main {
-  align-items: stretch;
-  display: grid;
-  gap: 16px;
-  grid-template-columns: minmax(0, 1fr) auto;
-  min-width: 0;
-}
-
-#page_charts .page_charts_section_charts_item_info_main_left {
-  display: grid;
-  gap: 6px;
-  min-width: 0;
-}
-
-#page_charts .page_charts_section_charts_top_line_title_artist {
+.rym-modern-chart-main {
   display: flex;
   flex-direction: column;
-  gap: 3px;
+  gap: 4px;
   min-width: 0;
+  padding-top: 1px;
 }
 
-#page_charts .page_charts_section_charts_item_title {
-  font-size: 15px !important;
-  font-weight: 630 !important;
-  line-height: 1.25 !important;
-  min-width: 0;
-  order: 1;
-}
-
-#page_charts .page_charts_section_charts_item_title a {
+.rym-modern-chart-title {
   color: var(--rym-link-hover) !important;
-  font-weight: inherit !important;
+  font-size: 15px;
+  font-weight: 640;
+  line-height: 1.25;
+  text-decoration: none;
 }
 
-#page_charts .page_charts_section_charts_item_credited_links_primary {
-  min-width: 0;
-  order: 2;
+.rym-modern-chart-title:hover {
+  text-decoration: underline;
 }
 
-#page_charts .page_charts_section_charts_item_credited_text a.artist {
-  color: var(--rym-text-muted) !important;
-  font-size: 13px !important;
-  font-weight: 520 !important;
+.rym-modern-chart-artist {
+  color: var(--rym-text-muted);
+  font-size: 13px;
+  font-weight: 520;
   line-height: 1.2;
 }
 
-#page_charts .page_charts_section_charts_item_title_date_compact {
-  color: var(--rym-text-muted) !important;
-  font-size: 12px !important;
+.rym-modern-chart-artist a {
+  color: var(--rym-text-soft) !important;
+  font-weight: 560;
+  text-decoration: none;
+}
+
+.rym-modern-chart-artist a:hover {
+  color: var(--rym-link-hover) !important;
+}
+
+.rym-modern-chart-subline {
+  color: var(--rym-text-muted);
+  font-size: 11.5px;
   font-weight: 500;
   line-height: 1.2;
-  margin-top: 4px;
 }
 
-#page_charts .page_charts_section_charts_item_date {
-  color: var(--rym-text-muted) !important;
-  display: none !important;
-}
-
-#page_charts .page_charts_section_charts_item_genres_descriptors_rating_frame {
-  align-items: end;
-  display: grid;
-  gap: 12px;
-  grid-template-columns: minmax(0, 1fr) auto;
-  min-width: 0;
-}
-
-#page_charts .page_charts_section_charts_item_genres_descriptors_frame {
-  min-width: 0;
-}
-
-#page_charts .page_charts_section_charts_item_genres_primary,
-#page_charts .page_charts_section_charts_item_genres_secondary,
-#page_charts .page_charts_section_charts_item_genre_descriptors {
-  line-height: 1.25;
-}
-
-#page_charts .page_charts_section_charts_item_genres_primary a.genre {
-  color: var(--rym-link) !important;
-  font-size: 13px !important;
-  font-weight: 660 !important;
-}
-
-#page_charts .page_charts_section_charts_item_genres_secondary a.genre,
-#page_charts .page_charts_section_charts_item_genre_descriptors span {
-  color: var(--rym-text-muted) !important;
-  font-size: 12px !important;
-  font-weight: 440;
-}
-
-#page_charts .page_charts_section_charts_item_stats.compact {
-  align-items: center;
+.rym-modern-chart-genres {
   display: flex;
-  gap: 18px;
-  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 3px 8px;
+  line-height: 1.2;
+}
+
+.rym-modern-chart-genres--primary {
+  margin-top: 3px;
+}
+
+.rym-modern-chart-genres--primary .rym-modern-chart-link {
+  color: var(--rym-link) !important;
+  font-size: 13px;
+  font-weight: 650;
+  text-decoration: none;
+}
+
+.rym-modern-chart-genres--secondary .rym-modern-chart-link {
+  color: var(--rym-text-muted) !important;
+  font-size: 12px;
+  font-weight: 440;
+  text-decoration: none;
+}
+
+.rym-modern-chart-link:hover {
+  text-decoration: underline;
+}
+
+.rym-modern-chart-descriptors {
+  color: var(--rym-text-muted);
+  font-size: 11.5px;
+  font-weight: 420;
+  line-height: 1.3;
+  opacity: 0.85;
+}
+
+.rym-modern-chart-meta {
+  align-items: flex-end;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  padding-top: 2px;
   white-space: nowrap;
 }
 
-#page_charts .page_charts_section_charts_item_details_average_num {
-  color: var(--rym-warning) !important;
-  font-size: 15px;
+.rym-modern-chart-rating {
+  align-items: baseline;
+  display: flex;
+  gap: 5px;
+}
+
+.rym-modern-chart-rating-star {
+  color: var(--rym-warning);
+  font-size: 13px;
+}
+
+.rym-modern-chart-rating-value {
+  color: var(--rym-warning);
+  font-size: 16px;
   font-weight: 780;
 }
 
-#page_charts .page_charts_section_charts_item_details_ratings,
-#page_charts .page_charts_section_charts_item_details_reviews {
-  color: var(--rym-text-muted) !important;
+.rym-modern-chart-rating-count {
+  color: var(--rym-text-muted);
   font-size: 12px;
-  font-weight: 510;
+  font-weight: 520;
 }
 
-#page_charts .page_charts_section_charts_item_info_main_right {
-  display: none !important;
+.rym-modern-chart-reviews {
+  color: var(--rym-text-muted);
+  font-size: 12px;
+  font-weight: 500;
 }
 
-.page_charts_section_charts_item_rank {
-  align-items: center;
-  background: rgb(125 211 252 / 10%);
-  border: 1px solid rgb(125 211 252 / 28%);
-  border-radius: 999px;
-  color: var(--rym-accent);
-  display: inline-flex;
-  font-weight: 750;
-  height: 2rem;
-  justify-content: center;
-  min-width: 2rem;
-  padding: 0 0.45rem;
+.rym-modern-chart-media {
+  margin-top: 2px;
 }
 
-.page_charts_section_charts_item_title,
-.page_charts_section_charts_item_artist {
-  margin: 0;
+.rym-modern-chart-media .ui_media_links,
+.rym-modern-chart-media .ui_media_links_container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  justify-content: flex-end;
 }
 
-.page_charts_section_charts_item_title {
-  font-size: 1rem;
-  line-height: 1.25;
-}
-
-.page_charts_section_charts_item_artist {
-  margin-top: 0.15rem;
+.rym-modern-chart-media .ui_media_link_btn {
+  border-radius: 6px !important;
+  height: 26px !important;
+  width: 26px !important;
 }
 
 @media only screen and (max-width: 52rem) {
-  #page_charts .page_charts_section_charts_item.object_release {
-    column-gap: 14px;
-    grid-template-columns: 32px 72px minmax(0, 1fr);
-    padding: 10px !important;
+  .rym-modern-chart-row {
+    gap: 8px 12px;
+    grid-template-columns: 26px 64px minmax(0, 1fr);
+    grid-template-areas:
+      "rank cover main"
+      "meta meta meta";
   }
 
-  #page_charts .page_charts_section_charts_item_image_link {
-    height: 72px;
-    width: 72px;
+  .rym-modern-chart-rank {
+    font-size: 16px;
+    grid-area: rank;
   }
 
-  #page_charts .page_charts_section_charts_item_number.number_main {
-    font-size: 18px;
+  .rym-modern-chart-cover {
+    grid-area: cover;
+    height: 64px;
+    width: 64px;
   }
 
-  #page_charts .page_charts_section_charts_item_info_main,
-  #page_charts
-    .page_charts_section_charts_item_genres_descriptors_rating_frame {
-    grid-template-columns: minmax(0, 1fr);
+  .rym-modern-chart-main {
+    grid-area: main;
   }
 
-  #page_charts .page_charts_section_charts_item_stats.compact {
+  .rym-modern-chart-meta {
+    align-items: flex-start;
+    flex-flow: row wrap;
+    gap: 6px 16px;
+    grid-area: meta;
+    padding-left: 76px;
+  }
+
+  .rym-modern-chart-media {
+    flex-basis: 100%;
+    margin-top: 0;
+  }
+
+  .rym-modern-chart-media .ui_media_links,
+  .rym-modern-chart-media .ui_media_links_container {
     justify-content: flex-start;
   }
 }
@@ -5730,213 +5667,27 @@ html#page_release #content {
     overflow-x: hidden;
   }
 
-  #page_charts .page_charts_section_charts_items {
-    counter-reset: rym-modern-chart-rank;
+  .rym-modern-chart-row {
+    column-gap: 10px;
+    grid-template-columns: 22px 56px minmax(0, 1fr);
+    padding: 12px 4px;
   }
 
-  #page_charts .page_section_charts_item_wrapper {
-    border-top: 1px solid rgb(148 163 184 / 18%);
-    counter-increment: rym-modern-chart-rank;
+  .rym-modern-chart-cover {
+    height: 56px;
+    width: 56px;
   }
 
-  #page_charts .page_section_charts_item_wrapper:first-child {
-    border-top: 0;
-  }
-
-  #page_charts .page_charts_section_charts_item.object_release {
-    align-items: start;
-    display: grid !important;
-    gap: 8px 9px;
-    grid-template-areas:
-      "rank cover meta"
-      "genres genres genres";
-    grid-template-columns: 26px 78px minmax(0, 1fr);
-    padding: 12px 8px !important;
-  }
-
-  #page_charts .page_charts_section_charts_item.object_release:hover {
-    background: rgb(120 183 255 / 5%) !important;
-  }
-
-  #page_charts .page_charts_section_charts_item_number.number_main {
-    color: var(--rym-text-muted) !important;
-    display: block;
-    font-size: 18px;
-    font-weight: 820;
-    line-height: 1;
-    padding-top: 1px;
-    text-align: right;
-  }
-
-  #page_charts .page_charts_section_charts_item_number.number_main::before {
-    content: counter(rym-modern-chart-rank);
-    display: block;
-  }
-
-  #page_charts
-    .page_charts_section_charts_item_number.number_main
-    > div:not(.page_charts_section_charts_item_esoteric_indicator) {
-    display: none;
-  }
-
-  #page_charts .page_charts_section_charts_item_esoteric_indicator {
-    display: none !important;
-  }
-
-  #page_charts .page_charts_section_charts_item_image_link {
-    align-self: start;
-    border-radius: 6px;
-    grid-area: cover;
-    height: 78px;
-    overflow: hidden;
-    width: 78px;
-  }
-
-  #page_charts .page_charts_section_charts_item_image,
-  #page_charts .page_charts_section_charts_item_image img {
-    border-radius: 6px;
-  }
-
-  #page_charts .page_charts_section_charts_item_info {
-    display: contents;
-    min-width: 0;
-  }
-
-  #page_charts .page_charts_section_charts_item_info_main,
-  #page_charts
-    .page_charts_section_charts_item_genres_descriptors_rating_frame {
-    display: contents;
-  }
-
-  #page_charts .page_charts_section_charts_item_info_main_left {
-    display: contents;
-  }
-
-  #page_charts .page_charts_section_charts_top_line {
-    grid-area: meta;
-    min-width: 0;
-    padding-bottom: 30px;
-    position: relative;
-  }
-
-  #page_charts .page_charts_section_charts_top_line_title_artist {
-    gap: 2px;
-  }
-
-  #page_charts .page_charts_section_charts_item_title {
-    font-size: 16px !important;
-    line-height: 1.12 !important;
-  }
-
-  #page_charts .page_charts_section_charts_item_credited_text a.artist {
-    color: var(--rym-text-soft) !important;
-    font-size: 12.5px !important;
-    font-weight: 760 !important;
-  }
-
-  #page_charts .page_charts_section_charts_item_title_date_compact {
-    color: var(--rym-text-muted) !important;
-    font-size: 11.5px !important;
-    font-weight: 650;
-    margin-top: 2px;
-  }
-
-  #page_charts .page_charts_section_charts_item_genres_descriptors_frame {
-    grid-area: genres;
-    display: grid;
-    gap: 4px;
-    min-width: 0;
-    padding-left: 35px;
-  }
-
-  #page_charts .page_charts_section_charts_item_genres_primary,
-  #page_charts .page_charts_section_charts_item_genres_secondary {
-    display: block;
-    line-height: 1.25;
-    overflow: visible;
-  }
-
-  #page_charts .page_charts_section_charts_item_genres_primary a.genre {
-    font-size: 12.5px !important;
-    font-weight: 780 !important;
-  }
-
-  #page_charts .page_charts_section_charts_item_genres_secondary a.genre {
-    font-size: 11.5px !important;
-    font-weight: 650 !important;
-  }
-
-  #page_charts .page_charts_section_charts_item_genre_descriptors {
-    display: none !important;
-  }
-
-  #page_charts .page_charts_section_charts_item_stats.compact {
-    background: transparent !important;
-    border: 0 !important;
-    box-shadow: none !important;
-    display: flex;
-    gap: 12px;
-    justify-content: flex-start;
-    line-height: 1;
-    margin: 2px 0 0;
-    max-width: 100%;
-    padding: 0;
-  }
-
-  #page_charts .page_charts_section_charts_item_credited_links_rating_compact {
-    grid-area: meta;
-    margin-bottom: 2px;
-    place-self: end start;
-  }
-
-  #page_charts .page_charts_section_charts_item_stats_ratings,
-  #page_charts .page_charts_section_charts_item_details_reviews {
-    color: var(--rym-text-muted) !important;
-    min-width: 0;
-  }
-
-  #page_charts .page_charts_section_charts_item_stats_ratings::before {
-    color: var(--rym-text) !important;
-    font-size: 12px;
-  }
-
-  #page_charts .page_charts_section_charts_item_details_reviews::before {
-    font-size: 11px;
-  }
-
-  #page_charts .page_charts_section_charts_item_details_average_num {
-    color: var(--rym-link-hover) !important;
+  .rym-modern-chart-title {
     font-size: 14px;
-    font-weight: 850;
   }
 
-  #page_charts .page_charts_section_charts_item_details_ratings,
-  #page_charts .page_charts_section_charts_item_details_reviews {
-    font-size: 11.5px;
-    font-weight: 680;
+  .rym-modern-chart-meta {
+    padding-left: 66px;
   }
 
-  #page_charts .page_charts_section_charts_item_stats_media {
-    display: none !important;
-  }
-
-  #page_charts .page_charts_section_charts_item_media_links,
-  #page_charts .ui_media_links {
-    align-items: center;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
-    min-width: 0;
-  }
-
-  #page_charts .ui_media_link_btn {
-    border-radius: 6px !important;
-    height: 26px !important;
-    width: 26px !important;
-  }
-
-  #page_charts .page_charts_section_charts_item_info_main_right {
-    display: none !important;
+  .rym-modern-chart-descriptors {
+    display: none;
   }
 }
 

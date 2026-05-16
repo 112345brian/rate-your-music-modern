@@ -50,6 +50,15 @@ This is not an ES module build, so do not use `import` or `export`.
 - `04-mobile.js`: bottom navigation, mobile rating more menu, mobile Info
   sub-tabs, mobile release wrapper, hero metadata, taxonomy moves, and mobile
   Info panel.
+- `05-charts.js`: `enhanceChartsPage` — rebuilds each chart item's nested RYM
+  markup into a flat `.rym-modern-chart-row` DOM (rank, cover, main, meta).
+  This is a full DOM restructure, not CSS-only; `charts.css` styles the
+  rebuilt classes, not RYM's `.page_charts_section_charts_item_*` markup.
+
+The enhancement runner lives at the end of `03-release-tabs.js`. Functions
+defined in later files (`04`, `05`) are reachable from it via function
+hoisting in the concatenated scope — add new enhancements to the
+`_enhancements` array there and to `SOURCE_FILES` in `build-js.mjs`.
 
 ### CSS: `css/*.css`
 

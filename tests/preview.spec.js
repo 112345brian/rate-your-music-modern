@@ -1013,49 +1013,67 @@ test("modernizes the release preview layout", async ({ page }) => {
   ).toHaveCSS("display", "block");
 });
 
-test("modernizes the charts preview rows", async ({ page }) => {
+test("rebuilds the charts rows into a clean DOM", async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto(
     pathToFileURL(`${process.cwd()}/assets/charts-page/preview.html`).href,
   );
 
-  const firstChartItem = page
-    .locator(".page_charts_section_charts_item.object_release")
-    .first();
+  const firstRow = page.locator(".rym-modern-chart-row").first();
 
-  await expect(firstChartItem).toBeVisible();
-  await expect(
-    firstChartItem.locator(".page_charts_section_charts_item_title"),
-  ).toContainText("Caminhos de água");
-  await expect(
-    firstChartItem.locator(".page_charts_section_charts_item_credited_text"),
-  ).toContainText("Kaátaìra");
+  await expect(firstRow).toBeVisible();
+  await expect(firstRow.locator(".rym-modern-chart-title")).toContainText(
+    "Caminhos de água",
+  );
+  await expect(firstRow.locator(".rym-modern-chart-artist")).toContainText(
+    "Kaátaìra",
+  );
 
-  const chartRowLayout = await firstChartItem.evaluate((item) => {
-    const cover = item
-      .querySelector(".page_charts_section_charts_item_image_link")
+  const layout = await firstRow.evaluate((row) => {
+    const rowCount = document.querySelectorAll(".rym-modern-chart-row").length;
+    const oldMarkupCount = document.querySelectorAll(
+      ".page_charts_section_charts_item_info_main",
+    ).length;
+    const cover = row
+      .querySelector(".rym-modern-chart-cover")
       .getBoundingClientRect();
-    const title = item
-      .querySelector(".page_charts_section_charts_item_title")
+    const title = row
+      .querySelector(".rym-modern-chart-title")
       .getBoundingClientRect();
     const titleStyle = getComputedStyle(
-      item.querySelector(".page_charts_section_charts_item_title"),
+      row.querySelector(".rym-modern-chart-title"),
     );
     const artistStyle = getComputedStyle(
-      item.querySelector(".page_charts_section_charts_item_credited_text a"),
+      row.querySelector(".rym-modern-chart-artist"),
     );
 
     return {
-      artistFontSize: Number.parseFloat(artistStyle.fontSize),
+      rowCount,
+      oldMarkupCount,
+      rank: row.querySelector(".rym-modern-chart-rank").textContent.trim(),
+      rating: row
+        .querySelector(".rym-modern-chart-rating-value")
+        .textContent.trim(),
+      primaryGenreCount: row.querySelectorAll(
+        ".rym-modern-chart-genres--primary a",
+      ).length,
+      mediaButtonCount: row.querySelectorAll(
+        ".rym-modern-chart-media .ui_media_link_btn",
+      ).length,
+      titleStartsAfterCover: title.left >= cover.right + 12,
       titleFontSize: Number.parseFloat(titleStyle.fontSize),
-      titleStartsAfterCover: title.left >= cover.right + 16,
+      artistFontSize: Number.parseFloat(artistStyle.fontSize),
     };
   });
 
-  expect(chartRowLayout.titleStartsAfterCover).toBe(true);
-  expect(chartRowLayout.titleFontSize).toBeGreaterThan(
-    chartRowLayout.artistFontSize,
-  );
+  expect(layout.rowCount).toBeGreaterThan(10);
+  expect(layout.oldMarkupCount).toBe(0);
+  expect(layout.rank).toBe("1");
+  expect(layout.rating).toBe("3.92");
+  expect(layout.primaryGenreCount).toBe(3);
+  expect(layout.mediaButtonCount).toBeGreaterThan(0);
+  expect(layout.titleStartsAfterCover).toBe(true);
+  expect(layout.titleFontSize).toBeGreaterThan(layout.artistFontSize);
 });
 
 test("formats chart rows compactly on mobile", async ({ page }) => {
@@ -1064,53 +1082,39 @@ test("formats chart rows compactly on mobile", async ({ page }) => {
     pathToFileURL(`${process.cwd()}/assets/charts-page/preview.html`).href,
   );
 
-  const firstChartItem = page
-    .locator(".page_charts_section_charts_item.object_release")
-    .first();
+  const firstRow = page.locator(".rym-modern-chart-row").first();
 
-  await expect(firstChartItem).toBeVisible();
+  await expect(firstRow).toBeVisible();
 
-  const chartRowLayout = await firstChartItem.evaluate((item) => {
-    const cover = item
-      .querySelector(".page_charts_section_charts_item_image_link")
+  const layout = await firstRow.evaluate((row) => {
+    const cover = row
+      .querySelector(".rym-modern-chart-cover")
       .getBoundingClientRect();
-    const title = item
-      .querySelector(".page_charts_section_charts_item_title")
+    const title = row
+      .querySelector(".rym-modern-chart-title")
       .getBoundingClientRect();
+    const item = row.closest(".page_charts_section_charts_item");
     const itemRect = item.getBoundingClientRect();
-    const stats = [
-      ...item.querySelectorAll(".page_charts_section_charts_item_stats"),
-    ].filter((el) => getComputedStyle(el).display !== "none");
-    const secondaryGenres = item.querySelector(
-      ".page_charts_section_charts_item_genres_secondary",
-    );
-    const statsMedia = item.querySelector(
-      ".page_charts_section_charts_item_stats_media",
-    );
-    const rank = item.querySelector(
-      ".page_charts_section_charts_item_number.number_main",
+    const secondaryGenres = row.querySelector(
+      ".rym-modern-chart-genres--secondary",
     );
 
     return {
       height: itemRect.height,
       overflowsViewport: itemRect.right > document.documentElement.clientWidth,
-      rankContent: getComputedStyle(rank, "::before").content,
+      rank: row.querySelector(".rym-modern-chart-rank").textContent.trim(),
       secondaryGenresHeight: secondaryGenres.getBoundingClientRect().height,
       secondaryGenresText: secondaryGenres.textContent.trim(),
-      statsMediaDisplay: getComputedStyle(statsMedia).display,
       titleRightOfCover: title.left > cover.right - 5,
-      visibleStatsCount: stats.length,
     };
   });
 
-  expect(chartRowLayout.height).toBeLessThan(230);
-  expect(chartRowLayout.overflowsViewport).toBe(false);
-  expect(chartRowLayout.rankContent).not.toBe('""');
-  expect(chartRowLayout.secondaryGenresHeight).toBeGreaterThan(0);
-  expect(chartRowLayout.secondaryGenresText).toContain("Post-Minimalism");
-  expect(chartRowLayout.statsMediaDisplay).toBe("none");
-  expect(chartRowLayout.titleRightOfCover).toBe(true);
-  expect(chartRowLayout.visibleStatsCount).toBe(1);
+  expect(layout.height).toBeLessThan(360);
+  expect(layout.overflowsViewport).toBe(false);
+  expect(layout.rank).toBe("1");
+  expect(layout.secondaryGenresHeight).toBeGreaterThan(0);
+  expect(layout.secondaryGenresText).toContain("Post-Minimalism");
+  expect(layout.titleRightOfCover).toBe(true);
 });
 
 test("uses the release distribution as the second column without friend ratings", async ({

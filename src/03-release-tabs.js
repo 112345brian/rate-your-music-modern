@@ -363,6 +363,7 @@ const _enhancements = [
   enhanceContributions,
   enhanceReleasePage,
   enhanceMobileRelease,
+  enhanceChartsPage,
   enhanceResponsiveInlineGroups,
   enhanceFooterDisclosure,
 ];
