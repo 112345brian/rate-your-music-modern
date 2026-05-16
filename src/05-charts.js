@@ -352,3 +352,8 @@ function enhanceChartsPage() {
   container.classList.add("rym-modern-chart-list");
   container.dataset.rymModernEnhanced = "true";
 }
+
+window.rymModernCharts = {
+  buildChartRow,
+  enhanceChartsPage,
+};

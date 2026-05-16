@@ -5386,330 +5386,59 @@ html#page_release #content {
   color: var(--rym-accent);
 }
 
-/* Button in charts items */
-.page_charts_section_charts_item_button {
-  background: var(--rym-surface-raised);
-  border: 1px solid var(--rym-border);
-  border-radius: 6px;
-  color: var(--rym-text);
-  cursor: pointer;
-  font-weight: 650;
-  min-height: 2.25rem;
-  padding: 0.45rem 0.8rem;
-}
-
-/* The "Add filters" card follows the scroll, but sits BEHIND the
- sections after it. As you scroll, Saved charts / mini-charts slide
- up and over the pinned card (it disappears behind their opaque
- backgrounds); scrolling back up, it reemerges. Same intent as the
- release page's sticky stack — the sticky element is the lowest in
- the stack and later content paints over it. */
-#page_charts #page_charts_section_settings {
-  position: sticky;
-  top: 52px;
-  z-index: 0;
-}
-
-#page_charts #page_charts_section_settings ~ * {
-  position: relative;
-  z-index: 1;
-}
-
-/* ----------------------------------------------------------------------
- Chart list — rebuilt DOM (see src/05-charts.js).
- RYM's nested item markup is replaced with .rym-modern-chart-row.
- ---------------------------------------------------------------------- */
-
-#page_charts .page_charts_section_charts_items {
+.page_charts_section_charts_item_list {
   display: grid;
-  gap: 0;
-  min-width: 0;
+  gap: 0.75rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
 }
 
-#page_charts .page_section_charts_item_wrapper {
-  border-top: 1px solid var(--rym-border);
-  display: block;
-  min-width: 0;
-}
-
-#page_charts .page_section_charts_item_wrapper:first-child {
-  border-top: 0;
-}
-
-#page_charts .page_charts_section_charts_item {
-  background: transparent !important;
-  border: 0 !important;
-  border-radius: 0 !important;
+.page_charts_section_charts_item {
+  align-items: center;
+  background: var(--rym-surface) !important;
+  border: 1px solid var(--rym-border) !important;
+  border-radius: var(--rym-radius) !important;
   box-shadow: none;
-  min-width: 0;
-  overflow-x: clip;
-}
-
-#page_charts .page_charts_section_charts_item:hover {
-  background: rgb(120 183 255 / 5%) !important;
-}
-
-.rym-modern-chart-row {
-  align-items: start;
   display: grid;
-  gap: 10px 20px;
-  grid-template-areas:
-    "rank  rank  rank"
-    "cover main  meta";
-  grid-template-columns: 96px minmax(0, 1fr) 156px;
-  padding: 16px 12px 16px 4px;
+  gap: 1rem;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  padding: 0.9rem 1rem;
 }
 
-.rym-modern-chart-rank {
-  color: var(--rym-text-muted);
-  font-size: 17px;
-  font-weight: 780;
-  grid-area: rank;
-  letter-spacing: 0.04em;
-  line-height: 1;
+.page_charts_section_charts_item:hover,
+.review:hover,
+.comment:hover {
+  background: var(--rym-surface-raised) !important;
+  border-color: #41506a !important;
 }
 
-.rym-modern-chart-cover {
-  display: block;
-  grid-area: cover;
-  height: 104px;
-  overflow: hidden;
-  width: 104px;
+.page_charts_section_charts_item_rank {
+  align-items: center;
+  background: rgb(125 211 252 / 10%);
+  border: 1px solid rgb(125 211 252 / 28%);
+  border-radius: 999px;
+  color: var(--rym-accent);
+  display: inline-flex;
+  font-weight: 750;
+  height: 2rem;
+  justify-content: center;
+  min-width: 2rem;
+  padding: 0 0.45rem;
 }
 
-.rym-modern-chart-cover picture,
-.rym-modern-chart-cover img {
-  border-radius: 6px;
-  display: block;
-  height: 100% !important;
-  object-fit: cover;
-  width: 100% !important;
+.page_charts_section_charts_item_title,
+.page_charts_section_charts_item_artist {
+  margin: 0;
 }
 
-.rym-modern-chart-cover-empty {
-  background: var(--rym-surface-raised);
-  border-radius: 6px;
-  display: block;
-  height: 100%;
-  width: 100%;
+.page_charts_section_charts_item_title {
+  font-size: 1rem;
+  line-height: 1.25;
 }
 
-.rym-modern-chart-main {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  grid-area: main;
-  min-width: 0;
-  padding-top: 1px;
-}
-
-.rym-modern-chart-title {
-  color: var(--rym-link-hover) !important;
-  font-size: 21px;
-  font-weight: 660;
-  line-height: 1.22;
-  text-decoration: none;
-}
-
-.rym-modern-chart-title:hover {
-  text-decoration: underline;
-}
-
-.rym-modern-chart-artist {
-  color: var(--rym-text-muted);
-  font-size: 16px;
-  font-weight: 540;
-  line-height: 1.2;
-}
-
-.rym-modern-chart-artist a {
-  color: var(--rym-text-soft) !important;
-  font-weight: 560;
-  text-decoration: none;
-}
-
-.rym-modern-chart-artist a:hover {
-  color: var(--rym-link-hover) !important;
-}
-
-.rym-modern-chart-subline {
-  color: var(--rym-text-muted);
-  font-size: 13px;
-  font-weight: 500;
-  line-height: 1.2;
-}
-
-.rym-modern-chart-genres {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 3px 8px;
-  line-height: 1.2;
-}
-
-.rym-modern-chart-genres--primary {
-  margin-top: 3px;
-}
-
-.rym-modern-chart-genres--primary .rym-modern-chart-link {
-  color: var(--rym-link) !important;
-  font-size: 15px;
-  font-weight: 650;
-  text-decoration: none;
-}
-
-.rym-modern-chart-genres--secondary {
-  margin-top: 1px;
-}
-
-.rym-modern-chart-genres--secondary .rym-modern-chart-link {
-  color: var(--rym-link) !important;
-  font-size: 14px;
-  font-weight: 440;
-  opacity: 0.92;
-  text-decoration: none;
-}
-
-.rym-modern-chart-link:hover {
-  text-decoration: underline;
-}
-
-.rym-modern-chart-descriptors {
-  color: var(--rym-text-muted);
-  font-size: 13px;
-  font-style: italic;
-  font-weight: 430;
-  line-height: 1.35;
-  margin-top: 2px;
-  opacity: 0.82;
-}
-
-.rym-modern-chart-meta {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  grid-area: meta;
-  padding-top: 2px;
-}
-
-.rym-modern-chart-rating {
-  align-items: baseline;
-  display: flex;
-  gap: 5px;
-  justify-content: flex-end;
-  white-space: nowrap;
-}
-
-.rym-modern-chart-rating-star {
-  color: var(--rym-warning);
-  font-size: 16px;
-}
-
-.rym-modern-chart-rating-value {
-  color: var(--rym-warning);
-  font-size: 20px;
-  font-weight: 780;
-}
-
-.rym-modern-chart-rating-count {
-  color: var(--rym-text-muted);
-  font-size: 14px;
-  font-weight: 520;
-}
-
-.rym-modern-chart-reviews {
-  color: var(--rym-text-muted);
-  font-size: 14px;
-  font-weight: 500;
-  text-align: right;
-}
-
-/* Streaming links — compact widget, sized to its icons */
-.rym-modern-chart-media {
-  align-self: flex-end;
-  background: rgb(255 255 255 / 2.5%);
-  border: 1px solid var(--rym-border-soft);
-  border-radius: 8px;
-  margin-top: 2px;
-  max-width: 100%;
-  padding: 6px;
-  width: fit-content;
-}
-
-.rym-modern-chart-media .ui_media_links,
-.rym-modern-chart-media .ui_media_links_container {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 5px;
-  justify-content: flex-end;
-  max-width: 130px;
-}
-
-.rym-modern-chart-media .ui_media_link_btn {
-  border-radius: 5px !important;
-  height: 22px !important;
-  width: 22px !important;
-}
-
-@media only screen and (max-width: 52rem) {
-  .rym-modern-chart-row {
-    gap: 8px 14px;
-    grid-template-areas:
-      "rank  rank"
-      "cover main"
-      "meta  meta";
-    grid-template-columns: 76px minmax(0, 1fr);
-  }
-
-  .rym-modern-chart-cover {
-    height: 76px;
-    width: 76px;
-  }
-
-  .rym-modern-chart-meta {
-    align-items: center;
-    flex-flow: row wrap;
-    gap: 8px 18px;
-  }
-
-  .rym-modern-chart-rating {
-    justify-content: flex-start;
-  }
-
-  .rym-modern-chart-reviews {
-    text-align: left;
-  }
-
-  .rym-modern-chart-media {
-    margin-top: 0;
-  }
-}
-
-@media only screen and (max-width: 42rem) {
-  #page_charts #content,
-  #page_charts .content,
-  #page_charts .page_charts_section {
-    max-width: 100% !important;
-    overflow-x: hidden;
-  }
-
-  .rym-modern-chart-row {
-    column-gap: 12px;
-    grid-template-columns: 60px minmax(0, 1fr);
-    padding: 12px 4px;
-  }
-
-  .rym-modern-chart-cover {
-    height: 60px;
-    width: 60px;
-  }
-
-  .rym-modern-chart-title {
-    font-size: 14px;
-  }
-
-  .rym-modern-chart-descriptors {
-    display: none;
-  }
+.page_charts_section_charts_item_artist {
+  margin-top: 0.15rem;
 }
 
 .rym-modern-card-grid {
