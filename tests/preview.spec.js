@@ -1029,6 +1029,9 @@ test("keeps charts on native RYM markup", async ({ page }) => {
     firstChartItem.locator(".page_charts_section_charts_item_title"),
   ).toContainText("Caminhos de água");
   await expect(
+    firstChartItem.locator(".page_charts_section_charts_item_title"),
+  ).toHaveCSS("font-size", "18.75px");
+  await expect(
     firstChartItem.locator(".page_charts_section_charts_item_credited_text"),
   ).toContainText("Kaátaìra");
   await expect(
@@ -1042,6 +1045,20 @@ test("keeps charts on native RYM markup", async ({ page }) => {
   const filters = page.locator("#page_charts_section_settings");
   await expect(filters).toHaveCSS("position", "sticky");
   await expect(filters).toHaveCSS("top", "52px");
+
+  const savedChartsScrim = await page
+    .locator("#page_charts_section_saved_charts")
+    .evaluate((section) => {
+      const styles = getComputedStyle(section, "::before");
+
+      return {
+        backgroundImage: styles.backgroundImage,
+        height: styles.height,
+      };
+    });
+
+  expect(savedChartsScrim.height).toBe("50px");
+  expect(savedChartsScrim.backgroundImage).toContain("linear-gradient");
 });
 
 test("uses the release distribution as the second column without friend ratings", async ({

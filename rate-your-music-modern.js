@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Rate Your Music Modern
 // @namespace    github.com/112345brian/rate-your-music-modern
-// @version      1.5.3
+// @version      1.5.0
 // @description  Behavior enhancements for the Rate Your Music Modern userstyle.
 // @author       bri
 // @homepageURL  https://github.com/112345brian/rate-your-music-modern
@@ -583,9 +583,9 @@ function enhanceReleaseRatingDistribution() {
       { label: "Distribution", panel: distribution },
       trendChart
         ? {
-          label: "Trend",
-          panel: createReleaseTrendPanel(trendChart),
-        }
+            label: "Trend",
+            panel: createReleaseTrendPanel(trendChart),
+          }
         : null,
     ]);
 
@@ -1402,7 +1402,7 @@ function enhanceReleaseContributions() {
   summary.textContent = `Options ${actionCount}`;
   normalizeContributionHeader(header);
 
-  for (let node = header.nextSibling; node && node !== actions;) {
+  for (let node = header.nextSibling; node && node !== actions; ) {
     const next = node.nextSibling;
 
     if (node.nodeType === Node.ELEMENT_NODE && node.matches("a.user")) {
@@ -1907,16 +1907,16 @@ function buildBottomNav() {
   const exploreItems =
     mobileMenuAnchors.length > 0
       ? mobileMenuAnchors.map((a) => ({
-        href: a.href,
-        label: a.textContent.trim(),
-      }))
+          href: a.href,
+          label: a.textContent.trim(),
+        }))
       : [
-        { href: "/newreleases/", label: "New Music" },
-        { href: "/genres/", label: "Genres" },
-        { href: "/charts/", label: "Charts" },
-        { href: "/lists/", label: "Lists" },
-        { href: "/forums/", label: "Forums" },
-      ];
+          { href: "/newreleases/", label: "New Music" },
+          { href: "/genres/", label: "Genres" },
+          { href: "/charts/", label: "Charts" },
+          { href: "/lists/", label: "Lists" },
+          { href: "/forums/", label: "Forums" },
+        ];
 
   const homeSvg = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>`;
   const gridSvg = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>`;
@@ -2467,10 +2467,10 @@ function buildMobileInfoPanel() {
   );
   const languagePlainRow = !languagePairedRow
     ? [...document.querySelectorAll(".album_info tr")].find(
-      (row) =>
-        row.querySelector(".info_hdr")?.textContent.trim().toLowerCase() ===
-        "language",
-    )
+        (row) =>
+          row.querySelector(".info_hdr")?.textContent.trim().toLowerCase() ===
+          "language",
+      )
     : null;
 
   // Use the show-for-small tracklist (already mobile-visible, avoids duplicate
@@ -2625,7 +2625,7 @@ function chartBuildLinkList(anchors, className) {
 function buildChartRow(wrapper, item, fallbackIndex) {
   const titleLink = item.querySelector(
     ".page_charts_section_charts_item_link.release, " +
-    ".page_charts_section_charts_item_link",
+      ".page_charts_section_charts_item_link",
   );
   const imageLink = item.querySelector(
     ".page_charts_section_charts_item_image_link",
@@ -2699,7 +2699,7 @@ function buildChartRow(wrapper, item, fallbackIndex) {
   const artistAnchors = [
     ...item.querySelectorAll(
       ".page_charts_section_charts_item_credited_text a.artist, " +
-      ".page_charts_section_charts_item_credited_text a",
+        ".page_charts_section_charts_item_credited_text a",
     ),
   ];
 
