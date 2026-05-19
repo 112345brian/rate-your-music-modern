@@ -42,53 +42,51 @@
   z-index: 1;
 }
 
-#page_charts #page_charts_section_settings ~ .page_charts_section::before,
+#page_charts #page_charts_section_settings ~ .page_charts_section {
+  background: rgb(7 10 16);
+  isolation: isolate;
+  position: relative;
+  z-index: 2;
+}
+
 #page_charts
   #page_charts_section_settings
   ~ #page_charts_section_mini_charts
-  .page_charts_section_mini_charts_chart::before {
-  background: linear-gradient(
-    180deg,
-    rgb(7 10 16 / 98%) 0%,
-    rgb(7 10 16 / 94%) 58%,
-    rgb(7 10 16 / 68%) 82%,
-    rgb(7 10 16 / 0%) 100%
-  );
+  .page_charts_section_mini_charts_chart {
+  background: var(--rym-surface) !important;
+  isolation: isolate;
+  position: relative;
+  z-index: 2;
+}
+
+#page_charts #page_charts_section_saved_charts::before {
+  background: rgb(7 10 16);
+  bottom: 100%;
   content: "";
   display: block;
-  height: 7rem;
+  height: 22rem;
   left: 0;
   pointer-events: none;
   position: absolute;
   right: 0;
-  top: 0;
-  z-index: 0;
+  z-index: -1;
 }
 
-#page_charts #page_charts_section_settings ~ .page_charts_section::after,
+#page_charts #page_charts_section_saved_charts::after,
 #page_charts
   #page_charts_section_settings
   ~ #page_charts_section_mini_charts
   .page_charts_section_mini_charts_chart::after {
   background: rgb(7 10 16);
-  bottom: -5rem;
   content: "";
   display: block;
-  height: 5rem;
+  height: 6rem;
   left: 0;
   pointer-events: none;
   position: absolute;
   right: 0;
-  z-index: 0;
-}
-
-#page_charts #page_charts_section_settings ~ .page_charts_section,
-#page_charts
-  #page_charts_section_settings
-  ~ #page_charts_section_mini_charts
-  .page_charts_section_mini_charts_chart {
-  isolation: isolate;
-  position: relative;
+  top: 100%;
+  z-index: -1;
 }
 
 #page_charts

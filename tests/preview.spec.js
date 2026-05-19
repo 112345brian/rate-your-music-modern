@@ -1063,15 +1063,16 @@ test("keeps charts on native RYM markup", async ({ page }) => {
       return {
         bridgeBackground: after.backgroundColor,
         bridgeHeight: after.height,
-        scrimBackgroundImage: before.backgroundImage,
-        scrimHeight: before.height,
+        leadInBackground: before.backgroundColor,
+        leadInHeight: before.height,
+        leadInTop: before.top,
       };
     });
 
-  expect(savedChartsScrim.scrimHeight).toBe("70px");
-  expect(savedChartsScrim.scrimBackgroundImage).toContain("linear-gradient");
-  expect(savedChartsScrim.scrimBackgroundImage).toContain("rgba(7, 10, 16");
-  expect(savedChartsScrim.bridgeHeight).toBe("50px");
+  expect(savedChartsScrim.leadInBackground).toBe("rgb(7, 10, 16)");
+  expect(savedChartsScrim.leadInHeight).toBe("220px");
+  expect(savedChartsScrim.leadInTop).toBe("-220px");
+  expect(savedChartsScrim.bridgeHeight).toBe("60px");
   expect(savedChartsScrim.bridgeBackground).toBe("rgb(7, 10, 16)");
 });
 
