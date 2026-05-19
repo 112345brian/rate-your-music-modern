@@ -1038,7 +1038,7 @@ test("keeps charts on native RYM markup", async ({ page }) => {
   ).toContainText("Caminhos de água");
   await expect(
     firstChartItem.locator(".page_charts_section_charts_item_title"),
-  ).toHaveCSS("font-size", "18.75px");
+  ).toHaveCSS("font-size", "17px");
   await expect(
     firstChartItem.locator(".page_charts_section_charts_item_credited_text"),
   ).toContainText("Kaátaìra");
@@ -1049,31 +1049,28 @@ test("keeps charts on native RYM markup", async ({ page }) => {
     firstChartItem.locator(".page_charts_section_charts_item_genres_secondary"),
   ).toContainText("Post-Minimalism");
   await expect(firstChartItem).not.toHaveClass(/rym-modern-chart-enhanced/);
+});
 
-  const filters = page.locator("#page_charts_section_settings");
-  await expect(filters).toHaveCSS("position", "sticky");
-  await expect(filters).toHaveCSS("top", "52px");
+test("uses one desktop header across saved RYM previews", async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 820 });
 
-  const savedChartsScrim = await page
-    .locator("#page_charts_section_saved_charts")
-    .evaluate((section) => {
-      const before = getComputedStyle(section, "::before");
-      const after = getComputedStyle(section, "::after");
+  for (const asset of [
+    "release-page",
+    "artist-page",
+    "charts-page",
+    "home-page",
+  ]) {
+    await page.goto(
+      pathToFileURL(`${process.cwd()}/assets/${asset}/preview.html`).href,
+    );
 
-      return {
-        bridgeBackground: after.backgroundColor,
-        bridgeHeight: after.height,
-        leadInBackground: before.backgroundColor,
-        leadInHeight: before.height,
-        leadInTop: before.top,
-      };
-    });
-
-  expect(savedChartsScrim.leadInBackground).toBe("rgb(7, 10, 16)");
-  expect(savedChartsScrim.leadInHeight).toBe("220px");
-  expect(savedChartsScrim.leadInTop).toBe("-220px");
-  expect(savedChartsScrim.bridgeHeight).toBe("60px");
-  expect(savedChartsScrim.bridgeBackground).toBe("rgb(7, 10, 16)");
+    const header = page.locator("#page_header");
+    await expect(header).toHaveCSS("height", "56px");
+    await expect(header).toHaveCSS("font-size", "22.4px");
+    await expect(header).toHaveCSS("padding-left", "28px");
+    await expect(header).toHaveCSS("padding-right", "28px");
+    await expect(page.locator("#content")).toHaveCSS("margin-top", "64px");
+  }
 });
 
 test("uses the release distribution as the second column without friend ratings", async ({

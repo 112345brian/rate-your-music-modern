@@ -4,7 +4,7 @@ import prettier from "prettier";
 const USERSCRIPT_HEADER = `// ==UserScript==
 // @name         Rate Your Music Modern
 // @namespace    github.com/112345brian/rate-your-music-modern
-// @version      1.9.1
+// @version      1.9.2
 // @description  Behavior enhancements for the Rate Your Music Modern userstyle.
 // @author       bri
 // @homepageURL  https://github.com/112345brian/rate-your-music-modern
@@ -25,7 +25,6 @@ const SOURCE_FILES = [
   "src/02-release-core.js",
   "src/03-release-tabs.js",
   "src/04-mobile.js",
-  "src/05-charts.js",
 ];
 
 const parts = await Promise.all(SOURCE_FILES.map((f) => readFile(f, "utf8")));

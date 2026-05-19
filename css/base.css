@@ -70,6 +70,50 @@ body {
   margin: 0;
 }
 
+@media only screen and (min-width: 42.063rem) {
+  :root {
+    --rym-desktop-header-height: 56px;
+  }
+
+  #page_header,
+  body > header {
+    font-size: 22.4px !important;
+    height: var(--rym-desktop-header-height) !important;
+    line-height: 53.984px !important;
+    padding-left: 28px !important;
+    padding-right: 28px !important;
+  }
+
+  .header_inner {
+    height: var(--rym-desktop-header-height) !important;
+    max-width: 95em;
+    padding-left: 4px !important;
+    padding-right: 0 !important;
+  }
+
+  .logo_header {
+    height: 44.8px !important;
+    margin-right: 0.7em !important;
+    margin-top: 5.6px !important;
+    width: 44.8px !important;
+  }
+
+  .header_user_img {
+    height: 44.8px !important;
+    margin-top: 5.6px !important;
+    width: 44.8px !important;
+  }
+
+  .header_search,
+  .header_search .ui_search_frame_outer {
+    height: var(--rym-desktop-header-height) !important;
+  }
+
+  #content {
+    margin-top: 64px !important;
+  }
+}
+
 .rym-modern-footer-toggle {
   background: transparent;
   border: 0;
