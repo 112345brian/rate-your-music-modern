@@ -43,9 +43,8 @@
   z-index: 1;
 }
 
-/* Saved charts + mini-chart sections are flat rows, not cards */
-#page_charts #page_charts_section_saved_charts,
-#page_charts #page_charts_section_mini_charts {
+/* All chart page sections are flat — no card borders, no raised background */
+#page_charts .page_charts_section {
   background: var(--rym-bg) !important;
   border: 0 !important;
   border-radius: 0 !important;
@@ -53,7 +52,7 @@
   padding: 0 !important;
 }
 
-/* Mini-chart sub-sections (Soundtracks, Live, Archival) — remove any inherited card look */
+/* Mini-chart sub-sections (Soundtracks, Live, Archival) — no inherited card look */
 #page_charts .page_charts_section_mini_charts_chart {
   background: transparent !important;
   border: 0 !important;

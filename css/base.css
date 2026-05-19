@@ -319,3 +319,8 @@ small,
 .descriptor {
   color: var(--rym-link) !important;
 }
+
+/* Streaming / media link icon rows: always wrap rather than overflow */
+.ui_media_links {
+  flex-wrap: wrap !important;
+}
