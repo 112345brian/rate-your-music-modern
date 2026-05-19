@@ -1,7 +1,7 @@
 /* ==UserStyle==
 @name           Rate Your Music Modern
 @namespace      github.com/112345brian/rate-your-music-modern
-@version        1.7.0
+@version        1.7.1
 @description    Modern visual treatment for Rate Your Music.
 @author         bri
 @homepageURL    https://github.com/112345brian/rate-your-music-modern
@@ -5480,6 +5480,20 @@
   #page_charts #page_charts_section_settings ~ .page_charts_section {
     position: relative;
     z-index: 1;
+  }
+
+  /* Opaque lead-in above each section so the sticky Add filters is covered when scrolled under */
+  #page_charts #page_charts_section_saved_charts::before,
+  #page_charts #page_charts_section_mini_charts::before {
+    background: var(--rym-bg);
+    content: "";
+    display: block;
+    height: 400px;
+    left: 0;
+    pointer-events: none;
+    position: absolute;
+    right: 0;
+    top: -400px;
   }
 
   /* All chart page sections are flat — no card borders, no raised background */
