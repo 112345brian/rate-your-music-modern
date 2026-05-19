@@ -1057,17 +1057,22 @@ test("keeps charts on native RYM markup", async ({ page }) => {
   const savedChartsScrim = await page
     .locator("#page_charts_section_saved_charts")
     .evaluate((section) => {
-      const styles = getComputedStyle(section, "::before");
+      const before = getComputedStyle(section, "::before");
+      const after = getComputedStyle(section, "::after");
 
       return {
-        backgroundImage: styles.backgroundImage,
-        height: styles.height,
+        bridgeBackground: after.backgroundColor,
+        bridgeHeight: after.height,
+        scrimBackgroundImage: before.backgroundImage,
+        scrimHeight: before.height,
       };
     });
 
-  expect(savedChartsScrim.height).toBe("70px");
-  expect(savedChartsScrim.backgroundImage).toContain("linear-gradient");
-  expect(savedChartsScrim.backgroundImage).toContain("rgba(7, 10, 16");
+  expect(savedChartsScrim.scrimHeight).toBe("70px");
+  expect(savedChartsScrim.scrimBackgroundImage).toContain("linear-gradient");
+  expect(savedChartsScrim.scrimBackgroundImage).toContain("rgba(7, 10, 16");
+  expect(savedChartsScrim.bridgeHeight).toBe("50px");
+  expect(savedChartsScrim.bridgeBackground).toBe("rgb(7, 10, 16)");
 });
 
 test("uses the release distribution as the second column without friend ratings", async ({

@@ -1,7 +1,7 @@
 /* ==UserStyle==
 @name           Rate Your Music Modern
 @namespace      github.com/112345brian/rate-your-music-modern
-@version        1.6.1
+@version        1.6.2
 @description    Modern visual treatment for Rate Your Music.
 @author         bri
 @homepageURL    https://github.com/112345brian/rate-your-music-modern
@@ -5452,6 +5452,23 @@
     position: absolute;
     right: 0;
     top: 0;
+    z-index: 0;
+  }
+
+  #page_charts #page_charts_section_settings ~ .page_charts_section::after,
+  #page_charts
+    #page_charts_section_settings
+    ~ #page_charts_section_mini_charts
+    .page_charts_section_mini_charts_chart::after {
+    background: rgb(7 10 16);
+    bottom: -5rem;
+    content: "";
+    display: block;
+    height: 5rem;
+    left: 0;
+    pointer-events: none;
+    position: absolute;
+    right: 0;
     z-index: 0;
   }
 

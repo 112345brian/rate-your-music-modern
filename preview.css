@@ -5424,6 +5424,23 @@ html#page_release #content {
   z-index: 0;
 }
 
+#page_charts #page_charts_section_settings ~ .page_charts_section::after,
+#page_charts
+  #page_charts_section_settings
+  ~ #page_charts_section_mini_charts
+  .page_charts_section_mini_charts_chart::after {
+  background: rgb(7 10 16);
+  bottom: -5rem;
+  content: "";
+  display: block;
+  height: 5rem;
+  left: 0;
+  pointer-events: none;
+  position: absolute;
+  right: 0;
+  z-index: 0;
+}
+
 #page_charts #page_charts_section_settings ~ .page_charts_section,
 #page_charts
   #page_charts_section_settings
