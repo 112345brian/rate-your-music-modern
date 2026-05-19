@@ -1038,7 +1038,7 @@ test("keeps charts on native RYM markup", async ({ page }) => {
   ).toContainText("Caminhos de água");
   await expect(
     firstChartItem.locator(".page_charts_section_charts_item_title"),
-  ).toHaveCSS("font-size", "17px");
+  ).toHaveCSS("font-size", "18.75px");
   await expect(
     firstChartItem.locator(".page_charts_section_charts_item_credited_text"),
   ).toContainText("Kaátaìra");
