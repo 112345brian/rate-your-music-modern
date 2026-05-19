@@ -1096,7 +1096,7 @@ html#page_release #content {
 
 .page_release .release_pri_genres,
 .page_release .release_sec_genres {
-  display: contents;
+  display: block;
 }
 
 .page_release table.album_info tr.release_genres {
@@ -1111,10 +1111,8 @@ html#page_release #content {
 }
 
 .page_release table.album_info tr.release_genres td:first-of-type > div {
-  display: flex;
+  display: block;
   float: none !important;
-  flex-wrap: wrap;
-  gap: 5px 13px;
   max-width: 100%;
 }
 
@@ -1125,6 +1123,8 @@ html#page_release #content {
 
 .page_release .release_sec_genres {
   opacity: 0.82;
+  font-size: 13px;
+  margin-top: 4px;
 }
 
 .page_release .release_pri_genres br,
@@ -1135,20 +1135,21 @@ html#page_release #content {
 .page_release table.album_info a.genre {
   border-radius: 0;
   display: inline;
-  font-size: 14px !important;
   font-weight: 740 !important;
   line-height: 1.35;
   padding: 0;
   text-decoration: none;
-  text-transform: lowercase;
+  text-transform: none;
 }
 
 .page_release .release_pri_genres a.genre {
   color: var(--rym-link-hover) !important;
+  font-size: 15px !important;
 }
 
 .page_release .release_sec_genres a.genre {
   color: var(--rym-text-soft) !important;
+  font-size: 13px !important;
   font-weight: 680 !important;
 }
 
@@ -3400,9 +3401,7 @@ html#page_release #content {
   }
 
   .page_release .rym-modern-info-genres {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 5px 13px;
+    display: block;
     margin: 0;
     padding: 0;
   }
@@ -3410,7 +3409,12 @@ html#page_release #content {
   .page_release
     .rym-modern-info-genres
     :where(.release_pri_genres, .release_sec_genres) {
-    display: contents !important;
+    display: block !important;
+  }
+
+  .page_release .rym-modern-info-genres .release_sec_genres {
+    font-size: 14px;
+    margin-top: 4px;
   }
 
   .page_release .rym-modern-info-genres :where(br) {

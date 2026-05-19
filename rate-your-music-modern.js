@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Rate Your Music Modern
 // @namespace    github.com/112345brian/rate-your-music-modern
-// @version      1.9
+// @version      1.9.1
 // @description  Behavior enhancements for the Rate Your Music Modern userstyle.
 // @author       bri
 // @homepageURL  https://github.com/112345brian/rate-your-music-modern
@@ -1343,15 +1343,7 @@ function observeReleaseRecordedLanguage() {
 }
 
 function enhanceReleaseGenres() {
-  for (const genreGroup of document.querySelectorAll(
-    ".page_release .release_pri_genres, .page_release .release_sec_genres",
-  )) {
-    for (const node of genreGroup.childNodes) {
-      if (node.nodeType === Node.TEXT_NODE) {
-        node.textContent = node.textContent.replaceAll(",", "");
-      }
-    }
-  }
+  // Keep native comma separators now that genre links are plain text again.
 }
 
 function findReleaseContributionsSection() {

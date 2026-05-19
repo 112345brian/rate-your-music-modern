@@ -49,14 +49,14 @@
   .page_charts_section_mini_charts_chart::before {
   background: linear-gradient(
     180deg,
-    var(--rym-surface) 0%,
-    var(--rym-surface) 54%,
-    rgb(28 34 48 / 92%) 78%,
-    rgb(28 34 48 / 0%) 100%
+    rgb(7 10 16 / 98%) 0%,
+    rgb(7 10 16 / 94%) 58%,
+    rgb(7 10 16 / 68%) 82%,
+    rgb(7 10 16 / 0%) 100%
   );
   content: "";
   display: block;
-  height: 5rem;
+  height: 7rem;
   left: 0;
   pointer-events: none;
   position: absolute;

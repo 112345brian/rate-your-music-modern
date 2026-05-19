@@ -890,15 +890,7 @@ function observeReleaseRecordedLanguage() {
 }
 
 function enhanceReleaseGenres() {
-  for (const genreGroup of document.querySelectorAll(
-    ".page_release .release_pri_genres, .page_release .release_sec_genres",
-  )) {
-    for (const node of genreGroup.childNodes) {
-      if (node.nodeType === Node.TEXT_NODE) {
-        node.textContent = node.textContent.replaceAll(",", "");
-      }
-    }
-  }
+  // Keep native comma separators now that genre links are plain text again.
 }
 
 function findReleaseContributionsSection() {

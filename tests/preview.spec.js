@@ -637,7 +637,7 @@ test("modernizes the release preview layout", async ({ page }) => {
     page.locator(".rym-modern-release-rating-row #chart_div"),
   ).toBeVisible();
   await expect(page.locator(".section_catalog #chart_div")).toHaveCount(0);
-  await expect(page.locator(".release_genres")).not.toContainText(",");
+  await expect(page.locator(".release_genres")).toContainText(",");
   await expect(page.locator(".release_pri_genres a.genre").first()).toHaveCSS(
     "color",
     "rgb(164, 205, 253)",
@@ -656,11 +656,19 @@ test("modernizes the release preview layout", async ({ page }) => {
   );
   await expect(page.locator(".release_pri_genres").first()).toHaveCSS(
     "display",
-    "contents",
+    "block",
   );
   await expect(page.locator(".release_sec_genres").first()).toHaveCSS(
     "display",
-    "contents",
+    "block",
+  );
+  await expect(page.locator(".release_pri_genres a.genre").first()).toHaveCSS(
+    "font-size",
+    "15px",
+  );
+  await expect(page.locator(".release_sec_genres a.genre").first()).toHaveCSS(
+    "font-size",
+    "13px",
   );
   await expect(
     page.locator(".rym-modern-release-lists-disclosure"),
@@ -1057,8 +1065,9 @@ test("keeps charts on native RYM markup", async ({ page }) => {
       };
     });
 
-  expect(savedChartsScrim.height).toBe("50px");
+  expect(savedChartsScrim.height).toBe("70px");
   expect(savedChartsScrim.backgroundImage).toContain("linear-gradient");
+  expect(savedChartsScrim.backgroundImage).toContain("rgba(7, 10, 16");
 });
 
 test("uses the release distribution as the second column without friend ratings", async ({
@@ -1115,7 +1124,7 @@ test("uses the release distribution as the second column without friend ratings"
     };
   });
 
-  expect(compactRatingMetrics.albumInfoHeight).toBeLessThanOrEqual(500);
+  expect(compactRatingMetrics.albumInfoHeight).toBeLessThanOrEqual(520);
   expect(compactRatingMetrics.summaryHeight).toBeLessThanOrEqual(150);
   expect(compactRatingMetrics.distributionHeight).toBeLessThanOrEqual(145);
   await expect(page.locator("#rym-modern-release-ratings")).toBeHidden();
