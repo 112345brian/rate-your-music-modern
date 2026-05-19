@@ -5451,6 +5451,19 @@ html#page_release #content {
   z-index: 1;
 }
 
+/* Fill the margin gap between Saved Charts and Mini Charts so the sticky
+ Add filters panel cannot show through as sections scroll over it */
+#page_charts #page_charts_section_saved_charts::after {
+  background: var(--rym-bg);
+  content: "";
+  height: 60px;
+  left: 0;
+  pointer-events: none;
+  position: absolute;
+  right: 0;
+  top: 100%;
+}
+
 /* All chart page sections are flat — no card borders, no raised background */
 #page_charts .page_charts_section {
   background: var(--rym-bg) !important;
