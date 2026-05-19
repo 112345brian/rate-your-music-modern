@@ -1049,6 +1049,21 @@ test("keeps charts on native RYM markup", async ({ page }) => {
     firstChartItem.locator(".page_charts_section_charts_item_genres_secondary"),
   ).toContainText("Post-Minimalism");
   await expect(firstChartItem).not.toHaveClass(/rym-modern-chart-enhanced/);
+
+  const filters = page.locator("#page_charts_section_settings");
+  await expect(filters).toHaveCSS("position", "sticky");
+  await expect(filters).toHaveCSS("top", "66px");
+
+  // Following sections should stack over the sticky card; group_filler divs must not
+  const savedCharts = page.locator("#page_charts_section_saved_charts");
+  const savedChartsZIndex = await savedCharts.evaluate(
+    (el) => getComputedStyle(el).zIndex,
+  );
+  const filterZIndex = await filters.evaluate(
+    (el) => getComputedStyle(el).zIndex,
+  );
+
+  expect(Number(savedChartsZIndex)).toBeGreaterThan(Number(filterZIndex));
 });
 
 test("uses one desktop header across saved RYM previews", async ({ page }) => {
