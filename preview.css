@@ -5446,6 +5446,24 @@ html#page_release #content {
   z-index: 1;
 }
 
+/* Saved charts + mini-chart sections are flat rows, not cards */
+#page_charts #page_charts_section_saved_charts,
+#page_charts #page_charts_section_mini_charts {
+  background: var(--rym-bg) !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+}
+
+/* Mini-chart sub-sections (Soundtracks, Live, Archival) — remove any inherited card look */
+#page_charts .page_charts_section_mini_charts_chart {
+  background: transparent !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+
 .page_charts_section_charts_item_list {
   display: grid;
   gap: 0.75rem;
